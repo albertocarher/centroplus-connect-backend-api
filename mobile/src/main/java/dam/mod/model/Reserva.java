@@ -2,7 +2,7 @@ package dam.mod.models;
 
 import java.time.LocalDate;
 
-public class Inscripcion {
+public class Reserva {
     private int id;
     private int idUsuario;
     private int idActividad;
