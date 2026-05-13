@@ -15,3 +15,6 @@ La aplicacion deberá cumplir ciertas condiciones:
 
 
 Este proyecto esta siendo realizado por Nauzet Torres y Alberto Carballo.
+
+# Base de datos  
+[Ver documentación de la base de datos](./database/README.md)
