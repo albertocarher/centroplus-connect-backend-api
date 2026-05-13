@@ -33,12 +33,12 @@ public class ActividadRepository implements IActividadRepository {
                         resultSet.getInt("plazas_ocupadas")
                 ));
             }
-
+        return listaActividades;
         } catch (SQLException exception) {
             throw new RuntimeException("Error al obtener actividades", exception);
         }
 
-        return listaActividades;
+
     }
 
     @Override

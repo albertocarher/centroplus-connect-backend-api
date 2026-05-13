@@ -30,12 +30,10 @@ public class UsuarioRepository implements IUsuarioRepository {
                         resultSet.getString("tipo_usuario")
                 ));
             }
-
+        return listaUsuarios;
         } catch (SQLException exception) {
             throw new RuntimeException("Error al obtener usuarios", exception);
         }
-
-        return listaUsuarios;
     }
 
     @Override

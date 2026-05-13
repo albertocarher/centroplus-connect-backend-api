@@ -30,12 +30,11 @@ public class ReservaRepository implements IReservaRepository {
                         resultSet.getString("estado")
                 ));
             }
-
+        return listaReservas;
         } catch (SQLException exception) {
             throw new RuntimeException("Error al obtener reservas", exception);
         }
 
-        return listaReservas;
     }
 
     @Override

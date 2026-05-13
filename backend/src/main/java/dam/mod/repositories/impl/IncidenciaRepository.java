@@ -31,12 +31,12 @@ public class IncidenciaRepository implements IIncidenciaRepository {
                         resultSet.getString("estado")
                 ));
             }
-
+            return listaIncidencias;
         } catch (SQLException exception) {
             throw new RuntimeException("Error al obtener incidencias", exception);
         }
 
-        return listaIncidencias;
+
     }
 
     @Override
