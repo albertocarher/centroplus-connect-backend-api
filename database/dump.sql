@@ -6,11 +6,12 @@ CREATE TABLE usuarios (
     dni TEXT NOT NULL UNIQUE,
     email TEXT NOT NULL,
     telefono TEXT,
-    tipo_usuario TEXT NOT NULL
+    tipo_usuario TEXT NOT NULL,
+    password TEXT NOT NULL
 );
-INSERT INTO usuarios VALUES(1,'Ana Pérez','11111111A','ana@email.com','600111111','ALUMNO');
-INSERT INTO usuarios VALUES(2,'Luis Ramos','22222222B','luis@email.com','600222222','SOCIO');
-INSERT INTO usuarios VALUES(3,'Marta Díaz','33333333C','marta@email.com','600333333','AMBOS');
+INSERT INTO usuarios VALUES(1,'Ana Pérez','11111111A','ana@email.com','600111111','ALUMNO', '123456789');
+INSERT INTO usuarios VALUES(2,'Luis Ramos','22222222B','luis@email.com','600222222','SOCIO', '123456789');
+INSERT INTO usuarios VALUES(3,'Marta Díaz','33333333C','marta@email.com','600333333','AMBOS', '123456789');
 CREATE TABLE actividades (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nombre TEXT NOT NULL,

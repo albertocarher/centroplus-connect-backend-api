@@ -11,7 +11,8 @@ CREATE TABLE usuarios (
     dni TEXT NOT NULL UNIQUE,
     email TEXT NOT NULL,
     telefono TEXT,
-    tipo_usuario TEXT NOT NULL
+    tipo_usuario TEXT NOT NULL,
+    password TEXT NOT NULL
 );
 
 CREATE TABLE actividades (

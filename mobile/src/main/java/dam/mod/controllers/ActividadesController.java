@@ -1,0 +1,62 @@
+package dam.mod.controllers;
+
+import dam.mod.models.Actividad;
+import dam.mod.repositories.IActividadRepository;
+import dam.mod.repositories.impl.ActividadRepository;
+import dam.mod.services.IActividadService;
+import dam.mod.services.impl.ActividadServiceImpl;
+import dam.mod.utils.ScreenManager;
+import dam.mod.utils.Session;
+import javafx.fxml.FXML;
+import javafx.scene.control.ListView;
+
+import java.util.List;
+
+public class ActividadesController {
+
+    @FXML
+    private ListView<Actividad> listaActividades;
+
+    private IActividadService actividadService;
+
+    @FXML
+    public void initialize() {
+
+        // 🔒 login obligatorio
+        if (Session.getCurrentUser() == null) {
+            ScreenManager.change("login.fxml");
+            return;
+        }
+
+        // service
+        IActividadRepository repo = new ActividadRepository();
+        actividadService = new ActividadServiceImpl(repo);
+
+        cargarActividades();
+    }
+
+    private void cargarActividades() {
+
+        List<Actividad> actividades = actividadService.findAll();
+
+        listaActividades.getItems().clear();
+        listaActividades.getItems().addAll(actividades);
+    }
+
+    @FXML
+    private void seleccionarActividad() {
+
+        Actividad seleccionada =
+                listaActividades.getSelectionModel().getSelectedItem();
+
+        if (seleccionada != null) {
+            DetalleActividadController.setActividad(seleccionada);
+            ScreenManager.change("detalle_actividad.fxml");
+        }
+    }
+
+    @FXML
+    private void volver() {
+        ScreenManager.change("inicio.fxml");
+    }
+}
