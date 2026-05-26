@@ -10,6 +10,9 @@ public class Reserva {
     private LocalDate fecha;
     private String estado;
 
+    // 👇 NUEVO: para mostrar el nombre en UI
+    private String nombreActividad;
+
     public Reserva(int id, int idUsuario, int idActividad,
                    LocalDate fecha, String estado) {
         this.id = id;
@@ -19,15 +22,41 @@ public class Reserva {
         this.estado = estado;
     }
 
-    public int getId() { return id; }
-    public int getIdUsuario() { return idUsuario; }
-    public int getIdActividad() { return idActividad; }
-    public LocalDate getFecha() { return fecha; }
-    public String getEstado() { return estado; }
+    // GETTERS
+    public int getId() {
+        return id;
+    }
+
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    public int getIdActividad() {
+        return idActividad;
+    }
+
+    public LocalDate getFecha() {
+        return fecha;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public String getNombreActividad() {
+        return nombreActividad;
+    }
+
+    // SETTER necesario para el JOIN en el repository
+    public void setNombreActividad(String nombreActividad) {
+        this.nombreActividad = nombreActividad;
+    }
 
     @Override
     public String toString() {
-        return "Actividad ID: " + idActividad +
+
+        // 👇 Esto es lo que verá el ListView
+        return nombreActividad +
                 " | Fecha: " + fecha +
                 " | Estado: " + estado;
     }

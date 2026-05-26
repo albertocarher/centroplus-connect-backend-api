@@ -2,9 +2,9 @@ PRAGMA foreign_keys = ON;
 
 INSERT INTO usuarios (nombre, dni, email, telefono, tipo_usuario, password)
 VALUES
-    ('Ana Pérez', '11111111A', 'ana@email.com', '600111111', 'ALUMNO', '123456789'),
-    ('Luis Ramos', '22222222B', 'luis@email.com', '600222222', 'SOCIO', '123456789'),
-    ('Marta Díaz', '33333333C', 'marta@email.com', '600333333', 'AMBOS', '123456789');
+    ('Ana Pérez', '11111111A', 'ana@email.com', '600111111', 'ALUMNO', ''),
+    ('Luis Ramos', '22222222B', 'luis@email.com', '600222222', 'SOCIO', ''),
+    ('Marta Díaz', '33333333C', 'marta@email.com', '600333333', 'AMBOS', '');
 
 INSERT INTO actividades (nombre, tipo_actividad, duracion, precio, plazas_maximas, plazas_ocupadas)
 VALUES

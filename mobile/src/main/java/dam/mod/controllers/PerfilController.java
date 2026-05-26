@@ -41,4 +41,9 @@ public class PerfilController {
         Session.logout();
         ScreenManager.change("login.fxml");
     }
+
+    @FXML
+    private void abrirCambiarPassword() {
+        ScreenManager.change("cambiar_password.fxml");
+    }
 }

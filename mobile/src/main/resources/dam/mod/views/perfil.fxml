@@ -50,7 +50,11 @@
     </VBox>
 
     <!-- ACCIÓN -->
+
     <HBox alignment="CENTER">
+        <Button text="Cambiar contraseña"
+                onAction="#abrirCambiarPassword"
+                prefWidth="200"/>
         <Button text="Cerrar sesión"
                 onAction="#cerrarSesion"
                 prefWidth="200"/>

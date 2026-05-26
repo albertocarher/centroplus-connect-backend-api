@@ -16,25 +16,39 @@ public class ReservaRepository implements IReservaRepository {
 
     @Override
     public List<Reserva> findAll() {
-        String sql = "SELECT * FROM reservas";
+
+        String sql = """
+        SELECT r.id, r.id_usuario, r.id_actividad, r.fecha, r.estado, a.nombre
+        FROM reservas r
+        JOIN actividades a ON r.id_actividad = a.id
+    """;
+
         List<Reserva> listaReservas = new ArrayList<>();
 
-        try (Connection connection = ConnectionManager.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql); ResultSet resultSet = preparedStatement.executeQuery()) {
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
 
             while (resultSet.next()) {
-                listaReservas.add(new Reserva(
+
+                Reserva r = new Reserva(
                         resultSet.getInt("id"),
                         resultSet.getInt("id_usuario"),
                         resultSet.getInt("id_actividad"),
                         LocalDate.parse(resultSet.getString("fecha")),
                         resultSet.getString("estado")
-                ));
+                );
+
+                r.setNombreActividad(resultSet.getString("nombre"));
+
+                listaReservas.add(r);
             }
-        return listaReservas;
+
+            return listaReservas;
+
         } catch (SQLException exception) {
             throw new RuntimeException("Error al obtener reservas", exception);
         }
-
     }
 
     @Override
