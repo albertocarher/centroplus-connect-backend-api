@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="dam.mod.controllers.PerfilController"
+      spacing="15"
+      prefWidth="390"
+      prefHeight="844"
+      style="-fx-padding: 15;">
+
+    <!-- HEADER -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Button text="← Volver" onAction="#volver"/>
+        <Label text="Mi perfil"/>
+    </HBox>
+
+    <!-- CONTENIDO -->
+    <VBox spacing="10">
+
+        <Label text="Nombre"/>
+        <Label fx:id="lblNombre"/>
+
+        <Label text="Email"/>
+        <Label fx:id="lblEmail"/>
+
+    </VBox>
+
+    <!-- ACCIÓN -->
+    <HBox alignment="CENTER">
+        <Button text="Cerrar sesión"
+                onAction="#cerrarSesion"
+                prefWidth="200"/>
+    </HBox>
+
+</VBox>

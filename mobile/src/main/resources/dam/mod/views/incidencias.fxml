@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="dam.mod.controllers.IncidenciasController"
+      spacing="15"
+      alignment="CENTER"
+      prefWidth="390"
+      prefHeight="844"
+      style="-fx-padding: 15;">
+
+    <!-- HEADER -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Button text="← Volver" onAction="#volver"/>
+        <Label text="Incidencias"/>
+    </HBox>
+
+    <!-- FORM -->
+    <TextField fx:id="txtAsunto"
+               promptText="Asunto"/>
+
+    <TextArea fx:id="txtDescripcion"
+              promptText="Describe el problema"
+              wrapText="true"
+              prefHeight="200"/>
+
+    <!-- ACTION -->
+    <Button text="Enviar incidencia"
+            onAction="#enviarIncidencia"
+            prefWidth="200"/>
+
+</VBox>
