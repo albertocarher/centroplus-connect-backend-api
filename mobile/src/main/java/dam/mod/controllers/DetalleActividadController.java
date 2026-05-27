@@ -48,16 +48,14 @@ public class DetalleActividadController {
     @FXML
     public void initialize() {
 
-        // 🔒 Login obligatorio
+        // Login obligatorio
         Usuario user = Session.getCurrentUser();
         if (user == null) {
             ScreenManager.change("login.fxml");
             return;
         }
 
-        // =========================
         // SERVICES
-        // =========================
 
         IActividadRepository actividadRepo = new ActividadRepository();
         actividadService = new ActividadServiceImpl(actividadRepo);
@@ -73,9 +71,7 @@ public class DetalleActividadController {
                 actividadService
         );
 
-        // =========================
         // LOAD DATA
-        // =========================
         if (actividadSeleccionada != null) {
             cargarDatos();
         }
@@ -101,13 +97,13 @@ public class DetalleActividadController {
         int usuarioId = Session.getCurrentUser().getId();
         int actividadId = actividadSeleccionada.getId();
 
-        // ❌ ya reservado
+        // ya reservado
         if (reservaService.yaReservado(actividadId, usuarioId)) {
-            System.out.println("❌ Ya tienes esta actividad reservada");
+            System.out.println("Ya tienes esta actividad reservada");
             return;
         }
 
-        // ❌ sin plazas
+        // sin plazas
         int disponibles =
                 actividadSeleccionada.getPlazasMaximas()
                         - actividadSeleccionada.getPlazasOcupadas();
@@ -117,7 +113,7 @@ public class DetalleActividadController {
             return;
         }
 
-        // ✔ reservar
+        // reservar
         boolean ok = reservaService.reservar(actividadId, usuarioId);
 
         if (ok) {
@@ -134,6 +130,7 @@ public class DetalleActividadController {
         }
     }
 
+    //volver
     @FXML
     private void volver() {
         ScreenManager.change("actividades.fxml");

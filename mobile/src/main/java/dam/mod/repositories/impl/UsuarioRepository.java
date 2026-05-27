@@ -86,7 +86,7 @@ public class UsuarioRepository implements IUsuarioRepository {
             ps.setString(4, usuario.getTelefono());
             ps.setString(5, usuario.getTipoUsuario());
 
-            // 🔐 HASH de contraseña
+            // HASH de contraseña
             ps.setString(6, PasswordUtils.hashPassword(usuario.getPassword()));
 
             return ps.executeUpdate() > 0;
@@ -110,7 +110,7 @@ public class UsuarioRepository implements IUsuarioRepository {
             ps.setString(4, usuario.getTelefono());
             ps.setString(5, usuario.getTipoUsuario());
 
-            // 🔐 hash si se cambia contraseña
+            // hash si se cambia contraseña
             ps.setString(6, PasswordUtils.hashPassword(usuario.getPassword()));
 
             ps.setInt(7, usuario.getId());

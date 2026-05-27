@@ -10,7 +10,7 @@ public class Reserva {
     private LocalDate fecha;
     private String estado;
 
-    // 👇 NUEVO: para mostrar el nombre en UI
+    // NUEVO: para mostrar el nombre en UI
     private String nombreActividad;
 
     public Reserva(int id, int idUsuario, int idActividad,
@@ -55,7 +55,7 @@ public class Reserva {
     @Override
     public String toString() {
 
-        // 👇 Esto es lo que verá el ListView
+        // Esto es lo que verá el ListView
         return nombreActividad +
                 " | Fecha: " + fecha +
                 " | Estado: " + estado;

@@ -34,6 +34,7 @@ public class IncidenciasController {
 
     private int idUsuario = 1;
 
+    //inicializacion
     @FXML
     public void initialize() {
 
@@ -50,6 +51,7 @@ public class IncidenciasController {
                 new IncidenciaServiceImpl(repo, usuarioService);
     }
 
+    //envio de incidencia
     @FXML
     private void enviarIncidencia() {
 
@@ -57,7 +59,7 @@ public class IncidenciasController {
         String descripcion = txtDescripcion.getText();
 
         if (asunto.isBlank() || descripcion.isBlank()) {
-            System.out.println("❌ Campos vacíos");
+            System.out.println("Campos vacíos");
             return;
         }
 
@@ -78,10 +80,11 @@ public class IncidenciasController {
             txtAsunto.clear();
             txtDescripcion.clear();
         } else {
-            System.out.println("❌ Error al enviar incidencia");
+            System.out.println("Error al enviar incidencia");
         }
     }
 
+    //volver
     @FXML
     private void volver() {
         ScreenManager.change("inicio.fxml");

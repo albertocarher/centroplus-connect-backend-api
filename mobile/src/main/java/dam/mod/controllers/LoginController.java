@@ -47,6 +47,7 @@ public class LoginController {
     @FXML
     private Label registerErrorLabel;
 
+    //inicializacion
     @FXML
     public void initialize() {
 
@@ -60,6 +61,7 @@ public class LoginController {
     }
 
 
+    //manejo del login
     @FXML
     private void handleLogin() {
 
@@ -78,7 +80,7 @@ public class LoginController {
         }
     }
 
-    // 📝 REGISTER
+    // REGISTER
     @FXML
     private void handleRegister() {
 
@@ -94,6 +96,11 @@ public class LoginController {
                     registerPasswordField.getText()
             );
 
+            if (registerPasswordField.getText().length() < 6) {
+            System.out.println("Contraseña demasiado corta");
+            return;
+        }
+
             service.create(nuevo);
 
             ScreenManager.change("login.fxml");
@@ -103,11 +110,13 @@ public class LoginController {
         }
     }
 
+    //abrir registro
     @FXML
     private void abrirRegistro() {
         ScreenManager.change("register.fxml");
     }
 
+    //volver al login
     @FXML
     private void volverLogin() {
         ScreenManager.change("login.fxml");

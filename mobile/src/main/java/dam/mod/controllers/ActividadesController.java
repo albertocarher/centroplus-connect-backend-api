@@ -19,10 +19,11 @@ public class ActividadesController {
 
     private IActividadService actividadService;
 
+    //inicializacion
     @FXML
     public void initialize() {
 
-        // 🔒 login obligatorio
+        // login obligatorio
         if (Session.getCurrentUser() == null) {
             ScreenManager.change("login.fxml");
             return;
@@ -35,6 +36,7 @@ public class ActividadesController {
         cargarActividades();
     }
 
+    //carga de actividades
     private void cargarActividades() {
 
         List<Actividad> actividades = actividadService.findAll();
@@ -43,6 +45,7 @@ public class ActividadesController {
         listaActividades.getItems().addAll(actividades);
     }
 
+    //seleccionar una actividad
     @FXML
     private void seleccionarActividad() {
 
@@ -55,6 +58,7 @@ public class ActividadesController {
         }
     }
 
+    //volver
     @FXML
     private void volver() {
         ScreenManager.change("inicio.fxml");

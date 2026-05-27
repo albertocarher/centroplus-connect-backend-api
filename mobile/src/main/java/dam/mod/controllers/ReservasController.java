@@ -32,6 +32,7 @@ public class ReservasController {
 
     private IReservaService reservaService;
 
+    //inicializacion
     @FXML
     public void initialize() {
 
@@ -57,12 +58,14 @@ public class ReservasController {
         cargarReservas();
     }
 
+    //Carga reservas
     private void cargarReservas() {
         listaReservas.getItems().setAll(
                 reservaService.findAll()
         );
     }
 
+    //cancela reservas
     @FXML
     private void cancelarReserva() {
 
@@ -82,6 +85,7 @@ public class ReservasController {
         }
     }
 
+    //volver al inicio
     @FXML
     private void volver() {
         ScreenManager.change("inicio.fxml");

@@ -72,6 +72,21 @@ public interface IReservaService {
      */
     boolean comprobarPlazasDisponibles(int idActividad);
 
+    /**
+     * Comprueba si esta reservado
+     * 
+     * @param actividadId id de la actividad
+     * @param usuarioId id del usuario
+     * @return Reservado?
+     */
     boolean yaReservado(int actividadId, int usuarioId);
+
+    /**
+     * Reserva una actividad
+     * 
+     * @param actividadId id de la actividad
+     * @param usuarioId id de usuario
+     * @return reserva
+     */
     boolean reservar(int actividadId, int usuarioId);
 }
