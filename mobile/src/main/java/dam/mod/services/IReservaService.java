@@ -3,6 +3,7 @@ package dam.mod.services;
 import java.util.List;
 
 import dam.mod.models.Reserva;
+import dam.mod.models.Usuario;
 
 public interface IReservaService {
 
@@ -49,9 +50,10 @@ public interface IReservaService {
      * Cancela una reserva por su ID.
      *
      * @param idReserva ID de la reserva a cancelar.
+     * @param idUsuario ID del usuario
      * @return true si la cancelación fue exitosa, false en caso contrario.
      */
-    boolean cancelarReserva(int idReserva);
+    boolean cancelarReserva(int idReserva, int idUsuario);
 
     /**
      * Verifica si un usuario ya tiene una reserva para una actividad
@@ -72,6 +74,23 @@ public interface IReservaService {
      */
     boolean comprobarPlazasDisponibles(int idActividad);
 
+    /**
+     * Comprueba si esta reservado
+     * 
+     * @param actividadId id de la actividad
+     * @param usuarioId id del usuario
+     * @return Reservado?
+     */
     boolean yaReservado(int actividadId, int usuarioId);
+
+    /**
+     * Reserva una actividad
+     * 
+     * @param actividadId id de la actividad
+     * @param usuarioId id de usuario
+     * @return reserva
+     */
     boolean reservar(int actividadId, int usuarioId);
+
+    List<Reserva> findByIdUsuario(int idUsuario);
 }

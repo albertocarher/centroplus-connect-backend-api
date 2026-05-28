@@ -9,6 +9,7 @@ import dam.mod.utils.ScreenManager;
 import dam.mod.utils.Session;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
+import dam.mod.utils.*;
 
 public class CambiarPasswordController {
 
@@ -23,6 +24,7 @@ public class CambiarPasswordController {
 
     private IUsuarioService usuarioService;
 
+    //inicializacion
     @FXML
     public void initialize() {
 
@@ -35,6 +37,7 @@ public class CambiarPasswordController {
         usuarioService = new UsuarioServiceImpl(repo);
     }
 
+    //Cambio de contraseña
     @FXML
     private void cambiarPassword() {
 
@@ -44,7 +47,7 @@ public class CambiarPasswordController {
         String newPass = newPasswordField.getText();
         String repeat = repeatPasswordField.getText();
 
-        if (!user.getPassword().equals(oldPass)) {
+        if (!PasswordUtils.checkPassword(oldPass, user.getPassword())) {
             System.out.println("Contraseña actual incorrecta");
             return;
         }
@@ -72,6 +75,7 @@ public class CambiarPasswordController {
         }
     }
 
+    //volver
     @FXML
     private void volver() {
         ScreenManager.change("perfil.fxml");

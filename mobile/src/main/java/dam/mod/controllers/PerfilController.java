@@ -14,6 +14,7 @@ public class PerfilController {
     @FXML private Label lblTelefono;
     @FXML private Label lblTipo;
 
+    //inicializacion
     @FXML
     public void initialize() {
 
@@ -31,17 +32,20 @@ public class PerfilController {
         lblTipo.setText(u.getTipoUsuario());
     }
 
+    //volver al inicio
     @FXML
     private void volver() {
         ScreenManager.change("inicio.fxml");
     }
 
+    //cerrar sesion
     @FXML
     private void cerrarSesion() {
         Session.logout();
         ScreenManager.change("login.fxml");
     }
 
+    //abrir aparado cambiar password
     @FXML
     private void abrirCambiarPassword() {
         ScreenManager.change("cambiar_password.fxml");
