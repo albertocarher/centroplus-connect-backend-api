@@ -8,7 +8,7 @@ public class ConnectionManager {
 
     // Ruta correcta hacia la base de datos (sale del módulo mobile)
     private static final String URL =
-            "jdbc:sqlite:../database/centroplus.db";
+            "jdbc:sqlite:src/main/resources/database/centroplus.db";
 
     static {
         try {
