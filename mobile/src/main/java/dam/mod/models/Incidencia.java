@@ -82,5 +82,10 @@ public class Incidencia {
         return id == other.id;
     }
 
+    @Override
+    public String toString() {
+        return asunto + " - " + estado;
+    }
+
     
 }
