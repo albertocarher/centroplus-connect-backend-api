@@ -12,8 +12,7 @@ import javafx.scene.control.*;
 public class LoginController {
 
     // SERVICE
-    private final IUsuarioService service =
-            new UsuarioServiceImpl(new UsuarioRepository());
+    private final IUsuarioService service = new UsuarioServiceImpl(new UsuarioRepository());
 
     // LOGIN
     @FXML
@@ -47,7 +46,7 @@ public class LoginController {
     @FXML
     private Label registerErrorLabel;
 
-    //inicializacion
+    // INIT
     @FXML
     public void initialize() {
 
@@ -55,24 +54,20 @@ public class LoginController {
             tipoUsuarioBox.getItems().addAll(
                     "ALUMNO",
                     "SOCIO",
-                    "AMBOS"
-            );
+                    "AMBOS");
         }
     }
 
-
-    //manejo del login
+    // LOGIN
     @FXML
     private void handleLogin() {
 
         try {
             Usuario u = service.login(
                     dniField.getText(),
-                    passwordField.getText()
-            );
+                    passwordField.getText());
 
             Session.setCurrentUser(u);
-
             ScreenManager.change("inicio.fxml");
 
         } catch (Exception e) {
@@ -86,6 +81,11 @@ public class LoginController {
 
         try {
 
+            if (registerPasswordField.getText().length() < 6) {
+                registerErrorLabel.setText("Contraseña demasiado corta");
+                return;
+            }
+
             Usuario nuevo = new Usuario(
                     0,
                     nombreField.getText(),
@@ -93,13 +93,7 @@ public class LoginController {
                     emailField.getText(),
                     telefonoField.getText(),
                     tipoUsuarioBox.getValue(),
-                    registerPasswordField.getText()
-            );
-
-            if (registerPasswordField.getText().length() < 6) {
-            System.out.println("Contraseña demasiado corta");
-            return;
-        }
+                    registerPasswordField.getText());
 
             service.create(nuevo);
 
@@ -110,15 +104,38 @@ public class LoginController {
         }
     }
 
-    //abrir registro
     @FXML
     private void abrirRegistro() {
         ScreenManager.change("register.fxml");
     }
 
-    //volver al login
     @FXML
     private void volverLogin() {
         ScreenManager.change("login.fxml");
+    }
+
+    // IDIOMA
+    @FXML
+    private void setSpanish() {
+        aplicarIdioma("es");
+    }
+
+    @FXML
+    private void setEnglish() {
+        aplicarIdioma("en");
+    }
+
+    @FXML
+    private void setGerman() {
+        aplicarIdioma("de");
+    }
+
+    private void aplicarIdioma(String lang) {
+
+        switch (lang) {
+            case "es" -> System.out.println("Idioma: Español");
+            case "en" -> System.out.println("Idioma: English");
+            case "de" -> System.out.println("Idioma: Deutsch");
+        }
     }
 }

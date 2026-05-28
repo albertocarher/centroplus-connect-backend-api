@@ -6,9 +6,9 @@
 <?import javafx.scene.image.ImageView?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="dam.mod.controllers.InicioController"
-            prefWidth="390"
-            prefHeight="844">
+    fx:controller="dam.mod.controllers.InicioController"
+    prefWidth="390"
+    prefHeight="844">
 
     <top>
         <BorderPane>
@@ -16,8 +16,8 @@
 
             <left>
                 <VBox spacing="5" alignment="CENTER_LEFT" style="-fx-padding: 10;">
-                    <Label text="SportCenter"/>
-                    <Label text="Menú principal"/>
+                    <Label text="SportCenter" />
+                    <Label text="Menú principal" />
                 </VBox>
             </left>
 
@@ -25,21 +25,54 @@
             <right>
                 <HBox spacing="10" alignment="CENTER_RIGHT" style="-fx-padding: 10;">
 
-                    <Button onAction="#cambiarIdioma">
+                    <MenuButton maxWidth="80">
+
                         <graphic>
-                            <ImageView fitWidth="20" fitHeight="20">
-                                <image>
-                                    <Image url="@/icons/idioma.png"/>
-                                </image>
+                            <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                                <Image url="@/icons/idioma.png" />
                             </ImageView>
                         </graphic>
-                    </Button>
+
+                        <items>
+
+                            <MenuItem onAction="#setSpanish">
+                                <graphic>
+                                    <HBox alignment="CENTER" spacing="5">
+                                        <ImageView fitWidth="24" fitHeight="16" preserveRatio="true">
+                                            <Image url="@/icons/es.png" />
+                                        </ImageView>
+                                    </HBox>
+                                </graphic>
+                            </MenuItem>
+
+                            <MenuItem onAction="#setEnglish">
+                                <graphic>
+                                    <HBox alignment="CENTER" spacing="5">
+                                        <ImageView fitWidth="24" fitHeight="16" preserveRatio="true">
+                                            <Image url="@/icons/en.png" />
+                                        </ImageView>
+                                    </HBox>
+                                </graphic>
+                            </MenuItem>
+
+                            <MenuItem onAction="#setGerman">
+                                <graphic>
+                                    <HBox alignment="CENTER" spacing="5">
+                                        <ImageView fitWidth="24" fitHeight="16" preserveRatio="true">
+                                            <Image url="@/icons/de.png" />
+                                        </ImageView>
+                                    </HBox>
+                                </graphic>
+                            </MenuItem>
+
+                        </items>
+                    </MenuButton>
 
                     <Button onAction="#abrirPerfil">
                         <graphic>
                             <ImageView fitWidth="20" fitHeight="20">
                                 <image>
-                                    <Image url="@/icons/usuario.png"/>
+                                    <Image url="@/icons/usuario.png" />
                                 </image>
                             </ImageView>
                         </graphic>
@@ -55,13 +88,13 @@
         <VBox spacing="20" alignment="CENTER">
 
             <Button text="Actividades"
-                    onAction="#abrirActividades"/>
+                onAction="#abrirActividades" />
 
             <Button text="Mis Reservas"
-                    onAction="#abrirReservas"/>
+                onAction="#abrirReservas" />
 
             <Button text="Incidencias"
-                    onAction="#abrirIncidencias"/>
+                onAction="#abrirIncidencias" />
 
         </VBox>
     </center>
