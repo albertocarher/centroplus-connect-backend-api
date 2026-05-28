@@ -1,6 +1,7 @@
 package dam.mod.models;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Incidencia {
 
@@ -11,6 +12,34 @@ public class Incidencia {
     private LocalDate fecha;
     private String estado;
 
+    /** 
+     * Constructor por defecto
+    */
+    public Incidencia() {
+
+    }
+
+    public Incidencia(int id){
+        this.id = id;
+    }
+
+    public Incidencia(int id, String asunto,
+                      String descripcion, LocalDate fecha) {
+        this.id = id;
+        this.asunto = asunto;
+        this.descripcion = descripcion;
+        this.fecha = fecha;
+    }
+
+    /**
+     * Construcor de la clase incidencia
+     * @param id de la clase incidencia
+     * @param idUsuario de la clase incidencia
+     * @param asunto de la clase incidencia
+     * @param descripcion de la clase incidencia
+     * @param fecha de la clase incidencia
+     * @param estado de la clase incidencia
+     */
     public Incidencia(int id, int idUsuario, String asunto,
                       String descripcion, LocalDate fecha, String estado) {
         this.id = id;
@@ -35,4 +64,23 @@ public class Incidencia {
     public void setEstado(String estado) {
         this.estado = estado;
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(Integer.valueOf(id));
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Incidencia other = (Incidencia) obj;
+        return id == other.id;
+    }
+
+    
 }

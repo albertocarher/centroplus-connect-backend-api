@@ -19,8 +19,8 @@ public class ReservaServiceImpl implements IReservaService {
     private final IActividadService actividadService;
 
     public ReservaServiceImpl(IReservaRepository repository,
-            IUsuarioService usuarioService,
-            IActividadService actividadService) {
+                              IUsuarioService usuarioService,
+                              IActividadService actividadService) {
         this.repository = repository;
         this.usuarioService = usuarioService;
         this.actividadService = actividadService;
@@ -74,7 +74,7 @@ public class ReservaServiceImpl implements IReservaService {
     }
 
     @Override
-    public boolean cancelarReserva(int idReserva, int idUsuario) {
+    public boolean cancelarReserva(int idReserva) {
 
         Reserva reserva = findById(idReserva);
 
@@ -82,11 +82,6 @@ public class ReservaServiceImpl implements IReservaService {
             return false;
         }
 
-        if (reserva.getIdUsuario() != idUsuario) {
-            return false;
-        }
-
-        // 👇 devolver plaza antes de borrar la reserva
         actividadService.cancelarPlaza(reserva.getIdActividad());
 
         return repository.delete(idReserva);
@@ -113,7 +108,6 @@ public class ReservaServiceImpl implements IReservaService {
         }
         Validaciones.validarEstadoReserva(reserva.getEstado());
     }
-
     @Override
     public boolean reservar(int actividadId, int usuarioId) {
 
@@ -142,13 +136,9 @@ public class ReservaServiceImpl implements IReservaService {
                 usuarioId,
                 actividadId,
                 LocalDate.now(),
-                "ACTIVA");
+                "ACTIVA"
+        );
 
         return repository.save(reserva);
-    }
-
-    @Override
-    public List<Reserva> findByIdUsuario(int idUsuario) {
-        return repository.findByIdUsuario(idUsuario);
     }
 }

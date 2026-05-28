@@ -1,6 +1,16 @@
 package dam.mod.models;
 
+import java.util.Objects;
+
 public class Actividad {
+
+    
+    public Actividad(){}
+
+    public Actividad(int id){
+        this.id=id;
+    }
+
 
     private int id;
     private String nombre;
@@ -34,8 +44,30 @@ public class Actividad {
         this.plazasOcupadas = plazasOcupadas;
     }
 
+    public int plazasDisponibles(){
+        return plazasMaximas - plazasOcupadas;
+    }
+
     @Override
     public String toString() {
         return nombre + " - " + tipoActividad;
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(Integer.valueOf(id));
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Actividad other = (Actividad) obj;
+        return id == other.id;
+    }
+    
 }

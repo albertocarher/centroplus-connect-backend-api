@@ -11,13 +11,13 @@
       prefHeight="844"
       style="-fx-padding: 15;">
 
-    <!-- HEADER -->
+
     <HBox spacing="10" alignment="CENTER_LEFT">
         <Button text="← Volver" onAction="#volver"/>
         <Label text="Actividades"/>
     </HBox>
 
-    <!-- LISTA -->
+
     <ListView fx:id="listaActividades"
               onMouseClicked="#seleccionarActividad"
               prefHeight="650"

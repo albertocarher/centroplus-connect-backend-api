@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="dam.mod.controllers.DetalleIncidenciaController"
+      spacing="15"
+      alignment="CENTER"
+      prefWidth="390"
+      prefHeight="844"
+      style="-fx-padding: 15;">
+
+    <Label text="Detalle de incidencia"
+           style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+    <Label fx:id="lblAsunto" />
+    <Label fx:id="lblEstado" />
+    <Label fx:id="lblFecha" />
+
+    <TextArea fx:id="txtDescripcion"
+              editable="false"
+              wrapText="true"
+              prefHeight="250"/>
+    
+    <Button fx:id="btnCerrar"
+        text="Cerrar incidencia"
+        onAction="#cerrarIncidencia"
+        prefWidth="200"/>
+
+    <Button text="← Volver"
+            onAction="#volver"
+            prefWidth="200"/>
+
+</VBox>

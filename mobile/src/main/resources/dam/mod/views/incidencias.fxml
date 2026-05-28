@@ -11,24 +11,32 @@
       prefHeight="844"
       style="-fx-padding: 15;">
 
-    <!-- HEADER -->
+
     <HBox spacing="10" alignment="CENTER_LEFT">
         <Button text="← Volver" onAction="#volver"/>
         <Label text="Incidencias"/>
     </HBox>
 
-    <!-- FORM -->
+
     <TextField fx:id="txtAsunto"
                promptText="Asunto"/>
 
     <TextArea fx:id="txtDescripcion"
               promptText="Describe el problema"
               wrapText="true"
-              prefHeight="200"/>
+              prefHeight="150"/>
 
-    <!-- ACTION -->
+
     <Button text="Enviar incidencia"
             onAction="#enviarIncidencia"
             prefWidth="200"/>
+
+
+    <Label text="Mis incidencias"/>
+
+    <ListView fx:id="listaIncidencias"
+              onMouseClicked="#seleccionarIncidencia"
+              prefHeight="450"
+              prefWidth="350"/>
 
 </VBox>

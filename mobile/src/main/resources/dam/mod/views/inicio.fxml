@@ -13,7 +13,7 @@
     <top>
         <BorderPane>
 
-            <!-- IZQUIERDA -->
+
             <left>
                 <VBox spacing="5" alignment="CENTER_LEFT" style="-fx-padding: 10;">
                     <Label text="SportCenter"/>
@@ -21,7 +21,7 @@
                 </VBox>
             </left>
 
-            <!-- DERECHA (BOTONES) -->
+
             <right>
                 <HBox spacing="10" alignment="CENTER_RIGHT" style="-fx-padding: 10;">
 

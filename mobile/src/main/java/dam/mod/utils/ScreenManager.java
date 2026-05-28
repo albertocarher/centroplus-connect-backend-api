@@ -16,6 +16,16 @@ public class ScreenManager {
         stage = s;
     }
 
+    private static int incidenciaId;
+
+    public static void setIncidenciaId(int id) {
+        incidenciaId = id;
+    }
+
+    public static int getIncidenciaId() {
+        return incidenciaId;
+    }
+
     public static void change(String fxml) {
 
         try {
@@ -29,8 +39,7 @@ public class ScreenManager {
 
             Scene scene = new Scene(root);
             scene.getStylesheets().add(
-                    ScreenManager.class.getResource("/dam/mod/views/style.css").toExternalForm()
-            );
+                    ScreenManager.class.getResource("/dam/mod/views/style.css").toExternalForm());
             stage.setScene(scene);
 
             stage.setScene(scene);

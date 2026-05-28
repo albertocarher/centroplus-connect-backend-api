@@ -11,20 +11,20 @@
       prefHeight="844"
       style="-fx-padding: 15;">
 
-    <!-- HEADER -->
+
     <HBox spacing="10" alignment="CENTER_LEFT">
         <Button text="← Volver" onAction="#volver"/>
         <Label text="Detalle actividad"/>
     </HBox>
 
-    <!-- INFO -->
+
     <Label fx:id="lblNombre"/>
     <Label fx:id="lblTipo"/>
     <Label fx:id="lblDuracion"/>
     <Label fx:id="lblPrecio"/>
     <Label fx:id="lblPlazas"/>
 
-    <!-- ACCIÓN -->
+
     <Button text="Reservar plaza"
             onAction="#reservar"
             prefWidth="200"/>
