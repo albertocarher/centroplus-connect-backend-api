@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+       fx:controller="dam.mod.controllers.LoginController"
+       alignment="CENTER"
+       spacing="10"
+       prefWidth="390"
+       prefHeight="844">
+
+       <padding>
+              <Insets top="30" right="30" bottom="30" left="30" />
+       </padding>
+
+       <Label text="CREATE ACCOUNT"
+              style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+
+       <TextField fx:id="nombreField" promptText="Name" />
+       <TextField fx:id="dniRegisterField" promptText="ID" />
+       <TextField fx:id="emailField" promptText="Email" />
+       <TextField fx:id="telefonoField" promptText="Phone" />
+
+       <PasswordField fx:id="registerPasswordField"
+              promptText="Password" />
+
+       <ComboBox fx:id="tipoUsuarioBox"
+              promptText="User type" />
+
+       <Label fx:id="registerErrorLabel"
+              style="-fx-text-fill: red;" />
+
+       <Button text="CREATE"
+              onAction="#handleRegister"
+              maxWidth="Infinity" />
+
+       <Button text="BACK"
+              onAction="#volverLogin"
+              maxWidth="Infinity" />
+
+</VBox>

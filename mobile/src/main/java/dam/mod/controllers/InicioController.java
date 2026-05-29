@@ -1,5 +1,6 @@
 package dam.mod.controllers;
 
+import dam.mod.utils.LanguageManager;
 import dam.mod.utils.ScreenManager;
 import dam.mod.utils.Session;
 import javafx.fxml.FXML;
@@ -90,9 +91,12 @@ public class InicioController {
     private void aplicarIdioma(String lang) {
 
         switch (lang) {
-            case "es" -> System.out.println("Idioma: Español");
-            case "en" -> System.out.println("Idioma: English");
-            case "de" -> System.out.println("Idioma: Deutsch");
+            case "es" -> LanguageManager.setLanguage("es");
+            case "en" -> LanguageManager.setLanguage("en");
+            case "de" -> LanguageManager.setLanguage("de");
+            default -> LanguageManager.setLanguage("es");
         }
+
+        ScreenManager.change(ScreenManager.getCurrentScreen());
     }
 }

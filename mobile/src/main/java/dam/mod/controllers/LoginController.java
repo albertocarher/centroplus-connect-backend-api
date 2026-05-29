@@ -4,6 +4,7 @@ import dam.mod.models.Usuario;
 import dam.mod.repositories.impl.UsuarioRepository;
 import dam.mod.services.IUsuarioService;
 import dam.mod.services.impl.UsuarioServiceImpl;
+import dam.mod.utils.LanguageManager;
 import dam.mod.utils.ScreenManager;
 import dam.mod.utils.Session;
 import javafx.fxml.FXML;
@@ -20,8 +21,7 @@ public class LoginController {
     /**
      * Servicio de usuarios para autenticación y gestión.
      */
-    private final IUsuarioService service =
-            new UsuarioServiceImpl(new UsuarioRepository());
+    private final IUsuarioService service = new UsuarioServiceImpl(new UsuarioRepository());
 
     /**
      * Campo de entrada para el DNI en login.
@@ -95,8 +95,7 @@ public class LoginController {
             tipoUsuarioBox.getItems().addAll(
                     "ALUMNO",
                     "SOCIO",
-                    "AMBOS"
-            );
+                    "AMBOS");
         }
     }
 
@@ -111,8 +110,7 @@ public class LoginController {
         try {
             Usuario usuario = service.login(
                     dniField.getText().trim().toUpperCase(),
-                    passwordField.getText()
-            );
+                    passwordField.getText());
 
             if (usuario == null) {
                 errorLabel.setText("Usuario o contraseña incorrectos");
@@ -150,8 +148,7 @@ public class LoginController {
                     emailField.getText(),
                     telefonoField.getText(),
                     tipoUsuarioBox.getValue(),
-                    registerPasswordField.getText()
-            );
+                    registerPasswordField.getText());
 
             service.create(nuevo);
 
@@ -210,9 +207,12 @@ public class LoginController {
     private void aplicarIdioma(String lang) {
 
         switch (lang) {
-            case "es" -> System.out.println("Idioma: Español");
-            case "en" -> System.out.println("Idioma: English");
-            case "de" -> System.out.println("Idioma: Deutsch");
+            case "es" -> LanguageManager.setLanguage("es");
+            case "en" -> LanguageManager.setLanguage("en");
+            case "de" -> LanguageManager.setLanguage("de");
+            default -> LanguageManager.setLanguage("es");
         }
+
+        ScreenManager.change(ScreenManager.getCurrentScreen());
     }
 }

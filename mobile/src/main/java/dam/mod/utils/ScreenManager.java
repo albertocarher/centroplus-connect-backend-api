@@ -10,12 +10,10 @@ import java.net.URL;
 
 public class ScreenManager {
 
-
     /**
      * Guarda la ventana principal de la app
      */
     private static Stage stage;
-
 
     /**
      * Guarda el Stage principal
@@ -31,7 +29,6 @@ public class ScreenManager {
      */
     private static int incidenciaId;
 
-
     /**
      * Setter del id de incidencia
      * 
@@ -40,7 +37,6 @@ public class ScreenManager {
     public static void setIncidenciaId(int id) {
         incidenciaId = id;
     }
-
 
     /**
      * Getter del id la incidencia
@@ -51,19 +47,19 @@ public class ScreenManager {
         return incidenciaId;
     }
 
-
     /**
      * Cambia la pantalla actual
      * 
      * @param fxml la pantalla
      */
     public static void change(String fxml) {
-
+        currentScreen = fxml;
         try {
             /**
              * Rutas de las pantallas
              */
-            URL url = ScreenManager.class.getResource("/dam/mod/views/" + fxml);
+            URL url = ScreenManager.class.getResource(
+                    "/dam/mod/views/" + LanguageManager.getLanguage() + "/" + fxml);
 
             if (url == null) {
                 throw new RuntimeException("FXML no encontrado: " + fxml);
@@ -96,5 +92,28 @@ public class ScreenManager {
         } catch (IOException e) {
             throw new RuntimeException("Error cargando FXML: " + fxml, e);
         }
+    }
+
+    /**
+     * Pantalla actualmente cargada en la aplicación.
+     */
+    private static String currentScreen;
+
+    /**
+     * Establece la pantalla actual que está siendo mostrada.
+     *
+     * @param fxml nombre del archivo FXML de la pantalla actual
+     */
+    public static void setCurrentScreen(String fxml) {
+        currentScreen = fxml;
+    }
+
+    /**
+     * Obtiene la pantalla actualmente cargada en la aplicación.
+     *
+     * @return nombre del archivo FXML de la pantalla actual
+     */
+    public static String getCurrentScreen() {
+        return currentScreen;
     }
 }

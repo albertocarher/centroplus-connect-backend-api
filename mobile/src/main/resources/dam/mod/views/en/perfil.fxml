@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+       fx:controller="dam.mod.controllers.PerfilController"
+       spacing="15"
+       prefWidth="390"
+       prefHeight="844"
+       style="-fx-padding: 15;">
+
+       <HBox spacing="10" alignment="CENTER_LEFT">
+              <Button text="← Back" onAction="#volver" />
+              <Label text="My profile"
+                     style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+       </HBox>
+
+       <VBox spacing="10">
+
+              <Label text="Name"
+                     style="-fx-font-size: 15px; -fx-font-weight: bold;" />
+              <Label fx:id="lblNombre"
+                     style="-fx-font-size: 13px;" />
+
+              <Label text="ID"
+                     style="-fx-font-size: 15px; -fx-font-weight: bold;" />
+              <Label fx:id="lblDni"
+                     style="-fx-font-size: 13px;" />
+
+              <Label text="Email"
+                     style="-fx-font-size: 15px; -fx-font-weight: bold;" />
+              <Label fx:id="lblEmail"
+                     style="-fx-font-size: 13px;" />
+
+              <Label text="Phone"
+                     style="-fx-font-size: 15px; -fx-font-weight: bold;" />
+              <Label fx:id="lblTelefono"
+                     style="-fx-font-size: 13px;" />
+
+              <Label text="User type"
+                     style="-fx-font-size: 15px; -fx-font-weight: bold;" />
+              <Label fx:id="lblTipo"
+                     style="-fx-font-size: 13px;" />
+
+       </VBox>
+
+       <HBox alignment="CENTER">
+              <Button text="Change password"
+                     onAction="#abrirCambiarPassword"
+                     prefWidth="200" />
+              <Button text="Log out"
+                     onAction="#cerrarSesion"
+                     prefWidth="200" />
+       </HBox>
+
+</VBox>
