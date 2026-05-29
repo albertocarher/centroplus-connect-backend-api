@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>dam.mod</groupId>
-  <artifactId>proyecto</artifactId>
+  <artifactId>CentroPlus-Connect</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <properties>
@@ -79,7 +79,11 @@
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>0.8.12</version>
-
+        <configuration>
+          <excludes>
+            <exclude>dam/mod/controllers/**</exclude>
+          </excludes>
+        </configuration>
         <executions>
 
           <!-- Activa JaCoCo -->
