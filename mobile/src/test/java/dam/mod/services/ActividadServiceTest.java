@@ -34,7 +34,7 @@ public class ActividadServiceTest {
     @BeforeEach
     void setup() {
         actividadservice = new ActividadServiceImpl(actividadRepositoryMock);
-        actividadValida = new Actividad(1, "Yoga", "Deportiva", 60, 15.0, 10, 3);
+        actividadValida = new Actividad(1, "Yoga", "DEPORTIVA", 60, 15.0, 10, 3);
     }
 
     @DisplayName("findById: id 0 devuelve null sin llamar al repositorio")
