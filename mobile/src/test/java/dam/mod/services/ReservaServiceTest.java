@@ -27,9 +27,12 @@ import dam.mod.services.impl.ReservaServiceImpl;
 @ExtendWith(MockitoExtension.class)
 public class ReservaServiceTest {
 
-    @Mock IReservaRepository repositoryMock;
-    @Mock IUsuarioService usuarioServiceMock;
-    @Mock IActividadService actividadServiceMock;
+    @Mock
+    IReservaRepository repositoryMock;
+    @Mock
+    IUsuarioService usuarioServiceMock;
+    @Mock
+    IActividadService actividadServiceMock;
 
     IReservaService service;
 
@@ -40,8 +43,8 @@ public class ReservaServiceTest {
     @BeforeEach
     void setup() {
         service = new ReservaServiceImpl(repositoryMock, usuarioServiceMock, actividadServiceMock);
-        reservaValida  = new Reserva(1, 2, 3, LocalDate.now(), "ACTIVA");
-        usuarioValido  = new Usuario(2, "Ana", "12345678A", "ana@example.com", "600000000", "ALUMNO", "pass");
+        reservaValida = new Reserva(1, 2, 3, LocalDate.now(), "ACTIVA");
+        usuarioValido = new Usuario(2, "Ana", "12345678A", "ana@example.com", "600000000", "ALUMNO", "pass");
         actividadValida = new Actividad(3, "Yoga", "DEPORTIVA", 60, 15.0, 10, 3);
     }
 
@@ -211,12 +214,21 @@ public class ReservaServiceTest {
     @Order(19)
     @Test
     void cancelarReservaOkTest() {
+
+        Reserva reservaValida = new Reserva(
+                1,
+                2,
+                3,
+                LocalDate.now(),
+                "ACTIVA");
+
         when(repositoryMock.findById(1)).thenReturn(reservaValida);
         when(repositoryMock.delete(1)).thenReturn(true);
 
         boolean resultado = service.cancelarReserva(1, 2);
 
         Assertions.assertTrue(resultado);
+
         verify(actividadServiceMock).cancelarPlaza(3);
         verify(repositoryMock).delete(1);
     }
@@ -228,7 +240,7 @@ public class ReservaServiceTest {
         when(usuarioServiceMock.findById(2)).thenReturn(usuarioValido);
         when(actividadServiceMock.findById(3)).thenReturn(actividadValida);
         when(actividadServiceMock.calcularPlazasDisponibles(3)).thenReturn(7);
-        when(repositoryMock.existsReserva(3, 2)).thenReturn(false);
+        when(repositoryMock.findByIdUsuario(2)).thenReturn(Collections.emptyList());
         when(repositoryMock.save(any())).thenReturn(true);
 
         Assertions.assertTrue(service.reservar(3, 2));
@@ -269,12 +281,25 @@ public class ReservaServiceTest {
     @Order(24)
     @Test
     void reservarDuplicadaTest() {
+
         when(usuarioServiceMock.findById(2)).thenReturn(usuarioValido);
         when(actividadServiceMock.findById(3)).thenReturn(actividadValida);
         when(actividadServiceMock.calcularPlazasDisponibles(3)).thenReturn(7);
-        when(repositoryMock.existsReserva(3, 2)).thenReturn(true);
+
+        Reserva reservaActiva = new Reserva(
+                10,
+                2,
+                3,
+                LocalDate.now(),
+                "ACTIVA");
+
+        when(repositoryMock.findByIdUsuario(2))
+                .thenReturn(List.of(reservaActiva));
+
         Assertions.assertThrows(IllegalArgumentException.class,
                 () -> service.reservar(3, 2));
+
+        verify(repositoryMock, never()).save(any());
     }
 
     @DisplayName("yaReservado: devuelve true cuando existe la reserva")

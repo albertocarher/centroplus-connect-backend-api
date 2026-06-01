@@ -27,4 +27,8 @@ public class LanguageManager {
     public static String getLanguage() {
         return language;
     }
+
+    public static void reset() {
+        language = "es";
+    }
 }

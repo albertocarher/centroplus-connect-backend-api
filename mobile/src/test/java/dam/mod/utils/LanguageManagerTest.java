@@ -4,15 +4,24 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
+
 class LanguageManagerTest {
 
-
-    // @Test
-    // void idiomaPorDefectoEsEspanol() {
-    //     assertEquals("es", LanguageManager.getLanguage());
-    // }
+    @BeforeEach
+    void setup() {
+        LanguageManager.reset();
+    }
 
     @Test
+    @Order(1)
+    void idiomaPorDefectoEsEspanol() {
+        assertEquals("es", LanguageManager.getLanguage());
+    }
+
+    @Test
+    @Order(2)
     void setLanguageCambiaIdiomaAIngles() {
         LanguageManager.setLanguage("en");
 
@@ -20,6 +29,7 @@ class LanguageManagerTest {
     }
 
     @Test
+    @Order(3)
     void setLanguageCambiaIdiomaAAleman() {
         LanguageManager.setLanguage("de");
 
@@ -27,6 +37,7 @@ class LanguageManagerTest {
     }
 
     @Test
+    @Order(4)
     void setLanguagePermiteVolverAEspanol() {
         LanguageManager.setLanguage("es");
 
@@ -34,6 +45,7 @@ class LanguageManagerTest {
     }
 
     @Test
+    @Order(5)
     void setLanguageSobrescribeIdiomaAnterior() {
         LanguageManager.setLanguage("en");
         LanguageManager.setLanguage("de");
@@ -42,6 +54,7 @@ class LanguageManagerTest {
     }
 
     @Test
+    @Order(6)
     void setLanguageAceptaValoresPersonalizados() {
         LanguageManager.setLanguage("fr");
 
@@ -49,6 +62,7 @@ class LanguageManagerTest {
     }
 
     @Test
+    @Order(7)
     void setLanguageAceptaNull() {
         LanguageManager.setLanguage(null);
 
