@@ -8,6 +8,7 @@ import dam.mod.utils.Session;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MultipleSelectionModel;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,17 +21,6 @@ import java.util.List;
  
 import static org.mockito.Mockito.*;
  
-/**
- * Tests unitarios para ReservasController.
- *
- * Escenarios cubiertos:
- * - initialize() sin sesión → redirige al login.
- * - cargarReservas() → llena la lista con las reservas del usuario.
- * - cancelarReserva() sin selección → no llama al servicio.
- * - cancelarReserva() propia con éxito → cambia estado y recarga.
- * - cancelarReserva() con error → no recarga.
- * - volver() → navega a inicio.fxml.
- */
 @ExtendWith(MockitoExtension.class)
 class ReservasControllerTest {
  
@@ -43,6 +33,11 @@ class ReservasControllerTest {
     private ObservableList<Reserva> items = mock(ObservableList.class);
  
     private final int USUARIO_ID = 10;
+ 
+    @BeforeAll
+    static void initJavaFX() {
+        dam.mod.JavaFXInitializer.init();
+    }
  
     @BeforeEach
     void setUp() throws Exception {

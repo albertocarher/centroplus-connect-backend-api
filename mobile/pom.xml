@@ -68,6 +68,13 @@
       <version>${mockito.version}</version>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+    <groupId>org.testfx</groupId>
+    <artifactId>openjfx-monocle</artifactId>
+    <version>jdk-12.0.1+2</version>
+    <scope>test</scope>
+</dependency>
  
   </dependencies>
  
@@ -118,21 +125,31 @@
  
       <!-- SUREFIRE -->
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.2.5</version>
-        <configuration>
-          <argLine>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-surefire-plugin</artifactId>
+    <version>3.2.5</version>
+
+    <configuration>
+
+        <argLine>
             @{argLine}
+
             -Djava.awt.headless=true
+            -Dtestfx.robot=glass
+            -Dtestfx.headless=true
             -Dprism.order=sw
             -Dprism.text=t2k
+            -Dglass.platform=Monocle
+            -Dmonocle.platform=Headless
+
             --add-opens=javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
             --add-opens=javafx.graphics/com.sun.glass.ui=ALL-UNNAMED
             --add-opens=javafx.controls/javafx.scene.control=ALL-UNNAMED
-          </argLine>
-        </configuration>
-      </plugin>
+
+        </argLine>
+
+    </configuration>
+</plugin>
  
     </plugins>
   </build>
