@@ -13,7 +13,6 @@ public class DatabaseInitializer {
 
             statement.execute("PRAGMA foreign_keys = ON;");
 
-            // USUARIOS
             statement.executeUpdate("""
                         CREATE TABLE IF NOT EXISTS usuarios (
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -43,7 +42,6 @@ public class DatabaseInitializer {
                         )
                     """);
 
-            // ACTIVIDADES
             statement.executeUpdate("""
                         CREATE TABLE IF NOT EXISTS actividades (
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -73,7 +71,6 @@ public class DatabaseInitializer {
                         )
                     """);
 
-            // RESERVAS
             statement.executeUpdate("""
                         CREATE TABLE IF NOT EXISTS reservas (
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -100,7 +97,6 @@ public class DatabaseInitializer {
                         )
                     """);
 
-            // INCIDENCIAS
             statement.executeUpdate("""
                         CREATE TABLE IF NOT EXISTS incidencias (
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -128,7 +124,6 @@ public class DatabaseInitializer {
                         )
                     """);
 
-            // REMEMBER TOKENS
             statement.executeUpdate("""
                         CREATE TABLE IF NOT EXISTS remember_tokens (
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -140,7 +135,6 @@ public class DatabaseInitializer {
                         )
                     """);
 
-            // AUDIT LOG
             statement.executeUpdate("""
                         CREATE TABLE IF NOT EXISTS audit_log (
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -153,7 +147,6 @@ public class DatabaseInitializer {
                         )
                     """);
 
-            // TRIGGERS (UPDATE)
             statement.executeUpdate("""
                         CREATE TRIGGER IF NOT EXISTS trg_usuarios_updated
                         AFTER UPDATE ON usuarios
@@ -198,7 +191,6 @@ public class DatabaseInitializer {
                         END;
                     """);
 
-            // TRIGGERS (DELETE)
             statement.executeUpdate("""
                         CREATE TRIGGER IF NOT EXISTS trg_usuarios_delete
                         BEFORE DELETE ON usuarios

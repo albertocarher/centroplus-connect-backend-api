@@ -15,14 +15,14 @@ public class RememberTokenRepositoryImpl implements IRememberTokenRepository {
 
         String sql = "INSERT INTO remember_tokens (user_id, token_hash, expires_at) VALUES (?, ?, ?)";
 
-        try (Connection con = ConnectionManager.getConnection();
-                PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection connection = ConnectionManager.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            ps.setInt(1, userId);
-            ps.setString(2, tokenHash);
-            ps.setString(3, expiresAt);
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setString(2, tokenHash);
+            preparedStatement.setString(3, expiresAt);
 
-            return ps.executeUpdate() > 0;
+            return preparedStatement.executeUpdate() > 0;
 
         } catch (SQLException e) {
             throw new RuntimeException("Error guardando token", e);
@@ -34,19 +34,19 @@ public class RememberTokenRepositoryImpl implements IRememberTokenRepository {
 
         String sql = "SELECT * FROM remember_tokens WHERE token_hash = ? AND expires_at > datetime('now')";
 
-        try (Connection con = ConnectionManager.getConnection();
-                PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection connection = ConnectionManager.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            ps.setString(1, tokenHash);
+            preparedStatement.setString(1, tokenHash);
 
-            try (ResultSet rs = ps.executeQuery()) {
+            try (ResultSet resulset = preparedStatement.executeQuery()) {
 
-                if (rs.next()) {
+                if (resulset.next()) {
                     return new RememberToken(
-                            rs.getInt("id"),
-                            rs.getInt("user_id"),
-                            rs.getString("token_hash"),
-                            rs.getString("expires_at"));
+                            resulset.getInt("id"),
+                            resulset.getInt("user_id"),
+                            resulset.getString("token_hash"),
+                            resulset.getString("expires_at"));
                 }
             }
 
@@ -64,17 +64,17 @@ public class RememberTokenRepositoryImpl implements IRememberTokenRepository {
 
         List<RememberToken> list = new ArrayList<>();
 
-        try (Connection con = ConnectionManager.getConnection();
-                PreparedStatement ps = con.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery()) {
+        try (Connection connection = ConnectionManager.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                ResultSet resultSet = preparedStatement.executeQuery()) {
 
-            while (rs.next()) {
+            while (resultSet.next()) {
 
                 list.add(new RememberToken(
-                        rs.getInt("id"),
-                        rs.getInt("user_id"),
-                        rs.getString("token_hash"),
-                        rs.getString("expires_at")));
+                        resultSet.getInt("id"),
+                        resultSet.getInt("user_id"),
+                        resultSet.getString("token_hash"),
+                        resultSet.getString("expires_at")));
             }
 
         } catch (SQLException e) {
@@ -89,11 +89,11 @@ public class RememberTokenRepositoryImpl implements IRememberTokenRepository {
 
         String sql = "DELETE FROM remember_tokens WHERE user_id = ?";
 
-        try (Connection con = ConnectionManager.getConnection();
-                PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection connection = ConnectionManager.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            ps.setInt(1, userId);
-            return ps.executeUpdate() > 0;
+            preparedStatement.setInt(1, userId);
+            return preparedStatement.executeUpdate() > 0;
 
         } catch (SQLException e) {
             throw new RuntimeException("Error borrando tokens", e);

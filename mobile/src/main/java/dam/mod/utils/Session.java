@@ -55,9 +55,11 @@ public class Session {
     }
 
     /**
-     * Guarda o elimina el token de sesión almacenado en las preferencias de la aplicación.
+     * Guarda o elimina el token de sesión almacenado en las preferencias de la
+     * aplicación.
      *
-     * @param token Token de sesión que se desea almacenar. Si es null, se eliminará el token guardado.
+     * @param token Token de sesión que se desea almacenar. Si es null, se eliminará
+     *              el token guardado.
      */
     public static void setTokenSesion(String token) {
 
@@ -71,7 +73,8 @@ public class Session {
     /**
      * Recupera el token de sesión almacenado en las preferencias de la aplicación.
      *
-     * @return El token de sesión guardado si existe. Devuelve null si no hay ningún token almacenado.
+     * @return El token de sesión guardado si existe. Devuelve null si no hay ningún
+     *         token almacenado.
      */
     public static String getTokenSesionGuardado() {
         return prefs.get(claveToken, null);

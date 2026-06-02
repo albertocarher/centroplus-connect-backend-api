@@ -20,19 +20,18 @@ public class UsuarioRepository implements IUsuarioRepository {
         List<Usuario> listaUsuarios = new ArrayList<>();
 
         try (Connection connection = ConnectionManager.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                ResultSet resultSet = preparedStatement.executeQuery()) {
 
-            while (rs.next()) {
+            while (resultSet.next()) {
                 listaUsuarios.add(new Usuario(
-                        rs.getInt("id"),
-                        rs.getString("nombre"),
-                        rs.getString("dni"),
-                        rs.getString("email"),
-                        rs.getString("telefono"),
-                        rs.getString("tipo_usuario"),
-                        rs.getString("password")
-                ));
+                        resultSet.getInt("id"),
+                        resultSet.getString("nombre"),
+                        resultSet.getString("dni"),
+                        resultSet.getString("email"),
+                        resultSet.getString("telefono"),
+                        resultSet.getString("tipo_usuario"),
+                        resultSet.getString("password")));
             }
 
             return listaUsuarios;
@@ -47,21 +46,20 @@ public class UsuarioRepository implements IUsuarioRepository {
         String sql = "SELECT * FROM usuarios WHERE id=?";
 
         try (Connection connection = ConnectionManager.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            ps.setInt(1, idUsuario);
+            preparedStatement.setInt(1, idUsuario);
 
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
                     return new Usuario(
-                            rs.getInt("id"),
-                            rs.getString("nombre"),
-                            rs.getString("dni"),
-                            rs.getString("email"),
-                            rs.getString("telefono"),
-                            rs.getString("tipo_usuario"),
-                            rs.getString("password")
-                    );
+                            resultSet.getInt("id"),
+                            resultSet.getString("nombre"),
+                            resultSet.getString("dni"),
+                            resultSet.getString("email"),
+                            resultSet.getString("telefono"),
+                            resultSet.getString("tipo_usuario"),
+                            resultSet.getString("password"));
                 }
             }
 
@@ -78,18 +76,17 @@ public class UsuarioRepository implements IUsuarioRepository {
         String sql = "INSERT INTO usuarios (nombre, dni, email, telefono, tipo_usuario, password) VALUES (?,?,?,?,?,?)";
 
         try (Connection connection = ConnectionManager.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            ps.setString(1, usuario.getNombre());
-            ps.setString(2, usuario.getDni());
-            ps.setString(3, usuario.getEmail());
-            ps.setString(4, usuario.getTelefono());
-            ps.setString(5, usuario.getTipoUsuario());
+            preparedStatement.setString(1, usuario.getNombre());
+            preparedStatement.setString(2, usuario.getDni());
+            preparedStatement.setString(3, usuario.getEmail());
+            preparedStatement.setString(4, usuario.getTelefono());
+            preparedStatement.setString(5, usuario.getTipoUsuario());
 
-            // HASH de contraseña
-            ps.setString(6, PasswordUtils.hashPassword(usuario.getPassword()));
+            preparedStatement.setString(6, PasswordUtils.hashPassword(usuario.getPassword()));
 
-            return ps.executeUpdate() > 0;
+            return preparedStatement.executeUpdate() > 0;
 
         } catch (SQLException e) {
             throw new RuntimeException("Error al insertar usuario", e);
@@ -102,20 +99,19 @@ public class UsuarioRepository implements IUsuarioRepository {
         String sql = "UPDATE usuarios SET nombre=?, dni=?, email=?, telefono=?, tipo_usuario=?, password=? WHERE id=?";
 
         try (Connection connection = ConnectionManager.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            ps.setString(1, usuario.getNombre());
-            ps.setString(2, usuario.getDni());
-            ps.setString(3, usuario.getEmail());
-            ps.setString(4, usuario.getTelefono());
-            ps.setString(5, usuario.getTipoUsuario());
+            preparedStatement.setString(1, usuario.getNombre());
+            preparedStatement.setString(2, usuario.getDni());
+            preparedStatement.setString(3, usuario.getEmail());
+            preparedStatement.setString(4, usuario.getTelefono());
+            preparedStatement.setString(5, usuario.getTipoUsuario());
 
-            // hash si se cambia contraseña
-            ps.setString(6, PasswordUtils.hashPassword(usuario.getPassword()));
+            preparedStatement.setString(6, PasswordUtils.hashPassword(usuario.getPassword()));
 
-            ps.setInt(7, usuario.getId());
+            preparedStatement.setInt(7, usuario.getId());
 
-            return ps.executeUpdate() > 0;
+            return preparedStatement.executeUpdate() > 0;
 
         } catch (SQLException e) {
             throw new RuntimeException("Error al actualizar usuario", e);
@@ -128,11 +124,11 @@ public class UsuarioRepository implements IUsuarioRepository {
         String sql = "DELETE FROM usuarios WHERE id=?";
 
         try (Connection connection = ConnectionManager.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            ps.setInt(1, idUsuario);
+            preparedStatement.setInt(1, idUsuario);
 
-            return ps.executeUpdate() > 0;
+            return preparedStatement.executeUpdate() > 0;
 
         } catch (SQLException e) {
             throw new RuntimeException("Error al eliminar usuario", e);
@@ -145,7 +141,7 @@ public class UsuarioRepository implements IUsuarioRepository {
         String sql = "SELECT * FROM usuarios WHERE dni=?";
 
         try (Connection connection = ConnectionManager.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+                PreparedStatement ps = connection.prepareStatement(sql)) {
 
             ps.setString(1, dni);
 
@@ -164,8 +160,7 @@ public class UsuarioRepository implements IUsuarioRepository {
                                 rs.getString("email"),
                                 rs.getString("telefono"),
                                 rs.getString("tipo_usuario"),
-                                hashBD
-                        );
+                                hashBD);
                     }
                 }
             }
@@ -183,22 +178,21 @@ public class UsuarioRepository implements IUsuarioRepository {
         String sql = "SELECT * FROM usuarios WHERE dni=?";
 
         try (Connection connection = ConnectionManager.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            ps.setString(1, dni);
+            preparedStatement.setString(1, dni);
 
-            try (ResultSet rs = ps.executeQuery()) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
 
-                if (rs.next()) {
+                if (resultSet.next()) {
                     return new Usuario(
-                            rs.getInt("id"),
-                            rs.getString("nombre"),
-                            rs.getString("dni"),
-                            rs.getString("email"),
-                            rs.getString("telefono"),
-                            rs.getString("tipo_usuario"),
-                            rs.getString("password")
-                    );
+                            resultSet.getInt("id"),
+                            resultSet.getString("nombre"),
+                            resultSet.getString("dni"),
+                            resultSet.getString("email"),
+                            resultSet.getString("telefono"),
+                            resultSet.getString("tipo_usuario"),
+                            resultSet.getString("password"));
                 }
             }
 

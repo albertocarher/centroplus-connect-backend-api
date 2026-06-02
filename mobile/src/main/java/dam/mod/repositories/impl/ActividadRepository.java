@@ -19,8 +19,8 @@ public class ActividadRepository implements IActividadRepository {
         List<Actividad> listaActividades = new ArrayList<>();
 
         try (Connection connection = ConnectionManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                ResultSet resultSet = preparedStatement.executeQuery()) {
 
             while (resultSet.next()) {
                 listaActividades.add(new Actividad(
@@ -30,14 +30,12 @@ public class ActividadRepository implements IActividadRepository {
                         resultSet.getInt("duracion"),
                         resultSet.getDouble("precio"),
                         resultSet.getInt("plazas_maximas"),
-                        resultSet.getInt("plazas_ocupadas")
-                ));
+                        resultSet.getInt("plazas_ocupadas")));
             }
-        return listaActividades;
+            return listaActividades;
         } catch (SQLException exception) {
             throw new RuntimeException("Error al obtener actividades", exception);
         }
-
 
     }
 
@@ -46,7 +44,7 @@ public class ActividadRepository implements IActividadRepository {
         String sql = "SELECT * FROM actividades WHERE id=?";
 
         try (Connection connection = ConnectionManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             preparedStatement.setInt(1, idActividad);
 
@@ -59,8 +57,7 @@ public class ActividadRepository implements IActividadRepository {
                             resultSet.getInt("duracion"),
                             resultSet.getDouble("precio"),
                             resultSet.getInt("plazas_maximas"),
-                            resultSet.getInt("plazas_ocupadas")
-                    );
+                            resultSet.getInt("plazas_ocupadas"));
                 }
             }
 
@@ -76,7 +73,7 @@ public class ActividadRepository implements IActividadRepository {
         String sql = "INSERT INTO actividades (nombre, tipo_actividad, duracion, precio, plazas_maximas, plazas_ocupadas) VALUES (?,?,?,?,?,?)";
 
         try (Connection connection = ConnectionManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             preparedStatement.setString(1, actividad.getNombre());
             preparedStatement.setString(2, actividad.getTipoActividad());
@@ -97,7 +94,7 @@ public class ActividadRepository implements IActividadRepository {
         String sql = "UPDATE actividades SET nombre=?, tipo_actividad=?, duracion=?, precio=?, plazas_maximas=?, plazas_ocupadas=? WHERE id=?";
 
         try (Connection connection = ConnectionManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             preparedStatement.setString(1, actividad.getNombre());
             preparedStatement.setString(2, actividad.getTipoActividad());
@@ -119,7 +116,7 @@ public class ActividadRepository implements IActividadRepository {
         String sql = "DELETE FROM actividades WHERE id=?";
 
         try (Connection connection = ConnectionManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             preparedStatement.setInt(1, idActividad);
             return preparedStatement.executeUpdate() > 0;

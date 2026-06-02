@@ -19,7 +19,9 @@ public class IncidenciaRepository implements IIncidenciaRepository {
         String sql = "SELECT * FROM incidencias";
         List<Incidencia> listaIncidencias = new ArrayList<>();
 
-        try (Connection connection = ConnectionManager.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql); ResultSet resultSet = preparedStatement.executeQuery()) {
+        try (Connection connection = ConnectionManager.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                ResultSet resultSet = preparedStatement.executeQuery()) {
 
             while (resultSet.next()) {
                 listaIncidencias.add(new Incidencia(
@@ -28,14 +30,12 @@ public class IncidenciaRepository implements IIncidenciaRepository {
                         resultSet.getString("asunto"),
                         resultSet.getString("descripcion"),
                         LocalDate.parse(resultSet.getString("fecha")),
-                        resultSet.getString("estado")
-                ));
+                        resultSet.getString("estado")));
             }
             return listaIncidencias;
         } catch (SQLException exception) {
             throw new RuntimeException("Error al obtener incidencias", exception);
         }
-
 
     }
 
@@ -43,7 +43,8 @@ public class IncidenciaRepository implements IIncidenciaRepository {
     public Incidencia findById(int idIncidencia) {
         String sql = "SELECT * FROM incidencias WHERE id=?";
 
-        try (Connection connection = ConnectionManager.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (Connection connection = ConnectionManager.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             preparedStatement.setInt(1, idIncidencia);
 
@@ -55,8 +56,7 @@ public class IncidenciaRepository implements IIncidenciaRepository {
                             resultSet.getString("asunto"),
                             resultSet.getString("descripcion"),
                             LocalDate.parse(resultSet.getString("fecha")),
-                            resultSet.getString("estado")
-                    );
+                            resultSet.getString("estado"));
                 }
             }
 
@@ -71,7 +71,8 @@ public class IncidenciaRepository implements IIncidenciaRepository {
     public boolean save(Incidencia incidencia) {
         String sql = "INSERT INTO incidencias (id_usuario, asunto, descripcion, fecha, estado) VALUES (?,?,?,?,?)";
 
-        try (Connection connection = ConnectionManager.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (Connection connection = ConnectionManager.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             preparedStatement.setInt(1, incidencia.getIdUsuario());
             preparedStatement.setString(2, incidencia.getAsunto());
@@ -90,7 +91,8 @@ public class IncidenciaRepository implements IIncidenciaRepository {
     public boolean update(Incidencia incidencia) {
         String sql = "UPDATE incidencias SET id_usuario=?, asunto=?, descripcion=?, fecha=?, estado=? WHERE id=?";
 
-        try (Connection connection = ConnectionManager.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (Connection connection = ConnectionManager.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             preparedStatement.setInt(1, incidencia.getIdUsuario());
             preparedStatement.setString(2, incidencia.getAsunto());
@@ -110,7 +112,8 @@ public class IncidenciaRepository implements IIncidenciaRepository {
     public boolean delete(int idIncidencia) {
         String sql = "DELETE FROM incidencias WHERE id=?";
 
-        try (Connection connection = ConnectionManager.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (Connection connection = ConnectionManager.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             preparedStatement.setInt(1, idIncidencia);
             return preparedStatement.executeUpdate() > 0;
