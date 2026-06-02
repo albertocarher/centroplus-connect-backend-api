@@ -26,8 +26,6 @@
     <PasswordField fx:id="registerPasswordField"
                    promptText="Contraseña"/>
 
-    <ComboBox fx:id="tipoUsuarioBox"
-              promptText="Tipo usuario"/>
 
     <Label fx:id="registerErrorLabel"
            style="-fx-text-fill: red;"/>

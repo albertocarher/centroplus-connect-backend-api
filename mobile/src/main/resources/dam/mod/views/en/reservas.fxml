@@ -4,25 +4,25 @@
 <?import javafx.scene.control.*?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
-    fx:controller="dam.mod.controllers.ReservasController"
-    prefWidth="390"
-    prefHeight="844">
+            fx:controller="dam.mod.controllers.ReservasController"
+            prefWidth="390"
+            prefHeight="844">
 
     <top>
         <HBox spacing="10" alignment="CENTER_LEFT">
-            <Button text="← Back" onAction="#volver" />
-            <Label text="My bookings" />
+            <Button text="←" onAction="#volver"/>
+            <Label text="Mis reservas"/>
         </HBox>
     </top>
 
     <center>
-        <ListView fx:id="listaReservas" />
+        <ListView fx:id="listaReservas"/>
     </center>
 
     <bottom>
         <HBox alignment="CENTER" spacing="10">
-            <Button text="Cancel booking"
-                onAction="#cancelarReserva" />
+            <Button text="Cancelar reserva"
+                    onAction="#cancelarReserva"/>
         </HBox>
     </bottom>
 

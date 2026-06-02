@@ -74,6 +74,9 @@
     <Label fx:id="errorLabel"
         style="-fx-text-fill: red;" />
 
+    <CheckBox fx:id="rememberMeCheckBox"
+        text="Recordarme" />
+
     <Button text="LOGIN"
         onAction="#handleLogin"
         maxWidth="Infinity" />

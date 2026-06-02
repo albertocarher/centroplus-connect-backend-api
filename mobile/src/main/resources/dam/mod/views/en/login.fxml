@@ -17,6 +17,7 @@
         <Insets top="40" right="40" bottom="40" left="40" />
     </padding>
 
+
     <MenuButton maxWidth="80">
 
         <graphic>
@@ -60,24 +61,27 @@
         </items>
     </MenuButton>
 
-    <Label text="LOGIN"
+    <Label text="INICIAR SESIÓN"
         style="-fx-font-size: 26px; -fx-font-weight: bold;" />
 
     <!-- FORM -->
     <TextField fx:id="dniField"
-        promptText="ID" />
+        promptText="DNI" />
 
     <PasswordField fx:id="passwordField"
-        promptText="Password" />
+        promptText="Contraseña" />
 
     <Label fx:id="errorLabel"
         style="-fx-text-fill: red;" />
+
+    <CheckBox fx:id="rememberMeCheckBox"
+        text="Recordarme" />
 
     <Button text="LOGIN"
         onAction="#handleLogin"
         maxWidth="Infinity" />
 
-    <Button text="CREATE ACCOUNT"
+    <Button text="CREAR CUENTA"
         onAction="#abrirRegistro"
         maxWidth="Infinity" />
 

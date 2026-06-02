@@ -5,39 +5,37 @@
 <?import javafx.scene.layout.*?>
 
 <VBox xmlns:fx="http://javafx.com/fxml"
-       fx:controller="dam.mod.controllers.LoginController"
-       alignment="CENTER"
-       spacing="10"
-       prefWidth="390"
-       prefHeight="844">
+      fx:controller="dam.mod.controllers.LoginController"
+      alignment="CENTER"
+      spacing="10"
+      prefWidth="390"
+      prefHeight="844">
 
-       <padding>
-              <Insets top="30" right="30" bottom="30" left="30" />
-       </padding>
+    <padding>
+        <Insets top="30" right="30" bottom="30" left="30"/>
+    </padding>
 
-       <Label text="CREATE ACCOUNT"
-              style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+    <Label text="CREAR CUENTA"
+           style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
 
-       <TextField fx:id="nombreField" promptText="Name" />
-       <TextField fx:id="dniRegisterField" promptText="ID" />
-       <TextField fx:id="emailField" promptText="Email" />
-       <TextField fx:id="telefonoField" promptText="Phone" />
+    <TextField fx:id="nombreField" promptText="Nombre"/>
+    <TextField fx:id="dniRegisterField" promptText="DNI"/>
+    <TextField fx:id="emailField" promptText="Email"/>
+    <TextField fx:id="telefonoField" promptText="Teléfono"/>
 
-       <PasswordField fx:id="registerPasswordField"
-              promptText="Password" />
+    <PasswordField fx:id="registerPasswordField"
+                   promptText="Contraseña"/>
 
-       <ComboBox fx:id="tipoUsuarioBox"
-              promptText="User type" />
 
-       <Label fx:id="registerErrorLabel"
-              style="-fx-text-fill: red;" />
+    <Label fx:id="registerErrorLabel"
+           style="-fx-text-fill: red;"/>
 
-       <Button text="CREATE"
-              onAction="#handleRegister"
-              maxWidth="Infinity" />
+    <Button text="CREAR"
+            onAction="#handleRegister"
+            maxWidth="Infinity"/>
 
-       <Button text="BACK"
-              onAction="#volverLogin"
-              maxWidth="Infinity" />
+    <Button text="VOLVER"
+            onAction="#volverLogin"
+            maxWidth="Infinity"/>
 
 </VBox>

@@ -6,54 +6,58 @@
 <?import javafx.scene.control.Button?>
 
 <VBox xmlns:fx="http://javafx.com/fxml"
-       fx:controller="dam.mod.controllers.PerfilController"
-       spacing="15"
-       prefWidth="390"
-       prefHeight="844"
-       style="-fx-padding: 15;">
+      fx:controller="dam.mod.controllers.PerfilController"
+      spacing="15"
+      prefWidth="390"
+      prefHeight="844"
+      style="-fx-padding: 15;">
 
-       <HBox spacing="10" alignment="CENTER_LEFT">
-              <Button text="← Back" onAction="#volver" />
-              <Label text="My profile"
-                     style="-fx-font-size: 18px; -fx-font-weight: bold;" />
-       </HBox>
 
-       <VBox spacing="10">
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Button text="← Volver" onAction="#volver"/>
+        <Label text="Mi perfil"
+               style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+    </HBox>
 
-              <Label text="Name"
-                     style="-fx-font-size: 15px; -fx-font-weight: bold;" />
-              <Label fx:id="lblNombre"
-                     style="-fx-font-size: 13px;" />
 
-              <Label text="ID"
-                     style="-fx-font-size: 15px; -fx-font-weight: bold;" />
-              <Label fx:id="lblDni"
-                     style="-fx-font-size: 13px;" />
+    <VBox spacing="10">
 
-              <Label text="Email"
-                     style="-fx-font-size: 15px; -fx-font-weight: bold;" />
-              <Label fx:id="lblEmail"
-                     style="-fx-font-size: 13px;" />
+        <Label text="Nombre"
+               style="-fx-font-size: 15px; -fx-font-weight: bold;"/>
+        <Label fx:id="lblNombre"
+               style="-fx-font-size: 13px;"/>
 
-              <Label text="Phone"
-                     style="-fx-font-size: 15px; -fx-font-weight: bold;" />
-              <Label fx:id="lblTelefono"
-                     style="-fx-font-size: 13px;" />
+        <Label text="DNI"
+               style="-fx-font-size: 15px; -fx-font-weight: bold;"/>
+        <Label fx:id="lblDni"
+               style="-fx-font-size: 13px;"/>
 
-              <Label text="User type"
-                     style="-fx-font-size: 15px; -fx-font-weight: bold;" />
-              <Label fx:id="lblTipo"
-                     style="-fx-font-size: 13px;" />
+        <Label text="Email"
+               style="-fx-font-size: 15px; -fx-font-weight: bold;"/>
+        <Label fx:id="lblEmail"
+               style="-fx-font-size: 13px;"/>
 
-       </VBox>
+        <Label text="Teléfono"
+               style="-fx-font-size: 15px; -fx-font-weight: bold;"/>
+        <Label fx:id="lblTelefono"
+               style="-fx-font-size: 13px;"/>
 
-       <HBox alignment="CENTER">
-              <Button text="Change password"
-                     onAction="#abrirCambiarPassword"
-                     prefWidth="200" />
-              <Button text="Log out"
-                     onAction="#cerrarSesion"
-                     prefWidth="200" />
-       </HBox>
+        <Label text="Tipo usuario"
+               style="-fx-font-size: 15px; -fx-font-weight: bold;"/>
+        <Label fx:id="lblTipo"
+               style="-fx-font-size: 13px;"/>
+
+    </VBox>
+
+
+
+    <HBox alignment="CENTER">
+        <Button text="Cambiar contraseña"
+                onAction="#abrirCambiarPassword"
+                prefWidth="200"/>
+        <Button text="Cerrar sesión"
+                onAction="#cerrarSesion"
+                prefWidth="200"/>
+    </HBox>
 
 </VBox>
