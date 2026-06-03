@@ -12,10 +12,7 @@ import dam.mod.utils.Session;
 import dam.mod.utils.TokenUtils;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
-
-import org.mindrot.jbcrypt.BCrypt;
 
 public class UsuarioServiceImpl implements IUsuarioService {
 

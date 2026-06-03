@@ -1,7 +1,6 @@
 package dam.mod.repositories;
  
 import dam.mod.models.RememberToken;
-import dam.mod.repositories.IRememberTokenRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
