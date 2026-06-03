@@ -11,7 +11,7 @@
     prefHeight="844"
     style="-fx-padding: 15;">
 
-    <Label text="Detalle de incidencia"
+    <Label text="%incident.detail"
         style="-fx-font-size: 18px; -fx-font-weight: bold;" />
 
     <Label fx:id="mensajeLabel"
@@ -27,11 +27,11 @@
         prefHeight="250" />
 
     <Button fx:id="btnCerrar"
-        text="Cerrar incidencia"
+        text="%incident.close"
         onAction="#cerrarIncidencia"
         prefWidth="200" />
 
-    <Button text="← Volver"
+    <Button text="%common.back"
         onAction="#volver"
         prefWidth="200" />
 

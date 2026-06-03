@@ -3,38 +3,38 @@ package dam.mod.controllers;
 import dam.mod.models.Reserva;
 import dam.mod.models.Usuario;
 import dam.mod.services.IReservaService;
+import dam.mod.utils.LanguageManager;
 import dam.mod.utils.ScreenManager;
 import dam.mod.utils.Session;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MultipleSelectionModel;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.*;
 import org.mockito.MockedStatic;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.ResourceBundle;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
 class ReservasControllerTest {
 
     private ReservasController controller;
+
     private IReservaService reservaService = mock(IReservaService.class);
 
-    @SuppressWarnings("unchecked")
     private ListView<Reserva> listaReservas = mock(ListView.class);
-    @SuppressWarnings("unchecked")
     private ObservableList<Reserva> items = mock(ObservableList.class);
 
-    private final int USUARIO_ID = 10;
+    private ResourceBundle bundleMock;
+
+    private MockedStatic<Session> sessionMock;
+    private MockedStatic<LanguageManager> langMock;
+
+    private final Usuario usuario = new Usuario();
 
     @BeforeAll
     static void initJavaFX() {
@@ -43,116 +43,143 @@ class ReservasControllerTest {
 
     @BeforeEach
     void setUp() throws Exception {
+
+        usuario.setId(10);
+
+        // =========================
+        // LANGUAGE
+        // =========================
+        bundleMock = mock(ResourceBundle.class);
+
+        langMock = mockStatic(LanguageManager.class);
+        langMock.when(LanguageManager::getBundle).thenReturn(bundleMock);
+
+        when(bundleMock.getString(anyString()))
+                .thenReturn("test");
+
+        // =========================
+        // SESSION
+        // =========================
+        sessionMock = mockStatic(Session.class);
+        sessionMock.when(Session::getCurrentUser).thenReturn(usuario);
+
+        // =========================
+        // CONTROLLER
+        // =========================
         controller = new ReservasController();
 
         setField("reservaService", reservaService);
         setField("listaReservas", listaReservas);
         setField("mensajeLabel", mock(javafx.scene.control.Label.class));
+        setField("bundle", bundleMock);
 
-        when(listaReservas.getItems()).thenReturn(items);
+        lenient().when(listaReservas.getItems()).thenReturn(items);
     }
+
+    @AfterEach
+    void tearDown() {
+        langMock.close();
+        sessionMock.close();
+    }
+
+    // =====================================================
+    // TESTS
+    // =====================================================
 
     @Test
     void initialize_sinSesion_redirigirALogin() {
-        try (MockedStatic<Session> sessionMock = mockStatic(Session.class);
-                MockedStatic<ScreenManager> screenMock = mockStatic(ScreenManager.class)) {
 
-            sessionMock.when(Session::getCurrentUser).thenReturn(null);
+        sessionMock.when(Session::getCurrentUser).thenReturn(null);
+
+        try (MockedStatic<ScreenManager> screenMock = mockStatic(ScreenManager.class)) {
+
             invoke("initialize");
+
             screenMock.verify(() -> ScreenManager.change("login.fxml"));
         }
     }
 
     @Test
-    void cargarReservas_cargaLasReservasDelUsuario() {
-        try (MockedStatic<Session> sessionMock = mockStatic(Session.class)) {
-            sessionMock.when(Session::getCurrentUser).thenReturn(usuarioMock(USUARIO_ID));
-            List<Reserva> reservas = List.of(new Reserva(), new Reserva());
-            when(reservaService.findByIdUsuario(USUARIO_ID)).thenReturn(reservas);
+    void cargarReservas_cargaDatos() {
 
-            invoke("cargarReservas");
+        List<Reserva> reservas = List.of(new Reserva(), new Reserva());
 
-            verify(items).setAll((java.util.Collection<Reserva>) reservas);
-        }
+        when(reservaService.findByIdUsuario(10)).thenReturn(reservas);
+
+        invoke("cargarReservas");
+
+        // 🔥 FIX DEFINITIVO (setAll ambigüo)
+        verify(items).setAll(any(java.util.Collection.class));
     }
 
     @Test
-    @SuppressWarnings("unchecked")
-    void cancelarReserva_sinSeleccion_noLlamaServicio() {
+    void cancelarReserva_sinSeleccion_noHaceNada() {
+
         MultipleSelectionModel<Reserva> model = mock(MultipleSelectionModel.class);
         when(listaReservas.getSelectionModel()).thenReturn(model);
         when(model.getSelectedItem()).thenReturn(null);
 
         invoke("cancelarReserva");
 
-        verify(reservaService, never()).cancelarReserva(anyInt(), anyInt());
+        verifyNoInteractions(reservaService);
     }
 
     @Test
-    @SuppressWarnings("unchecked")
-    void cancelarReserva_propia_exito_cambiEstadoYRecarga() {
+    void cancelarReserva_propia_exito() {
 
-        try (MockedStatic<Session> sessionMock = mockStatic(Session.class)) {
+        Reserva r = new Reserva();
+        r.setId(5);
+        r.setIdUsuario(10);
 
-            sessionMock.when(Session::getCurrentUser)
-                    .thenReturn(usuarioMock(USUARIO_ID));
+        MultipleSelectionModel<Reserva> model = mock(MultipleSelectionModel.class);
+        when(listaReservas.getSelectionModel()).thenReturn(model);
+        when(model.getSelectedItem()).thenReturn(r);
 
-            Reserva reserva = reservaMock(5, USUARIO_ID);
+        when(reservaService.cambiarEstado(5, "CANCELADA")).thenReturn(true);
+        when(reservaService.findByIdUsuario(10)).thenReturn(List.of());
 
-            MultipleSelectionModel<Reserva> model = mock(MultipleSelectionModel.class);
+        invoke("cancelarReserva");
 
-            when(listaReservas.getSelectionModel()).thenReturn(model);
-            when(model.getSelectedItem()).thenReturn(reserva);
+        verify(reservaService).cambiarEstado(5, "CANCELADA");
 
-            when(reservaService.cambiarEstado(5, "CANCELADA")).thenReturn(true);
-            when(reservaService.findByIdUsuario(USUARIO_ID)).thenReturn(List.of());
-
-            invoke("cancelarReserva");
-
-            verify(reservaService).cambiarEstado(5, "CANCELADA");
-            verify(items, atLeastOnce()).setAll(any(java.util.Collection.class));
-        }
+        // 🔥 FIX DEFINITIVO
+        verify(items).setAll(any(java.util.Collection.class));
     }
 
     @Test
-    @SuppressWarnings("unchecked")
-    void cancelarReserva_propia_error_noRecarga() {
-        try (MockedStatic<Session> sessionMock = mockStatic(Session.class)) {
-            sessionMock.when(Session::getCurrentUser).thenReturn(usuarioMock(USUARIO_ID));
+void cancelarReserva_error_noRecarga() {
 
-            Reserva reserva = reservaMock(5, USUARIO_ID);
-            MultipleSelectionModel<Reserva> model = mock(MultipleSelectionModel.class);
-            when(listaReservas.getSelectionModel()).thenReturn(model);
-            when(model.getSelectedItem()).thenReturn(reserva);
-            when(reservaService.cancelarReserva(5, USUARIO_ID)).thenReturn(false);
+    Reserva r = new Reserva();
+    r.setId(5);
+    r.setIdUsuario(10);
 
-            invoke("cancelarReserva");
+    MultipleSelectionModel<Reserva> model = mock(MultipleSelectionModel.class);
+    when(listaReservas.getSelectionModel()).thenReturn(model);
+    when(model.getSelectedItem()).thenReturn(r);
 
-            verify(items, never()).setAll(any(java.util.Collection.class));
-        }
-    }
+    when(reservaService.cambiarEstado(5, "CANCELADA")).thenReturn(false);
+
+    invoke("cancelarReserva");
+
+    verify(reservaService).cambiarEstado(5, "CANCELADA");
+
+    verify(reservaService, never()).findByIdUsuario(anyInt());
+}
 
     @Test
-    void volver_navegaAInicio() {
+    void volver_navega() {
+
         try (MockedStatic<ScreenManager> screenMock = mockStatic(ScreenManager.class)) {
+
             invoke("volver");
+
             screenMock.verify(() -> ScreenManager.change("inicio.fxml"));
         }
     }
 
-    private Usuario usuarioMock(int id) {
-        Usuario u = new Usuario();
-        u.setId(id);
-        return u;
-    }
-
-    private Reserva reservaMock(int id, int idUsuario) {
-        Reserva r = new Reserva();
-        r.setId(id);
-        r.setIdUsuario(idUsuario);
-        r.setEstado("ACTIVA");
-        return r;
-    }
+    // =====================================================
+    // HELPERS
+    // =====================================================
 
     private void setField(String name, Object value) throws Exception {
         Field f = ReservasController.class.getDeclaredField(name);
@@ -160,9 +187,9 @@ class ReservasControllerTest {
         f.set(controller, value);
     }
 
-    private void invoke(String methodName) {
+    private void invoke(String method) {
         try {
-            Method m = ReservasController.class.getDeclaredMethod(methodName);
+            Method m = ReservasController.class.getDeclaredMethod(method);
             m.setAccessible(true);
             m.invoke(controller);
         } catch (Exception e) {

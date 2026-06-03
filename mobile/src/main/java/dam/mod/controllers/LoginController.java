@@ -11,87 +11,45 @@ import dam.mod.utils.Session;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.util.ResourceBundle;
+
 /**
- * Controlador de la pantalla de inicio de sesión y registro.
- *
- * Gestiona la autenticación de usuarios, registro de nuevos usuarios
- * y navegación entre pantallas de login y registro.
+ * Controlador de login y registro.
  */
 public class LoginController {
 
-    /**
-     * Servicio de usuarios para autenticación y gestión.
-     */
-    private final IUsuarioService service = new UsuarioServiceImpl(new UsuarioRepository(),
-            new RememberTokenRepositoryImpl());
+    private final IUsuarioService service =
+            new UsuarioServiceImpl(
+                    new UsuarioRepository(),
+                    new RememberTokenRepositoryImpl()
+            );
 
-    /**
-     * Campo de entrada para el DNI en login.
-     */
-    @FXML
-    private TextField dniField;
+    @FXML private TextField dniField;
+    @FXML private PasswordField passwordField;
+    @FXML private Label errorLabel;
 
-    /**
-     * Campo de entrada para la contraseña en login.
-     */
-    @FXML
-    private PasswordField passwordField;
+    @FXML private TextField nombreField;
+    @FXML private TextField dniRegisterField;
+    @FXML private TextField emailField;
+    @FXML private TextField telefonoField;
+    @FXML private PasswordField registerPasswordField;
+    @FXML private CheckBox rememberMeCheckBox;
+    @FXML private Label registerErrorLabel;
 
-    /**
-     * Etiqueta para mostrar errores de login.
-     */
-    @FXML
-    private Label errorLabel;
+    private ResourceBundle bundle;
 
-    /**
-     * Campo de nombre en registro.
-     */
-    @FXML
-    private TextField nombreField;
-
-    /**
-     * Campo de DNI en registro.
-     */
-    @FXML
-    private TextField dniRegisterField;
-
-    /**
-     * Campo de email en registro.
-     */
-    @FXML
-    private TextField emailField;
-
-    /**
-     * Campo de teléfono en registro.
-     */
-    @FXML
-    private TextField telefonoField;
-
-    /**
-     * Campo de contraseña en registro.
-     */
-    @FXML
-    private PasswordField registerPasswordField;
-
-    /**
-     * Recuerdame
-     */
-    @FXML
-    private CheckBox rememberMeCheckBox;
-
-    /**
-     * Etiqueta para mostrar errores en registro.
-     */
-    @FXML
-    private Label registerErrorLabel;
-
-    /**
-     * Inicializa el controlador.
-     *
-     * Carga los tipos de usuario disponibles en el ComboBox.
-     */
     @FXML
     public void initialize() {
+
+        // FIX: nunca depender de null externo
+        bundle = LanguageManager.getBundle();
+
+        if (bundle == null) {
+            bundle = ResourceBundle.getBundle(
+                    "i18n.messages",
+                    LanguageManager.getLocale()
+            );
+        }
 
         String token = Session.getTokenSesionGuardado();
 
@@ -105,11 +63,6 @@ public class LoginController {
         }
     }
 
-    /**
-     * Gestiona el inicio de sesión del usuario.
-     *
-     * Valida credenciales, normaliza el DNI y establece la sesión si es correcto.
-     */
     @FXML
     private void handleLogin() {
 
@@ -117,35 +70,32 @@ public class LoginController {
             Usuario usuario = service.login(
                     dniField.getText().trim().toUpperCase(),
                     passwordField.getText(),
-                    rememberMeCheckBox.isSelected());
+                    rememberMeCheckBox.isSelected()
+            );
 
             Session.setCurrentUser(usuario);
             ScreenManager.change("inicio.fxml");
 
         } catch (Exception e) {
-            errorLabel.setText(LanguageManager.msg(
-                    e.getMessage(),
-                    e.getMessage(),
-                    e.getMessage()));
+            errorLabel.setText(e.getMessage());
         }
     }
 
-    /**
-     * Gestiona el registro de un nuevo usuario.
-     *
-     * Valida la contraseña, normaliza el DNI y crea el usuario en el sistema.
-     */
     @FXML
     private void handleRegister() {
 
         try {
 
-            if (registerPasswordField.getText() == null ||
-                    registerPasswordField.getText().length() < 6) {
-                registerErrorLabel.setText(LanguageManager.msg(
-                        "Contraseña demasiado corta",
-                        "Password too short",
-                        "Passwort zu kurz"));
+            String pass = registerPasswordField.getText();
+
+            if (pass == null || pass.length() < 6) {
+
+                // FIX: evitar null bundle crash
+                String msg = (bundle != null)
+                        ? bundle.getString("error.password.short")
+                        : "Contraseña demasiado corta";
+
+                registerErrorLabel.setText(msg);
                 return;
             }
 
@@ -156,75 +106,46 @@ public class LoginController {
                     emailField.getText(),
                     telefonoField.getText(),
                     "ALUMNO",
-                    registerPasswordField.getText());
+                    pass
+            );
 
             service.create(nuevo);
-
             ScreenManager.change("login.fxml");
 
         } catch (Exception e) {
-            registerErrorLabel.setText(LanguageManager.msg(
-                    e.getMessage(),
-                    e.getMessage(),
-                    e.getMessage()));
+            registerErrorLabel.setText(e.getMessage());
         }
     }
 
-    /**
-     * Abre la pantalla de registro.
-     */
     @FXML
     private void abrirRegistro() {
         ScreenManager.change("register.fxml");
     }
 
-    /**
-     * Vuelve a la pantalla de login.
-     */
     @FXML
     private void volverLogin() {
         ScreenManager.change("login.fxml");
     }
 
-    /**
-     * Cambia el idioma a español.
-     */
     @FXML
     private void setSpanish() {
         aplicarIdioma("es");
     }
 
-    /**
-     * Cambia el idioma a inglés.
-     */
     @FXML
     private void setEnglish() {
         aplicarIdioma("en");
     }
 
-    /**
-     * Cambia el idioma a alemán.
-     */
     @FXML
     private void setGerman() {
         aplicarIdioma("de");
     }
 
-    /**
-     * Aplica el idioma seleccionado.
-     *
-     * @param lang código del idioma
-     */
     private void aplicarIdioma(String lang) {
 
-        switch (lang) {
-            case "es" -> LanguageManager.setLanguage("es");
-            case "en" -> LanguageManager.setLanguage("en");
-            case "de" -> LanguageManager.setLanguage("de");
-            default -> LanguageManager.setLanguage("es");
-        }
+        LanguageManager.setLanguage(lang);
 
         ScreenManager.change(ScreenManager.getCurrentScreen());
     }
-
 }

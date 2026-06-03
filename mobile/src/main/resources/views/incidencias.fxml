@@ -13,8 +13,8 @@
 
     <HBox spacing="10" alignment="CENTER_LEFT">
 
-        <Button text="← Back" onAction="#volver" />
-        <Label text="Incidents" />
+        <Button text="%common.back" onAction="#volver" />
+        <Label text="%incidents.title" />
 
     </HBox>
 
@@ -22,18 +22,18 @@
         style="-fx-text-fill: red;" />
 
     <TextField fx:id="txtAsunto"
-        promptText="Subject" />
+        promptText="%incidents.subject" />
 
     <TextArea fx:id="txtDescripcion"
-        promptText="Describe the issue"
+        promptText="%incidents.description"
         wrapText="true"
         prefHeight="150" />
 
-    <Button text="Send incident"
+    <Button text="%incidents.send"
         onAction="#enviarIncidencia"
         prefWidth="200" />
 
-    <Label text="My incidents" />
+    <Label text="%incidents.myIncidents" />
 
     <ListView fx:id="listaIncidencias"
         onMouseClicked="#seleccionarIncidencia"

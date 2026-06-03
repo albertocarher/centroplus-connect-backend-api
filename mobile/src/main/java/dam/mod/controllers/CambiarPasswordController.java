@@ -14,42 +14,28 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 
+import java.util.ResourceBundle;
+
 /**
  * Controlador encargado del cambio de contraseña del usuario.
- *
- * Permite validar la contraseña actual, comprobar la nueva contraseña
- * y actualizarla en el sistema de forma segura.
  */
 public class CambiarPasswordController {
 
     @FXML
     private Label mensajeLabel;
-    /**
-     * Campo de contraseña actual.
-     */
+
     @FXML
     private PasswordField oldPasswordField;
 
-    /**
-     * Campo de nueva contraseña.
-     */
     @FXML
     private PasswordField newPasswordField;
 
-    /**
-     * Campo de repetición de nueva contraseña.
-     */
     @FXML
     private PasswordField repeatPasswordField;
 
     private IUsuarioService usuarioService;
+    private ResourceBundle bundle;
 
-    /**
-     * Inicializa el controlador.
-     *
-     * Verifica que el usuario esté autenticado e inicializa el servicio de
-     * usuarios.
-     */
     @FXML
     public void initialize() {
 
@@ -58,16 +44,12 @@ public class CambiarPasswordController {
             return;
         }
 
+        bundle = LanguageManager.getBundle();
+
         IUsuarioRepository repo = new UsuarioRepository();
         usuarioService = new UsuarioServiceImpl(repo, new RememberTokenRepositoryImpl());
     }
 
-    /**
-     * Cambia la contraseña del usuario actual.
-     *
-     * Valida la contraseña actual, comprueba coincidencia de la nueva contraseña
-     * y actualiza el usuario en el sistema.
-     */
     @FXML
     private void cambiarPassword() {
 
@@ -78,26 +60,17 @@ public class CambiarPasswordController {
         String repeat = repeatPasswordField.getText();
 
         if (!PasswordUtils.checkPassword(oldPass, user.getPassword())) {
-            mensajeLabel.setText(LanguageManager.msg(
-                    "Contraseña actual incorrecta",
-                    "Incorrect current password",
-                    "Aktuelles Passwort falsch"));
+            mensajeLabel.setText(bundle.getString("error.password.current"));
             return;
         }
 
         if (!newPass.equals(repeat)) {
-            mensajeLabel.setText(LanguageManager.msg(
-                    "Las contraseñas no coinciden",
-                    "Passwords do not match",
-                    "Passwörter stimmen nicht überein"));
+            mensajeLabel.setText(bundle.getString("error.password.mismatch"));
             return;
         }
 
         if (newPass.length() < 6) {
-            mensajeLabel.setText(LanguageManager.msg(
-                    "Contraseña demasiado corta",
-                    "Password too short",
-                    "Passwort zu kurz"));
+            mensajeLabel.setText(bundle.getString("error.password.short"));
             return;
         }
 
@@ -106,23 +79,14 @@ public class CambiarPasswordController {
         boolean ok = usuarioService.update(user);
 
         if (ok) {
-            mensajeLabel.setText(LanguageManager.msg(
-                    "Contraseña actualizada correctamente",
-                    "Password updated successfully",
-                    "Passwort erfolgreich aktualisiert"));
+            mensajeLabel.setText(bundle.getString("success.password.updated"));
             Session.setCurrentUser(user);
             ScreenManager.change("perfil.fxml");
         } else {
-            mensajeLabel.setText(LanguageManager.msg(
-                    "Error al actualizar",
-                    "Update error",
-                    "Fehler beim Aktualisieren"));
+            mensajeLabel.setText(bundle.getString("error.update"));
         }
     }
 
-    /**
-     * Vuelve a la pantalla de perfil.
-     */
     @FXML
     private void volver() {
         ScreenManager.change("perfil.fxml");

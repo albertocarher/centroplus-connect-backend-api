@@ -12,58 +12,55 @@
        prefHeight="844"
        style="-fx-padding: 15;">
 
-
        <HBox spacing="10" alignment="CENTER_LEFT">
-              <Button text="← Volver" onAction="#volver" />
-              <Label text="Mi perfil"
+              <Button text="%common.back" onAction="#volver" />
+              <Label text="%profile.title"
                      style="-fx-font-size: 18px; -fx-font-weight: bold;" />
        </HBox>
 
-
        <VBox spacing="10">
 
-              <Label text="Nombre"
+              <Label text="%profile.name"
                      style="-fx-font-size: 15px; -fx-font-weight: bold;" />
               <Label fx:id="lblNombre"
                      style="-fx-font-size: 13px;" />
 
-              <Label text="DNI"
+              <Label text="%profile.dni"
                      style="-fx-font-size: 15px; -fx-font-weight: bold;" />
               <Label fx:id="lblDni"
                      style="-fx-font-size: 13px;" />
 
-              <Label text="Email"
+              <Label text="%profile.email"
                      style="-fx-font-size: 15px; -fx-font-weight: bold;" />
               <Label fx:id="lblEmail"
                      style="-fx-font-size: 13px;" />
 
-              <Label text="Teléfono"
+              <Label text="%profile.phone"
                      style="-fx-font-size: 15px; -fx-font-weight: bold;" />
               <Label fx:id="lblTelefono"
                      style="-fx-font-size: 13px;" />
 
-              <Label text="Tipo usuario"
+              <Label text="%profile.type"
                      style="-fx-font-size: 15px; -fx-font-weight: bold;" />
               <Label fx:id="lblTipo"
                      style="-fx-font-size: 13px;" />
 
        </VBox>
 
-
        <VBox alignment="CENTER" spacing="10">
-              <Button text="Cambiar contraseña"
+              <Button text="%profile.change.password"
                      onAction="#abrirCambiarPassword"
                      prefWidth="220" />
 
-              <Button text="Cambiar email"
+              <Button text="%profile.change.email"
                      onAction="#abrirCambiarEmail"
                      prefWidth="220" />
 
-              <Button text="Cambiar teléfono"
+              <Button text="%profile.change.phone"
                      onAction="#abrirCambiarTelefono"
                      prefWidth="220" />
 
-              <Button text="Cerrar sesión"
+              <Button text="%profile.logout"
                      onAction="#cerrarSesion"
                      prefWidth="220" />
        </VBox>

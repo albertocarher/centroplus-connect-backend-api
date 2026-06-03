@@ -1,11 +1,12 @@
 package dam.mod.utils;
 
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+
+import java.util.Locale;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class LanguageManagerTest {
 
@@ -17,7 +18,7 @@ class LanguageManagerTest {
     @Test
     @Order(1)
     void idiomaPorDefectoEsEspanol() {
-        assertEquals("es", LanguageManager.getLanguage());
+        assertEquals("es", LanguageManager.getLocale().getLanguage());
     }
 
     @Test
@@ -25,7 +26,7 @@ class LanguageManagerTest {
     void setLanguageCambiaIdiomaAIngles() {
         LanguageManager.setLanguage("en");
 
-        assertEquals("en", LanguageManager.getLanguage());
+        assertEquals("en", LanguageManager.getLocale().getLanguage());
     }
 
     @Test
@@ -33,7 +34,7 @@ class LanguageManagerTest {
     void setLanguageCambiaIdiomaAAleman() {
         LanguageManager.setLanguage("de");
 
-        assertEquals("de", LanguageManager.getLanguage());
+        assertEquals("de", LanguageManager.getLocale().getLanguage());
     }
 
     @Test
@@ -41,7 +42,7 @@ class LanguageManagerTest {
     void setLanguagePermiteVolverAEspanol() {
         LanguageManager.setLanguage("es");
 
-        assertEquals("es", LanguageManager.getLanguage());
+        assertEquals("es", LanguageManager.getLocale().getLanguage());
     }
 
     @Test
@@ -50,7 +51,7 @@ class LanguageManagerTest {
         LanguageManager.setLanguage("en");
         LanguageManager.setLanguage("de");
 
-        assertEquals("de", LanguageManager.getLanguage());
+        assertEquals("de", LanguageManager.getLocale().getLanguage());
     }
 
     @Test
@@ -58,14 +59,16 @@ class LanguageManagerTest {
     void setLanguageAceptaValoresPersonalizados() {
         LanguageManager.setLanguage("fr");
 
-        assertEquals("fr", LanguageManager.getLanguage());
+        assertEquals("fr", LanguageManager.getLocale().getLanguage());
     }
 
     @Test
     @Order(7)
-    void setLanguageAceptaNull() {
-        LanguageManager.setLanguage(null);
+    void resetRestauraEspanol() {
+        LanguageManager.setLanguage("en");
 
-        assertNull(LanguageManager.getLanguage());
+        LanguageManager.reset();
+
+        assertEquals("es", LanguageManager.getLocale().getLanguage());
     }
 }

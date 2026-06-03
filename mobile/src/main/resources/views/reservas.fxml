@@ -9,17 +9,17 @@
             prefHeight="844">
 
     <top>
-    <VBox spacing="5">
+        <VBox spacing="5">
 
-        <HBox spacing="10" alignment="CENTER_LEFT">
-            <Button text="←" onAction="#volver"/>
-            <Label text="Mis reservas"/>
-        </HBox>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Button text="%common.back" onAction="#volver"/>
+                <Label text="%reservations.title"/>
+            </HBox>
 
-        <Label fx:id="mensajeLabel" style="-fx-text-fill: red;"/>
+            <Label fx:id="mensajeLabel" style="-fx-text-fill: red;"/>
 
-    </VBox>
-</top>
+        </VBox>
+    </top>
 
     <center>
         <ListView fx:id="listaReservas"/>
@@ -27,7 +27,7 @@
 
     <bottom>
         <HBox alignment="CENTER" spacing="10">
-            <Button text="Cancelar reserva"
+            <Button text="%reservations.cancel"
                     onAction="#cancelarReserva"/>
         </HBox>
     </bottom>

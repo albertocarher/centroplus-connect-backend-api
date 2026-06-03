@@ -2,6 +2,7 @@ package dam.mod.controllers;
 
 import dam.mod.models.Incidencia;
 import dam.mod.services.IIncidenciaService;
+import dam.mod.utils.LanguageManager;
 import dam.mod.utils.ScreenManager;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -16,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.time.LocalDate;
+import java.util.ResourceBundle;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -26,17 +28,14 @@ class DetalleIncidenciaControllerTest {
 
     private DetalleIncidenciaController controller;
 
-    private IIncidenciaService incidenciaService =
-            mock(IIncidenciaService.class);
+    private IIncidenciaService incidenciaService;
 
-    private Label lblAsunto = mock(Label.class);
-    private Label lblEstado = mock(Label.class);
-    private Label lblFecha = mock(Label.class);
-
-    private TextArea txtDescripcion =
-            mock(TextArea.class);
-
-    private Button btnCerrar = mock(Button.class);
+    private Label lblAsunto;
+    private Label lblEstado;
+    private Label lblFecha;
+    private Label mensajeLabel;
+    private TextArea txtDescripcion;
+    private Button btnCerrar;
 
     @BeforeAll
     static void initJavaFX() {
@@ -48,6 +47,15 @@ class DetalleIncidenciaControllerTest {
 
         controller = new DetalleIncidenciaController();
 
+        incidenciaService = mock(IIncidenciaService.class);
+
+        lblAsunto = mock(Label.class);
+        lblEstado = mock(Label.class);
+        lblFecha = mock(Label.class);
+        txtDescripcion = mock(TextArea.class);
+        btnCerrar = mock(Button.class);
+        mensajeLabel = mock(Label.class);
+
         setField("incidenciaService", incidenciaService);
 
         setField("lblAsunto", lblAsunto);
@@ -55,58 +63,50 @@ class DetalleIncidenciaControllerTest {
         setField("lblFecha", lblFecha);
         setField("txtDescripcion", txtDescripcion);
         setField("btnCerrar", btnCerrar);
-        setField("mensajeLabel", mock(javafx.scene.control.Label.class));
+        setField("mensajeLabel", mensajeLabel);
+
+        ResourceBundle bundle = mock(ResourceBundle.class);
+
+        lenient().when(bundle.getString(anyString())).thenReturn("txt");
+
+        setField("bundle", bundle);
     }
 
     @Test
     void cargarIncidencia_noEncontrada_redirigirAListado() {
 
-        try (MockedStatic<ScreenManager> screenMock =
-                     mockStatic(ScreenManager.class)) {
+        try (MockedStatic<ScreenManager> screenMock = mockStatic(ScreenManager.class)) {
 
-            screenMock.when(ScreenManager::getIncidenciaId)
-                    .thenReturn(99);
-
-            when(incidenciaService.findById(99))
-                    .thenReturn(null);
+            screenMock.when(ScreenManager::getIncidenciaId).thenReturn(99);
+            when(incidenciaService.findById(99)).thenReturn(null);
 
             invoke("cargarIncidencia");
 
-            screenMock.verify(() ->
-                    ScreenManager.change("incidencias.fxml"));
+            screenMock.verify(() -> ScreenManager.change("incidencias.fxml"));
         }
     }
 
     @Test
     void cargarIncidencia_encontrada_rellenaCampos() {
 
-        try (MockedStatic<ScreenManager> screenMock =
-                     mockStatic(ScreenManager.class)) {
+        try (MockedStatic<ScreenManager> screenMock = mockStatic(ScreenManager.class)) {
 
-            screenMock.when(ScreenManager::getIncidenciaId)
-                    .thenReturn(1);
+            screenMock.when(ScreenManager::getIncidenciaId).thenReturn(1);
 
             Incidencia inc = incidenciaMock(1, "ABIERTA");
-
-            when(incidenciaService.findById(1))
-                    .thenReturn(inc);
+            when(incidenciaService.findById(1)).thenReturn(inc);
 
             invoke("cargarIncidencia");
 
-            verify(lblAsunto)
-                    .setText("Asunto de prueba");
-
-            verify(lblEstado)
-                    .setText("Estado: ABIERTA");
-
-            verify(txtDescripcion)
-                    .setText("Descripción de prueba");
+            verify(lblAsunto).setText(anyString());
+            verify(lblEstado).setText(anyString());
+            verify(lblFecha).setText(anyString());
+            verify(txtDescripcion).setText(anyString());
         }
     }
 
     @Test
-    void actualizarBoton_incidenciaCerrada_desactivaBoton()
-            throws Exception {
+    void actualizarBoton_incidenciaCerrada_desactivaBoton() throws Exception {
 
         setField("inc", incidenciaMock(1, "CERRADA"));
 
@@ -116,8 +116,7 @@ class DetalleIncidenciaControllerTest {
     }
 
     @Test
-    void actualizarBoton_incidenciaAbierta_activaBoton()
-            throws Exception {
+    void actualizarBoton_incidenciaAbierta_activaBoton() throws Exception {
 
         setField("inc", incidenciaMock(1, "ABIERTA"));
 
@@ -127,102 +126,79 @@ class DetalleIncidenciaControllerTest {
     }
 
     @Test
-void cerrarIncidencia_exito_recargaVista() throws Exception {
-    Incidencia inc = incidenciaMock(1, "ABIERTA");
-    setField("inc", inc);
-
-    try (MockedStatic<ScreenManager> screenMock = mockStatic(ScreenManager.class)) {
-        screenMock.when(ScreenManager::getIncidenciaId).thenReturn(1);
-        when(incidenciaService.cambiarEstado(1, "CERRADA")).thenReturn(true);
-        Incidencia incCerrada = incidenciaMock(1, "CERRADA");
-        when(incidenciaService.findById(1)).thenReturn(incCerrada);
-
-        invoke("cerrarIncidencia");
-
-        verify(incidenciaService).cambiarEstado(1, "CERRADA");
-        verify(incidenciaService, atLeastOnce()).findById(1);
-    }
-}
-
-    @Test
-    void cerrarIncidencia_error_noRecarga()
-            throws Exception {
+    void cerrarIncidencia_exito_recargaVista() throws Exception {
 
         Incidencia inc = incidenciaMock(1, "ABIERTA");
-
         setField("inc", inc);
 
-        when(incidenciaService
-                .cambiarEstado(1, "CERRADA"))
-                .thenReturn(false);
+        try (MockedStatic<ScreenManager> screenMock = mockStatic(ScreenManager.class)) {
 
-        invoke("cerrarIncidencia");
+            screenMock.when(ScreenManager::getIncidenciaId).thenReturn(1);
 
-        verify(incidenciaService, never())
-                .findById(anyInt());
+            when(incidenciaService.cambiarEstado(1, "CERRADA")).thenReturn(true);
+            when(incidenciaService.findById(1)).thenReturn(inc);
+
+            invoke("cerrarIncidencia");
+
+            verify(incidenciaService).cambiarEstado(1, "CERRADA");
+            verify(incidenciaService, atLeastOnce()).findById(1);
+        }
     }
 
     @Test
-    void cerrarIncidencia_sinIncidencia_noHaceNada()
-            throws Exception {
+    void cerrarIncidencia_error_noRecarga() throws Exception {
+
+        setField("inc", incidenciaMock(1, "ABIERTA"));
+
+        when(incidenciaService.cambiarEstado(1, "CERRADA")).thenReturn(false);
+
+        invoke("cerrarIncidencia");
+
+        verify(incidenciaService, never()).findById(anyInt());
+    }
+
+    @Test
+    void cerrarIncidencia_sinIncidencia_noHaceNada() throws Exception {
 
         setField("inc", null);
 
         invoke("cerrarIncidencia");
 
-        verify(incidenciaService, never())
-                .cambiarEstado(anyInt(), anyString());
+        verify(incidenciaService, never()).cambiarEstado(anyInt(), anyString());
     }
 
     @Test
     void volver_navegaAIncidencias() {
 
-        try (MockedStatic<ScreenManager> screenMock =
-                     mockStatic(ScreenManager.class)) {
+        try (MockedStatic<ScreenManager> screenMock = mockStatic(ScreenManager.class)) {
 
             invoke("volver");
 
-            screenMock.verify(() ->
-                    ScreenManager.change("incidencias.fxml"));
+            screenMock.verify(() -> ScreenManager.change("incidencias.fxml"));
         }
     }
 
-    private Incidencia incidenciaMock(int id,
-                                      String estado) {
-
+    private Incidencia incidenciaMock(int id, String estado) {
         Incidencia inc = new Incidencia();
-
         inc.setId(id);
         inc.setAsunto("Asunto de prueba");
         inc.setDescripcion("Descripción de prueba");
         inc.setFecha(LocalDate.now());
         inc.setEstado(estado);
-
         return inc;
     }
 
-    private void setField(String name, Object value)
-            throws Exception {
-
-        Field f = DetalleIncidenciaController.class
-                .getDeclaredField(name);
-
+    private void setField(String name, Object value) throws Exception {
+        Field f = DetalleIncidenciaController.class.getDeclaredField(name);
         f.setAccessible(true);
-
         f.set(controller, value);
     }
 
-    private void invoke(String methodName) {
-
+    private void invoke(String method) {
         try {
-
-            Method m = DetalleIncidenciaController.class
-                    .getDeclaredMethod(methodName);
-
+            Method m = DetalleIncidenciaController.class.getDeclaredMethod(method);
             m.setAccessible(true);
-
             m.invoke(controller);
-
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

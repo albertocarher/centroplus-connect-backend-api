@@ -1,42 +1,25 @@
 package dam.mod.utils;
 
-/**
- * Gestiona el idioma actual de la aplicación.
- *
- * Se usa para determinar desde qué carpeta de vistas
- * se cargan los FXML (/es, /en, /de).
- */
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 public class LanguageManager {
 
-    private static String language = "es";
+    private static Locale locale = new Locale("es");
 
-    /**
-     * Cambia el idioma actual.
-     *
-     * @param lang código del idioma (es, en, de)
-     */
     public static void setLanguage(String lang) {
-        language = lang;
+        locale = new Locale(lang);
     }
 
-    /**
-     * Obtiene el idioma actual.
-     *
-     * @return idioma actual
-     */
-    public static String getLanguage() {
-        return language;
+    public static Locale getLocale() {
+        return locale;
+    }
+
+    public static ResourceBundle getBundle() {
+        return ResourceBundle.getBundle("i18n.messages", locale);
     }
 
     public static void reset() {
-        language = "es";
-    }
-
-    public static String msg(String es, String en, String de) {
-        return switch (language) {
-            case "en" -> en;
-            case "de" -> de;
-            default -> es;
-        };
+        locale = new Locale("es");
     }
 }

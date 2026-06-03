@@ -60,8 +60,7 @@ public class ScreenManager {
             /**
              * Rutas de las pantallas
              */
-            URL url = ScreenManager.class.getResource(
-                    "/dam/mod/views/" + LanguageManager.getLanguage() + "/" + fxml);
+            URL url = ScreenManager.class.getResource("/views/" + fxml);
 
             if (url == null) {
                 throw new RuntimeException("FXML no encontrado: " + fxml);
@@ -70,7 +69,7 @@ public class ScreenManager {
             /**
              * Convierte el FXML en una interfaz real
              */
-            FXMLLoader loader = new FXMLLoader(url);
+            FXMLLoader loader = new FXMLLoader(url,LanguageManager.getBundle());
             Parent root = loader.load();
 
             /**
@@ -81,7 +80,7 @@ public class ScreenManager {
             /**
              * Estilos para las escenas
              */
-            URL css = ScreenManager.class.getResource("/dam/mod/views/style.css");
+            URL css = ScreenManager.class.getResource("/styles/style.css");
             if (css != null) {
                 scene.getStylesheets().add(css.toExternalForm());
             }

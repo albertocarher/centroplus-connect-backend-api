@@ -11,15 +11,13 @@
     prefHeight="844"
     style="-fx-padding: 15;">
 
-
     <HBox spacing="10" alignment="CENTER_LEFT">
-        <Button text="← Volver" onAction="#volver" />
-        <Label text="Detalle actividad" />
+        <Button text="%common.back" onAction="#volver" />
+        <Label text="%activity.detail" />
     </HBox>
 
     <Label fx:id="mensajeLabel"
         style="-fx-text-fill: red;" />
-
 
     <Label fx:id="lblNombre" />
     <Label fx:id="lblTipo" />
@@ -27,8 +25,7 @@
     <Label fx:id="lblPrecio" />
     <Label fx:id="lblPlazas" />
 
-
-    <Button text="Reservar plaza"
+    <Button text="%activity.reserve"
         onAction="#reservar"
         prefWidth="200" />
 

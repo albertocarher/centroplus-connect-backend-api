@@ -17,7 +17,7 @@
                 <VBox spacing="5" alignment="CENTER_LEFT" style="-fx-padding: 10;">
 
                     <Label text="SportCenter" />
-                    <Label text="Hauptmenü" />
+                    <Label text="%home.menu" />
 
                     <Label fx:id="mensajeLabel"
                         style="-fx-text-fill: red;" />
@@ -90,13 +90,13 @@
     <center>
         <VBox spacing="20" alignment="CENTER">
 
-            <Button text="Aktivitäten"
+            <Button text="%home.activities"
                 onAction="#abrirActividades" />
 
-            <Button text="Meine Reservierungen"
+            <Button text="%home.reservations"
                 onAction="#abrirReservas" />
 
-            <Button text="Störungen"
+            <Button text="%home.incidents"
                 onAction="#abrirIncidencias" />
 
         </VBox>

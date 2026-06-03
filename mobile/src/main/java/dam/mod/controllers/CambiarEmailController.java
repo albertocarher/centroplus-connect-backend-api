@@ -14,6 +14,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+import java.util.ResourceBundle;
+
 /**
  * Controlador para cambiar el email del usuario.
  */
@@ -21,6 +23,7 @@ public class CambiarEmailController {
 
     @FXML
     private Label mensajeLabel;
+
     @FXML
     private TextField emailField;
 
@@ -28,6 +31,7 @@ public class CambiarEmailController {
     private TextField repeatEmailField;
 
     private IUsuarioService usuarioService;
+    private ResourceBundle bundle;
 
     @FXML
     public void initialize() {
@@ -36,6 +40,8 @@ public class CambiarEmailController {
             ScreenManager.change("login.fxml");
             return;
         }
+
+        bundle = LanguageManager.getBundle();
 
         IUsuarioRepository repo = new UsuarioRepository();
         usuarioService = new UsuarioServiceImpl(repo, new RememberTokenRepositoryImpl());
@@ -53,18 +59,12 @@ public class CambiarEmailController {
         String repeat = repeatEmailField.getText();
 
         if (email == null || email.isBlank() || repeat == null || repeat.isBlank()) {
-            mensajeLabel.setText(LanguageManager.msg(
-                    "Debes rellenar ambos campos",
-                    "You must fill in both fields",
-                    "Beide Felder müssen ausgefüllt werden"));
+            mensajeLabel.setText(bundle.getString("error.fields.required"));
             return;
         }
 
         if (!email.equals(repeat)) {
-            mensajeLabel.setText(LanguageManager.msg(
-                    "Los emails no coinciden",
-                    "Emails do not match",
-                    "E-Mails stimmen nicht überein"));
+            mensajeLabel.setText(bundle.getString("error.email.mismatch"));
             return;
         }
 
@@ -78,10 +78,7 @@ public class CambiarEmailController {
             ScreenManager.change("perfil.fxml");
 
         } catch (IllegalArgumentException e) {
-            mensajeLabel.setText(LanguageManager.msg(
-                    "Email inválido",
-                    "Invalid email",
-                    "Ungültige E-Mail"));
+            mensajeLabel.setText(bundle.getString("error.email.invalid"));
         }
     }
 

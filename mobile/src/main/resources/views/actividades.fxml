@@ -13,8 +13,8 @@
 
 
     <HBox spacing="10" alignment="CENTER_LEFT">
-        <Button text="← Volver" onAction="#volver" />
-        <Label text="Actividades" />
+        <Button text="%activities.back" onAction="#volver" />
+        <Label text="%activities.title" />
     </HBox>
 
 

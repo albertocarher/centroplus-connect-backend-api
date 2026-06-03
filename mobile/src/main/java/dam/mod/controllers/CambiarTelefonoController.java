@@ -14,6 +14,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+import java.util.ResourceBundle;
+
 /**
  * Controlador para cambiar el teléfono del usuario.
  */
@@ -21,12 +23,15 @@ public class CambiarTelefonoController {
 
     @FXML
     private Label mensajeLabel;
+
     @FXML
     private TextField telefonoField;
 
     @FXML
     private TextField repeatTelefonoField;
+
     private IUsuarioService usuarioService;
+    private ResourceBundle bundle;
 
     @FXML
     public void initialize() {
@@ -35,6 +40,8 @@ public class CambiarTelefonoController {
             ScreenManager.change("login.fxml");
             return;
         }
+
+        bundle = LanguageManager.getBundle();
 
         IUsuarioRepository repo = new UsuarioRepository();
         usuarioService = new UsuarioServiceImpl(repo, new RememberTokenRepositoryImpl());
@@ -52,32 +59,26 @@ public class CambiarTelefonoController {
         String repeat = repeatTelefonoField.getText();
 
         if (tel == null || tel.isBlank()) {
-            mensajeLabel.setText(LanguageManager.msg(
-                    "Teléfono vacío",
-                    "Empty phone number",
-                    "Leere Telefonnummer"));
+            mensajeLabel.setText(bundle.getString("error.phone.empty"));
             return;
         }
 
         if (!tel.equals(repeat)) {
-            mensajeLabel.setText(LanguageManager.msg(
-                    "Los teléfonos no coinciden",
-                    "Phone numbers do not match",
-                    "Telefonnummern stimmen nicht überein"));
+            mensajeLabel.setText(bundle.getString("error.phone.mismatch"));
             return;
         }
 
         try {
             Validaciones.validarTelefono(tel);
-            user.setTelefono(tel);
 
+            user.setTelefono(tel);
             usuarioService.update(user);
 
             Session.setCurrentUser(user);
             ScreenManager.change("perfil.fxml");
 
         } catch (IllegalArgumentException e) {
-            mensajeLabel.setText(e.getMessage());
+            mensajeLabel.setText(bundle.getString("error.phone.invalid"));
         }
     }
 

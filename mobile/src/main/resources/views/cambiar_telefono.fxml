@@ -11,18 +11,18 @@
     style="-fx-padding: 15;">
 
     <HBox spacing="10" alignment="CENTER_LEFT">
-        <Button text="← Volver" onAction="#volver" />
-        <Label text="Cambiar teléfono"
+        <Button text="%common.back" onAction="#volver" />
+        <Label text="%phone.title"
             style="-fx-font-size: 18px; -fx-font-weight: bold;" />
     </HBox>
 
     <Label fx:id="mensajeLabel"
         style="-fx-text-fill: red;" />
 
-    <TextField fx:id="telefonoField" promptText="Nuevo teléfono" />
-    <TextField fx:id="repeatTelefonoField" promptText="Repetir teléfono" />
+    <TextField fx:id="telefonoField" promptText="%phone.new" />
+    <TextField fx:id="repeatTelefonoField" promptText="%phone.repeat" />
 
-    <Button text="Actualizar teléfono"
+    <Button text="%phone.update"
         onAction="#cambiarTelefono"
         prefWidth="250" />
 

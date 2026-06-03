@@ -15,24 +15,15 @@ import java.util.List;
 /**
  * Controlador de la pantalla de actividades.
  *
- * Permite listar las actividades disponibles, seleccionar una actividad
- * y navegar a su pantalla de detalle.
+ * Permite listar actividades disponibles y abrir su detalle.
  */
 public class ActividadesController {
 
-    /**
-     * Lista visual de actividades disponibles.
-     */
     @FXML
     private ListView<Actividad> listaActividades;
 
     private IActividadService actividadService;
 
-    /**
-     * Inicializa el controlador.
-     *
-     * Verifica sesión activa, inicializa el servicio y carga las actividades.
-     */
     @FXML
     public void initialize() {
 
@@ -47,9 +38,6 @@ public class ActividadesController {
         cargarActividades();
     }
 
-    /**
-     * Carga todas las actividades en la lista visual.
-     */
     private void cargarActividades() {
 
         List<Actividad> actividades = actividadService.findAll();
@@ -58,9 +46,6 @@ public class ActividadesController {
         listaActividades.getItems().addAll(actividades);
     }
 
-    /**
-     * Selecciona una actividad y abre su detalle.
-     */
     @FXML
     private void seleccionarActividad() {
 
@@ -73,9 +58,6 @@ public class ActividadesController {
         }
     }
 
-    /**
-     * Vuelve a la pantalla principal.
-     */
     @FXML
     private void volver() {
         ScreenManager.change("inicio.fxml");

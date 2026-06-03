@@ -11,18 +11,18 @@
     style="-fx-padding: 15;">
 
     <HBox spacing="10" alignment="CENTER_LEFT">
-        <Button text="← Zurück" onAction="#volver" />
-        <Label text="E-Mail ändern"
+        <Button text="%common.back" onAction="#volver" />
+        <Label text="%email.title"
             style="-fx-font-size: 18px; -fx-font-weight: bold;" />
     </HBox>
 
     <Label fx:id="mensajeLabel"
         style="-fx-text-fill: red;" />
 
-    <TextField fx:id="emailField" promptText="Neue E-Mail" />
-    <TextField fx:id="repeatEmailField" promptText="E-Mail wiederholen" />
+    <TextField fx:id="emailField" promptText="%email.new" />
+    <TextField fx:id="repeatEmailField" promptText="%email.repeat" />
 
-    <Button text="E-Mail aktualisieren"
+    <Button text="%email.update"
         onAction="#cambiarEmail"
         prefWidth="250" />
 

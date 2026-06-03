@@ -24,32 +24,22 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 import java.time.LocalDate;
+import java.util.ResourceBundle;
 
 /**
  * Controlador de la pantalla de incidencias del usuario.
- *
- * Permite crear incidencias, listarlas, seleccionarlas y navegar al detalle.
- * Gestiona la comunicación entre la vista y la capa de servicios.
  */
 public class IncidenciasController {
 
     @FXML
     private Label mensajeLabel;
-    /**
-     * Campo de asunto de la incidencia.
-     */
+
     @FXML
     private TextField txtAsunto;
 
-    /**
-     * Campo de descripción de la incidencia.
-     */
     @FXML
     private TextArea txtDescripcion;
 
-    /**
-     * Lista visual de incidencias del usuario.
-     */
     @FXML
     private ListView<Incidencia> listaIncidencias;
 
@@ -57,11 +47,8 @@ public class IncidenciasController {
 
     private Usuario usuarioActual;
 
-    /**
-     * Inicializa el controlador.
-     *
-     * Verifica sesión activa, inicializa servicios y carga incidencias del usuario.
-     */
+    private ResourceBundle bundle;
+
     @FXML
     public void initialize() {
 
@@ -70,32 +57,30 @@ public class IncidenciasController {
             return;
         }
 
+        bundle = LanguageManager.getBundle();
+
         usuarioActual = Session.getCurrentUser();
 
         IIncidenciaRepository repo = new IncidenciaRepository();
         IUsuarioRepository usuarioRepo = new UsuarioRepository();
 
-        IUsuarioService usuarioService = new UsuarioServiceImpl(usuarioRepo, new RememberTokenRepositoryImpl());
+        IUsuarioService usuarioService = new UsuarioServiceImpl(
+                usuarioRepo,
+                new RememberTokenRepositoryImpl()
+        );
 
         incidenciaService = new IncidenciaServiceImpl(repo, usuarioService);
 
         cargarIncidencias();
     }
 
-    /**
-     * Carga las incidencias del usuario en la lista visual.
-     */
     private void cargarIncidencias() {
 
         listaIncidencias.getItems().setAll(
-                incidenciaService.findByUsuario(usuarioActual.getId()));
+                incidenciaService.findByUsuario(usuarioActual.getId())
+        );
     }
 
-    /**
-     * Envía una nueva incidencia al sistema.
-     *
-     * Valida campos, crea la incidencia y actualiza la lista.
-     */
     @FXML
     private void enviarIncidencia() {
 
@@ -103,10 +88,7 @@ public class IncidenciasController {
         String descripcion = txtDescripcion.getText();
 
         if (asunto.isBlank() || descripcion.isBlank()) {
-            mensajeLabel.setText(LanguageManager.msg(
-                    "Campos vacíos",
-                    "Empty fields",
-                    "Leere Felder"));
+            mensajeLabel.setText(bundle.getString("error.fields.empty"));
             return;
         }
 
@@ -116,45 +98,33 @@ public class IncidenciasController {
                 asunto,
                 descripcion,
                 LocalDate.now(),
-                "ABIERTA");
+                "ABIERTA"
+        );
 
         boolean ok = incidenciaService.create(incidencia);
 
         if (ok) {
-            mensajeLabel.setText(LanguageManager.msg(
-                    "Incidencia enviada",
-                    "Incident sent",
-                    "Störung gesendet"));
+            mensajeLabel.setText(bundle.getString("success.incident.sent"));
             cargarIncidencias();
         } else {
-            mensajeLabel.setText(LanguageManager.msg(
-                    "Error al enviar incidencia",
-                    "Error sending incident",
-                    "Fehler beim Senden der Störung"));
+            mensajeLabel.setText(bundle.getString("error.incident.send"));
         }
 
         txtAsunto.clear();
         txtDescripcion.clear();
     }
 
-    /**
-     * Selecciona una incidencia y abre su vista de detalle.
-     */
     @FXML
     private void seleccionarIncidencia(javafx.scene.input.MouseEvent event) {
 
         Incidencia incidencia = listaIncidencias.getSelectionModel().getSelectedItem();
 
-        if (incidencia == null)
-            return;
+        if (incidencia == null) return;
 
         ScreenManager.setIncidenciaId(incidencia.getId());
         ScreenManager.change("detalle_incidencia.fxml");
     }
 
-    /**
-     * Vuelve a la pantalla principal.
-     */
     @FXML
     private void volver() {
         ScreenManager.change("inicio.fxml");
