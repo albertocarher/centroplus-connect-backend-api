@@ -23,6 +23,7 @@ import dam.mod.services.impl.ActividadServiceImpl;
 import dam.mod.utils.ScreenManager;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 
 /**
@@ -34,6 +35,8 @@ import javafx.scene.control.ListView;
  */
 public class ReservasController {
 
+    @FXML
+    private Label mensajeLabel;
     /**
      * Lista visual que muestra las reservas del usuario.
      */
@@ -103,7 +106,7 @@ public class ReservasController {
         int idUsuario = Session.getCurrentUser().getId();
 
         if (seleccionada.getIdUsuario() != idUsuario) {
-            System.out.println("No tienes permisos para cancelar esta reserva");
+            mensajeLabel.setText("No tienes permisos para cancelar esta reserva");
             return;
         }
 
@@ -112,10 +115,10 @@ public class ReservasController {
                 "CANCELADA");
 
         if (ok) {
-            System.out.println("Reserva cancelada");
+            mensajeLabel.setText("Reserva cancelada");
             cargarReservas();
         } else {
-            System.out.println("No se pudo cancelar");
+            mensajeLabel.setText("No se pudo cancelar");
         }
     }
 

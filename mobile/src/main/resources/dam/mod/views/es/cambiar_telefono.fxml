@@ -16,6 +16,9 @@
             style="-fx-font-size: 18px; -fx-font-weight: bold;" />
     </HBox>
 
+    <Label fx:id="mensajeLabel"
+        style="-fx-text-fill: red;" />
+
     <TextField fx:id="telefonoField" promptText="Nuevo teléfono" />
     <TextField fx:id="repeatTelefonoField" promptText="Repetir teléfono" />
 

@@ -68,6 +68,7 @@ class DetalleActividadControllerTest {
                 setField("lblDuracion", lblDuracion);
                 setField("lblPrecio", lblPrecio);
                 setField("lblPlazas", lblPlazas);
+                setField("mensajeLabel", mock(javafx.scene.control.Label.class));
         }
 
         @Test

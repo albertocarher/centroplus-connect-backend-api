@@ -36,184 +36,163 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class ActividadesControllerTest {
 
-    private ActividadesController controller;
+        private ActividadesController controller;
 
-    @SuppressWarnings("unchecked")
-    private ListView<Actividad> listaActividades =
-            mock(ListView.class);
+        @SuppressWarnings("unchecked")
+        private ListView<Actividad> listaActividades = mock(ListView.class);
 
-    @SuppressWarnings("unchecked")
-    private ObservableList<Actividad> items =
-            mock(ObservableList.class);
+        @SuppressWarnings("unchecked")
+        private ObservableList<Actividad> items = mock(ObservableList.class);
 
-    private IActividadService actividadService =
-            mock(IActividadService.class);
+        private IActividadService actividadService = mock(IActividadService.class);
 
-    @BeforeAll
-    static void initJavaFX() {
-        dam.mod.JavaFXInitializer.init();
-    }
-
-    @BeforeEach
-    void setUp() throws Exception {
-
-        controller = new ActividadesController();
-
-        Field listaField =
-                ActividadesController.class
-                        .getDeclaredField(
-                                "listaActividades");
-
-        listaField.setAccessible(true);
-
-        listaField.set(controller, listaActividades);
-
-        Field serviceField =
-                ActividadesController.class
-                        .getDeclaredField(
-                                "actividadService");
-
-        serviceField.setAccessible(true);
-
-        serviceField.set(controller, actividadService);
-
-        when(listaActividades.getItems())
-                .thenReturn(items);
-    }
-
-    @Test
-    void initialize_sinSesion_redirigirALogin() {
-
-        try (MockedStatic<Session> sessionMock =
-                     mockStatic(Session.class);
-             MockedStatic<ScreenManager> screenMock =
-                     mockStatic(ScreenManager.class)) {
-
-            sessionMock.when(Session::getCurrentUser)
-                    .thenReturn(null);
-
-            invoke("initialize");
-
-            screenMock.verify(() ->
-                    ScreenManager.change("login.fxml"));
+        @BeforeAll
+        static void initJavaFX() {
+                dam.mod.JavaFXInitializer.init();
         }
-    }
 
-    @Test
-    void cargarActividades_conDatos_limpiaYAñade() {
+        @BeforeEach
+        void setUp() throws Exception {
 
-        List<Actividad> actividades =
-                Arrays.asList(
-                        new Actividad(),
-                        new Actividad()
-                );
+                controller = new ActividadesController();
 
-        when(actividadService.findAll())
-                .thenReturn(actividades);
+                Field listaField = ActividadesController.class
+                                .getDeclaredField(
+                                                "listaActividades");
 
-        invoke("cargarActividades");
+                listaField.setAccessible(true);
 
-        verify(items).clear();
+                listaField.set(controller, listaActividades);
 
-        verify(items).addAll(actividades);
-    }
+                Field serviceField = ActividadesController.class
+                                .getDeclaredField(
+                                                "actividadService");
 
-    @Test
-    void cargarActividades_listaVacia_limpiaSinAñadir() {
+                serviceField.setAccessible(true);
 
-        when(actividadService.findAll())
-                .thenReturn(Collections.emptyList());
+                serviceField.set(controller, actividadService);
 
-        invoke("cargarActividades");
-
-        verify(items).clear();
-
-        verify(items).addAll(Collections.emptyList());
-    }
-
-    @Test
-    void seleccionarActividad_sinSeleccion_noNavega() {
-
-        try (MockedStatic<ScreenManager> screenMock =
-                     mockStatic(ScreenManager.class)) {
-
-            @SuppressWarnings("unchecked")
-            MultipleSelectionModel<Actividad> model =
-                    mock(MultipleSelectionModel.class);
-
-            when(listaActividades.getSelectionModel())
-                    .thenReturn(model);
-
-            when(model.getSelectedItem())
-                    .thenReturn(null);
-
-            invoke("seleccionarActividad");
-
-            screenMock.verifyNoInteractions();
+                when(listaActividades.getItems())
+                                .thenReturn(items);
         }
-    }
 
-    @Test
-    void seleccionarActividad_conSeleccion_navegaADetalle() {
+        @Test
+        void initialize_sinSesion_redirigirALogin() {
 
-        try (MockedStatic<ScreenManager> screenMock =
-                     mockStatic(ScreenManager.class);
-             MockedStatic<DetalleActividadController>
-                     detalleMock =
-                             mockStatic(
-                                     DetalleActividadController.class
-                             )) {
+                try (MockedStatic<Session> sessionMock = mockStatic(Session.class);
+                                MockedStatic<ScreenManager> screenMock = mockStatic(ScreenManager.class)) {
 
-            @SuppressWarnings("unchecked")
-            MultipleSelectionModel<Actividad> model =
-                    mock(MultipleSelectionModel.class);
+                        sessionMock.when(Session::getCurrentUser)
+                                        .thenReturn(null);
 
-            when(listaActividades.getSelectionModel())
-                    .thenReturn(model);
+                        invoke("initialize");
 
-            Actividad actividad = new Actividad();
-
-            when(model.getSelectedItem())
-                    .thenReturn(actividad);
-
-            invoke("seleccionarActividad");
-
-            detalleMock.verify(() ->
-                    DetalleActividadController
-                            .setActividad(actividad));
-
-            screenMock.verify(() ->
-                    ScreenManager.change(
-                            "detalle_actividad.fxml"));
+                        screenMock.verify(() -> ScreenManager.change("login.fxml"));
+                }
         }
-    }
 
-    @Test
-    void volver_navegaAInicio() {
+        @Test
+        void cargarActividades_conDatos_limpiaYAñade() {
 
-        try (MockedStatic<ScreenManager> screenMock =
-                     mockStatic(ScreenManager.class)) {
+                List<Actividad> actividades = Arrays.asList(
+                                new Actividad(),
+                                new Actividad());
 
-            invoke("volver");
+                when(actividadService.findAll())
+                                .thenReturn(actividades);
 
-            screenMock.verify(() ->
-                    ScreenManager.change("inicio.fxml"));
+                invoke("cargarActividades");
+
+                verify(items).clear();
+
+                verify(items).addAll(actividades);
         }
-    }
 
-    private void invoke(String methodName) {
+        @Test
+        void cargarActividades_listaVacia_limpiaSinAñadir() {
 
-        try {
+                when(actividadService.findAll())
+                                .thenReturn(Collections.emptyList());
 
-            Method m = ActividadesController.class
-                    .getDeclaredMethod(methodName);
+                invoke("cargarActividades");
 
-            m.setAccessible(true);
+                verify(items).clear();
 
-            m.invoke(controller);
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+                verify(items).addAll(Collections.emptyList());
         }
-    }
+
+        @Test
+        void seleccionarActividad_sinSeleccion_noNavega() {
+
+                try (MockedStatic<ScreenManager> screenMock = mockStatic(ScreenManager.class)) {
+
+                        @SuppressWarnings("unchecked")
+                        MultipleSelectionModel<Actividad> model = mock(MultipleSelectionModel.class);
+
+                        when(listaActividades.getSelectionModel())
+                                        .thenReturn(model);
+
+                        when(model.getSelectedItem())
+                                        .thenReturn(null);
+
+                        invoke("seleccionarActividad");
+
+                        screenMock.verifyNoInteractions();
+                }
+        }
+
+        @Test
+        void seleccionarActividad_conSeleccion_navegaADetalle() {
+
+                try (MockedStatic<ScreenManager> screenMock = mockStatic(ScreenManager.class);
+                                MockedStatic<DetalleActividadController> detalleMock = mockStatic(
+                                                DetalleActividadController.class)) {
+
+                        @SuppressWarnings("unchecked")
+                        MultipleSelectionModel<Actividad> model = mock(MultipleSelectionModel.class);
+
+                        when(listaActividades.getSelectionModel())
+                                        .thenReturn(model);
+
+                        Actividad actividad = new Actividad();
+
+                        when(model.getSelectedItem())
+                                        .thenReturn(actividad);
+
+                        invoke("seleccionarActividad");
+
+                        detalleMock.verify(() -> DetalleActividadController
+                                        .setActividad(actividad));
+
+                        screenMock.verify(() -> ScreenManager.change(
+                                        "detalle_actividad.fxml"));
+                }
+        }
+
+        @Test
+        void volver_navegaAInicio() {
+
+                try (MockedStatic<ScreenManager> screenMock = mockStatic(ScreenManager.class)) {
+
+                        invoke("volver");
+
+                        screenMock.verify(() -> ScreenManager.change("inicio.fxml"));
+                }
+        }
+
+        private void invoke(String methodName) {
+
+                try {
+
+                        Method m = ActividadesController.class
+                                        .getDeclaredMethod(methodName);
+
+                        m.setAccessible(true);
+
+                        m.invoke(controller);
+
+                } catch (Exception e) {
+                        throw new RuntimeException(e);
+                }
+        }
 }

@@ -44,8 +44,11 @@ class ReservasControllerTest {
     @BeforeEach
     void setUp() throws Exception {
         controller = new ReservasController();
+
         setField("reservaService", reservaService);
         setField("listaReservas", listaReservas);
+        setField("mensajeLabel", mock(javafx.scene.control.Label.class));
+
         when(listaReservas.getItems()).thenReturn(items);
     }
 
@@ -88,10 +91,14 @@ class ReservasControllerTest {
     @Test
     @SuppressWarnings("unchecked")
     void cancelarReserva_propia_exito_cambiEstadoYRecarga() {
+
         try (MockedStatic<Session> sessionMock = mockStatic(Session.class)) {
-            sessionMock.when(Session::getCurrentUser).thenReturn(usuarioMock(USUARIO_ID));
+
+            sessionMock.when(Session::getCurrentUser)
+                    .thenReturn(usuarioMock(USUARIO_ID));
 
             Reserva reserva = reservaMock(5, USUARIO_ID);
+
             MultipleSelectionModel<Reserva> model = mock(MultipleSelectionModel.class);
 
             when(listaReservas.getSelectionModel()).thenReturn(model);

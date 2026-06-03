@@ -31,6 +31,8 @@ import javafx.scene.control.Label;
  */
 public class DetalleActividadController {
 
+    @FXML
+    private Label mensajeLabel;
     /**
      * Nombre de la actividad.
      */
@@ -149,14 +151,14 @@ public class DetalleActividadController {
         }
 
         if (yaTieneActiva) {
-            System.out.println("Ya tienes esta actividad reservada");
+            mensajeLabel.setText("Ya tienes esta actividad reservada");
             return;
         }
 
         int disponibles = actividadSeleccionada.getPlazasMaximas() - actividadSeleccionada.getPlazasOcupadas();
 
         if (disponibles <= 0) {
-            System.out.println("No hay plazas disponibles");
+            mensajeLabel.setText("No hay plazas disponibles");
             return;
         }
 
@@ -168,10 +170,10 @@ public class DetalleActividadController {
 
             cargarDatos();
 
-            System.out.println("Reserva realizada correctamente");
+            mensajeLabel.setText("Reserva realizada correctamente");
 
         } else {
-            System.out.println("Error al realizar la reserva");
+            mensajeLabel.setText("Error al realizar la reserva");
         }
     }
 

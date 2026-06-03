@@ -16,8 +16,13 @@
 
             <left>
                 <VBox spacing="5" alignment="CENTER_LEFT" style="-fx-padding: 10;">
+
                     <Label text="SportCenter" />
                     <Label text="Menú principal" />
+
+                    <Label fx:id="mensajeLabel"
+                        style="-fx-text-fill: red;" />
+
                 </VBox>
             </left>
 

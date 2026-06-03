@@ -10,6 +10,7 @@ import dam.mod.utils.ScreenManager;
 import dam.mod.utils.Session;
 import dam.mod.utils.Validaciones;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 /**
@@ -17,6 +18,8 @@ import javafx.scene.control.TextField;
  */
 public class CambiarTelefonoController {
 
+    @FXML
+    private Label mensajeLabel;
     @FXML
     private TextField telefonoField;
 
@@ -48,12 +51,12 @@ public class CambiarTelefonoController {
         String repeat = repeatTelefonoField.getText();
 
         if (tel == null || tel.isBlank()) {
-            System.out.println("Teléfono vacío");
+            mensajeLabel.setText("Teléfono vacío");
             return;
         }
 
         if (!tel.equals(repeat)) {
-            System.out.println("Los teléfonos no coinciden");
+            mensajeLabel.setText("Los teléfonos no coinciden");
             return;
         }
 
@@ -67,7 +70,7 @@ public class CambiarTelefonoController {
             ScreenManager.change("perfil.fxml");
 
         } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            mensajeLabel.setText(e.getMessage());
         }
     }
 
