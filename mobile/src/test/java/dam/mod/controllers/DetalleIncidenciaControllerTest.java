@@ -21,19 +21,6 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-/**
- * Tests unitarios para DetalleIncidenciaController.
- *
- * Escenarios cubiertos:
- * - Incidencia no encontrada → redirige al listado.
- * - Incidencia encontrada → rellena los campos de la vista.
- * - Incidencia cerrada → botón cerrar desactivado.
- * - Incidencia abierta → botón cerrar activo.
- * - cerrarIncidencia() con éxito → recarga la vista.
- * - cerrarIncidencia() con error → no recarga.
- * - cerrarIncidencia() sin incidencia → no hace nada.
- * - volver() → navega a incidencias.fxml.
- */
 @ExtendWith(MockitoExtension.class)
 class DetalleIncidenciaControllerTest {
 

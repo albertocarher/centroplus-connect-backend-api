@@ -22,17 +22,6 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
-/**
- * Tests unitarios para ActividadesController.
- *
- * Escenarios cubiertos:
- * - Sin sesión activa → redirige al login.
- * - Con sesión activa → carga la lista de actividades.
- * - Lista vacía → limpia sin añadir elementos.
- * - Sin actividad seleccionada → no navega al detalle.
- * - Con actividad seleccionada → navega a detalle_actividad.fxml.
- * - volver() → navega a inicio.fxml.
- */
 @ExtendWith(MockitoExtension.class)
 class ActividadesControllerTest {
 

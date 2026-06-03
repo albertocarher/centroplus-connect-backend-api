@@ -19,18 +19,6 @@ import java.lang.reflect.Method;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-/**
- * Tests unitarios para CambiarPasswordController.
- *
- * Escenarios cubiertos:
- * - Sin sesión → redirige al login.
- * - Contraseña actual incorrecta → no actualiza.
- * - Contraseñas nuevas no coinciden → no actualiza.
- * - Contraseña nueva demasiado corta → no actualiza.
- * - Datos válidos → actualiza y redirige al perfil.
- * - Error en el servicio → no redirige.
- * - volver() → navega a perfil.fxml.
- */
 @ExtendWith(MockitoExtension.class)
 class CambiarPasswordControllerTest {
 

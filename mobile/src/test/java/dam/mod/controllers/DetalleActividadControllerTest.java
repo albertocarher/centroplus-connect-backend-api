@@ -23,18 +23,6 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
-/**
- * Tests unitarios para DetalleActividadController.
- *
- * Escenarios cubiertos:
- * - Sin sesión → redirige al login.
- * - cargarDatos() → rellena todos los labels correctamente.
- * - reservar() con reserva activa ya existente → no reserva de nuevo.
- * - reservar() sin plazas disponibles → no reserva.
- * - reservar() correctamente → llama al servicio y recarga datos.
- * - reservar() con error en servicio → no recarga.
- * - volver() → navega a actividades.fxml.
- */
 @ExtendWith(MockitoExtension.class)
 class DetalleActividadControllerTest {
 

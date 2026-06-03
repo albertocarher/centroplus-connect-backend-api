@@ -15,15 +15,6 @@ import java.lang.reflect.Method;
 
 import static org.mockito.Mockito.*;
 
-/**
- * Tests unitarios para InicioController.
- *
- * Escenarios cubiertos:
- * - initialize() sin sesión → redirige al login.
- * - initialize() con sesión → no redirige.
- * - Cada botón de navegación llama al change correcto.
- * - setSpanish/setEnglish/setGerman aplican el idioma y recargan la pantalla.
- */
 @ExtendWith(MockitoExtension.class)
 class InicioControllerTest {
 
