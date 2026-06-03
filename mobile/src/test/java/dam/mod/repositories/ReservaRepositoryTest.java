@@ -359,4 +359,127 @@ public class ReservaRepositoryTest {
                     () -> repository.existsReserva(idActividad, idUsuario));
         }
     }
+
+    // ── findByIdUsuario ─────────────────────────────────────────────────────
+
+@DisplayName("findByIdUsuario: devuelve lista con reservas")
+@Order(20)
+@Test
+void findByIdUsuarioDevuelveListaTest() throws SQLException {
+
+    when(resultSet.next()).thenReturn(true, false);
+
+    when(resultSet.getInt("id")).thenReturn(id);
+    when(resultSet.getInt("id_usuario")).thenReturn(idUsuario);
+    when(resultSet.getInt("id_actividad")).thenReturn(idActividad);
+    when(resultSet.getString("fecha")).thenReturn(fecha.toString());
+    when(resultSet.getString("estado")).thenReturn(estado);
+    when(resultSet.getString("nombre_actividad")).thenReturn(nombreActividad);
+
+    when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+    when(preparedStatement.executeQuery()).thenReturn(resultSet);
+
+    try (MockedStatic<ConnectionManager> mock = mockStatic(ConnectionManager.class)) {
+
+        mock.when(ConnectionManager::getConnection).thenReturn(connection);
+
+        List<Reserva> resultado = repository.findByIdUsuario(idUsuario);
+
+        Assertions.assertAll(
+                () -> Assertions.assertNotNull(resultado),
+                () -> Assertions.assertEquals(1, resultado.size()),
+                () -> Assertions.assertEquals(idUsuario, resultado.get(0).getIdUsuario()),
+                () -> Assertions.assertEquals(nombreActividad, resultado.get(0).getNombreActividad())
+        );
+    }
+}
+
+@DisplayName("findByIdUsuario: devuelve lista vacía")
+@Order(21)
+@Test
+void findByIdUsuarioListaVaciaTest() throws SQLException {
+
+    when(resultSet.next()).thenReturn(false);
+
+    when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+    when(preparedStatement.executeQuery()).thenReturn(resultSet);
+
+    try (MockedStatic<ConnectionManager> mock = mockStatic(ConnectionManager.class)) {
+
+        mock.when(ConnectionManager::getConnection).thenReturn(connection);
+
+        List<Reserva> resultado = repository.findByIdUsuario(idUsuario);
+
+        Assertions.assertTrue(resultado.isEmpty(),
+                "Debe devolver lista vacía si el usuario no tiene reservas");
+    }
+}
+
+@DisplayName("findByIdUsuario: lanza RuntimeException si falla la BD")
+@Order(22)
+@Test
+void findByIdUsuarioExcepcionSQLTest() throws SQLException {
+
+    when(connection.prepareStatement(anyString()))
+            .thenThrow(new SQLException("Error BD"));
+
+    try (MockedStatic<ConnectionManager> mock = mockStatic(ConnectionManager.class)) {
+
+        mock.when(ConnectionManager::getConnection).thenReturn(connection);
+
+        Assertions.assertThrows(RuntimeException.class,
+                () -> repository.findByIdUsuario(idUsuario));
+    }
+}
+
+// ── cambiarEstado ───────────────────────────────────────────────────────
+
+@DisplayName("cambiarEstado: devuelve true cuando actualiza correctamente")
+@Order(23)
+@Test
+void cambiarEstadoTrueTest() throws SQLException {
+
+    when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+    when(preparedStatement.executeUpdate()).thenReturn(1);
+
+    try (MockedStatic<ConnectionManager> mock = mockStatic(ConnectionManager.class)) {
+
+        mock.when(ConnectionManager::getConnection).thenReturn(connection);
+
+        Assertions.assertTrue(repository.cambiarEstado(id, "CANCELADA"));
+    }
+}
+
+@DisplayName("cambiarEstado: devuelve false cuando no encuentra la reserva")
+@Order(24)
+@Test
+void cambiarEstadoFalseTest() throws SQLException {
+
+    when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+    when(preparedStatement.executeUpdate()).thenReturn(0);
+
+    try (MockedStatic<ConnectionManager> mock = mockStatic(ConnectionManager.class)) {
+
+        mock.when(ConnectionManager::getConnection).thenReturn(connection);
+
+        Assertions.assertFalse(repository.cambiarEstado(99, "CANCELADA"));
+    }
+}
+
+@DisplayName("cambiarEstado: lanza RuntimeException si falla la BD")
+@Order(25)
+@Test
+void cambiarEstadoExcepcionSQLTest() throws SQLException {
+
+    when(connection.prepareStatement(anyString()))
+            .thenThrow(new SQLException("Error BD"));
+
+    try (MockedStatic<ConnectionManager> mock = mockStatic(ConnectionManager.class)) {
+
+        mock.when(ConnectionManager::getConnection).thenReturn(connection);
+
+        Assertions.assertThrows(RuntimeException.class,
+                () -> repository.cambiarEstado(id, "CANCELADA"));
+    }
+}
 }
