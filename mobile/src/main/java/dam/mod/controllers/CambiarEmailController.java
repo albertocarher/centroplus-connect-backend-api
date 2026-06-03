@@ -10,6 +10,7 @@ import dam.mod.utils.ScreenManager;
 import dam.mod.utils.Session;
 import dam.mod.utils.Validaciones;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 /**
@@ -17,6 +18,8 @@ import javafx.scene.control.TextField;
  */
 public class CambiarEmailController {
 
+    @FXML
+    private Label mensajeLabel;
     @FXML
     private TextField emailField;
 
@@ -49,12 +52,12 @@ public class CambiarEmailController {
         String repeat = repeatEmailField.getText();
 
         if (email == null || email.isBlank() || repeat == null || repeat.isBlank()) {
-            System.out.println("Debes rellenar ambos campos");
+            mensajeLabel.setText("Debes rellenar ambos campos");
             return;
         }
 
         if (!email.equals(repeat)) {
-            System.out.println("Los emails no coinciden");
+            mensajeLabel.setText("Los emails no coinciden");
             return;
         }
 
@@ -68,7 +71,7 @@ public class CambiarEmailController {
             ScreenManager.change("perfil.fxml");
 
         } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            mensajeLabel.setText(e.getMessage());
         }
     }
 

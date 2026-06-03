@@ -4,29 +4,32 @@
 <?import javafx.scene.control.*?>
 
 <VBox xmlns:fx="http://javafx.com/fxml"
-      fx:controller="dam.mod.controllers.DetalleActividadController"
-      spacing="15"
-      alignment="CENTER"
-      prefWidth="390"
-      prefHeight="844"
-      style="-fx-padding: 15;">
+    fx:controller="dam.mod.controllers.DetalleActividadController"
+    spacing="15"
+    alignment="CENTER"
+    prefWidth="390"
+    prefHeight="844"
+    style="-fx-padding: 15;">
 
 
     <HBox spacing="10" alignment="CENTER_LEFT">
-        <Button text="← Volver" onAction="#volver"/>
-        <Label text="Detalle actividad"/>
+        <Button text="← Volver" onAction="#volver" />
+        <Label text="Detalle actividad" />
     </HBox>
 
+    <Label fx:id="mensajeLabel"
+        style="-fx-text-fill: red;" />
 
-    <Label fx:id="lblNombre"/>
-    <Label fx:id="lblTipo"/>
-    <Label fx:id="lblDuracion"/>
-    <Label fx:id="lblPrecio"/>
-    <Label fx:id="lblPlazas"/>
+
+    <Label fx:id="lblNombre" />
+    <Label fx:id="lblTipo" />
+    <Label fx:id="lblDuracion" />
+    <Label fx:id="lblPrecio" />
+    <Label fx:id="lblPlazas" />
 
 
     <Button text="Reservar plaza"
-            onAction="#reservar"
-            prefWidth="200"/>
+        onAction="#reservar"
+        prefWidth="200" />
 
 </VBox>

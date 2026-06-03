@@ -18,6 +18,7 @@ import dam.mod.services.impl.UsuarioServiceImpl;
 import dam.mod.utils.ScreenManager;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -32,6 +33,8 @@ import java.time.LocalDate;
  */
 public class IncidenciasController {
 
+    @FXML
+    private Label mensajeLabel;
     /**
      * Campo de asunto de la incidencia.
      */
@@ -100,7 +103,7 @@ public class IncidenciasController {
         String descripcion = txtDescripcion.getText();
 
         if (asunto.isBlank() || descripcion.isBlank()) {
-            System.out.println("Campos vacíos");
+            mensajeLabel.setText("Campos vacíos");
             return;
         }
 
@@ -115,10 +118,10 @@ public class IncidenciasController {
         boolean ok = incidenciaService.create(incidencia);
 
         if (ok) {
-            System.out.println("Incidencia enviada");
+            mensajeLabel.setText("Incidencia enviada");
             cargarIncidencias();
         } else {
-            System.out.println("Error al enviar incidencia");
+            mensajeLabel.setText("Error al enviar incidencia");
         }
 
         txtAsunto.clear();

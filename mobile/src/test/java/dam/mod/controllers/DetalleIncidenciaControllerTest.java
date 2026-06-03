@@ -68,6 +68,7 @@ class DetalleIncidenciaControllerTest {
         setField("lblFecha", lblFecha);
         setField("txtDescripcion", txtDescripcion);
         setField("btnCerrar", btnCerrar);
+        setField("mensajeLabel", mock(javafx.scene.control.Label.class));
     }
 
     @Test

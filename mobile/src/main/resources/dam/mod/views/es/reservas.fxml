@@ -9,11 +9,17 @@
             prefHeight="844">
 
     <top>
+    <VBox spacing="5">
+
         <HBox spacing="10" alignment="CENTER_LEFT">
             <Button text="←" onAction="#volver"/>
             <Label text="Mis reservas"/>
         </HBox>
-    </top>
+
+        <Label fx:id="mensajeLabel" style="-fx-text-fill: red;"/>
+
+    </VBox>
+</top>
 
     <center>
         <ListView fx:id="listaReservas"/>

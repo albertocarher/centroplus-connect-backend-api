@@ -4,6 +4,7 @@ import dam.mod.utils.LanguageManager;
 import dam.mod.utils.ScreenManager;
 import dam.mod.utils.Session;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 
 /**
  * Controlador de la pantalla principal del sistema.
@@ -12,6 +13,9 @@ import javafx.fxml.FXML;
  * y controla el acceso según la sesión del usuario.
  */
 public class InicioController {
+
+    @FXML
+    private Label mensajeLabel;
 
     /**
      * Inicializa la pantalla principal.

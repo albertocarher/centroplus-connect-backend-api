@@ -62,8 +62,8 @@ class CambiarPasswordControllerTest {
 
         setField("oldPasswordField", oldPasswordField);
         setField("newPasswordField", newPasswordField);
-        setField("repeatPasswordField",
-                repeatPasswordField);
+        setField("repeatPasswordField",repeatPasswordField);
+        setField("mensajeLabel", mock(javafx.scene.control.Label.class));
     }
 
     @Test

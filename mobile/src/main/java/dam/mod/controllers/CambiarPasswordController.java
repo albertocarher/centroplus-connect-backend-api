@@ -10,6 +10,7 @@ import dam.mod.utils.ScreenManager;
 import dam.mod.utils.Session;
 import dam.mod.utils.PasswordUtils;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 
 /**
@@ -20,6 +21,8 @@ import javafx.scene.control.PasswordField;
  */
 public class CambiarPasswordController {
 
+    @FXML
+    private Label mensajeLabel;
     /**
      * Campo de contraseña actual.
      */
@@ -43,7 +46,8 @@ public class CambiarPasswordController {
     /**
      * Inicializa el controlador.
      *
-     * Verifica que el usuario esté autenticado e inicializa el servicio de usuarios.
+     * Verifica que el usuario esté autenticado e inicializa el servicio de
+     * usuarios.
      */
     @FXML
     public void initialize() {
@@ -73,17 +77,17 @@ public class CambiarPasswordController {
         String repeat = repeatPasswordField.getText();
 
         if (!PasswordUtils.checkPassword(oldPass, user.getPassword())) {
-            System.out.println("Contraseña actual incorrecta");
+            mensajeLabel.setText("Contraseña actual incorrecta");
             return;
         }
 
         if (!newPass.equals(repeat)) {
-            System.out.println("Las contraseñas no coinciden");
+            mensajeLabel.setText("Las contraseñas no coinciden");
             return;
         }
 
         if (newPass.length() < 6) {
-            System.out.println("Contraseña demasiado corta");
+            mensajeLabel.setText("Contraseña demasiado corta");
             return;
         }
 
@@ -92,11 +96,11 @@ public class CambiarPasswordController {
         boolean ok = usuarioService.update(user);
 
         if (ok) {
-            System.out.println("Contraseña actualizada correctamente");
+            mensajeLabel.setText("Contraseña actualizada correctamente");
             Session.setCurrentUser(user);
             ScreenManager.change("perfil.fxml");
         } else {
-            System.out.println("Error al actualizar");
+            mensajeLabel.setText("Error al actualizar");
         }
     }
 

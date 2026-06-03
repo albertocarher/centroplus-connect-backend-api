@@ -24,6 +24,8 @@ import javafx.scene.control.TextArea;
  */
 public class DetalleIncidenciaController {
 
+    @FXML
+    private Label mensajeLabel;
     /**
      * Asunto de la incidencia.
      */
@@ -69,11 +71,9 @@ public class DetalleIncidenciaController {
         IIncidenciaRepository repo = new IncidenciaRepository();
         IUsuarioRepository usuarioRepo = new UsuarioRepository();
 
-        IUsuarioService usuarioService =
-                new UsuarioServiceImpl(usuarioRepo, new RememberTokenRepositoryImpl());
+        IUsuarioService usuarioService = new UsuarioServiceImpl(usuarioRepo, new RememberTokenRepositoryImpl());
 
-        incidenciaService =
-                new IncidenciaServiceImpl(repo, usuarioService);
+        incidenciaService = new IncidenciaServiceImpl(repo, usuarioService);
 
         cargarIncidencia();
     }
@@ -90,24 +90,21 @@ public class DetalleIncidenciaController {
         inc = incidenciaService.findById(id);
 
         if (inc == null) {
-            System.out.println("Incidencia no encontrada");
+            mensajeLabel.setText("Incidencia no encontrada");
             ScreenManager.change("incidencias.fxml");
             return;
         }
 
         lblAsunto.setText(
-                inc.getAsunto() != null ? inc.getAsunto() : ""
-        );
+                inc.getAsunto() != null ? inc.getAsunto() : "");
 
         lblEstado.setText(
-                "Estado: " + (inc.getEstado() != null ? inc.getEstado() : "DESCONOCIDO")
-        );
+                "Estado: " + (inc.getEstado() != null ? inc.getEstado() : "DESCONOCIDO"));
 
         lblFecha.setText("Fecha: " + inc.getFecha());
 
         txtDescripcion.setText(
-                inc.getDescripcion() != null ? inc.getDescripcion() : ""
-        );
+                inc.getDescripcion() != null ? inc.getDescripcion() : "");
 
         actualizarBoton();
     }
@@ -119,10 +116,10 @@ public class DetalleIncidenciaController {
      */
     private void actualizarBoton() {
 
-        if (btnCerrar == null || inc == null) return;
+        if (btnCerrar == null || inc == null)
+            return;
 
-        boolean cerrada =
-                inc.getEstado() != null &&
+        boolean cerrada = inc.getEstado() != null &&
                 inc.getEstado().equalsIgnoreCase("CERRADA");
 
         btnCerrar.setDisable(cerrada);
@@ -134,16 +131,17 @@ public class DetalleIncidenciaController {
     @FXML
     private void cerrarIncidencia() {
 
-        if (inc == null) return;
+        if (inc == null)
+            return;
 
         boolean ok = incidenciaService.cambiarEstado(inc.getId(), "CERRADA");
 
         if (ok) {
-            System.out.println("Incidencia cerrada");
+            mensajeLabel.setText("Incidencia cerrada");
             inc = incidenciaService.findById(inc.getId());
             cargarIncidencia();
         } else {
-            System.out.println("Error al cerrar incidencia");
+            mensajeLabel.setText("Error al cerrar incidencia");
         }
     }
 
