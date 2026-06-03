@@ -72,6 +72,32 @@ public class Actividad {
         return nombre + " - " + tipoActividad;
     }
 
+    
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setTipoActividad(String tipoActividad) {
+        this.tipoActividad = tipoActividad;
+    }
+
+    public void setDuracion(int duracion) {
+        this.duracion = duracion;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
+
+    public void setPlazasMaximas(int plazasMaximas) {
+        this.plazasMaximas = plazasMaximas;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(Integer.valueOf(id));

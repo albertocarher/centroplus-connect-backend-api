@@ -87,6 +87,24 @@ public class Incidencia {
         this.estado = estado;
     }
 
+    
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public void setAsunto(String asunto) {
+        this.asunto = asunto;
+    }
+
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(Integer.valueOf(id));

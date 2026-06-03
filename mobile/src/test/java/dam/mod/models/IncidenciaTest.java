@@ -141,7 +141,7 @@ public class IncidenciaTest {
     @Order(16)
     @Test
     void incidenciaSetEstadoTest() {
-        String nuevoEstado = "cerrado";
+        String nuevoEstado = "CERRADA";
         incidencia.setEstado(nuevoEstado);
         Assertions.assertEquals(nuevoEstado, incidencia.getEstado(),
                 "setEstado debe actualizar el valor");

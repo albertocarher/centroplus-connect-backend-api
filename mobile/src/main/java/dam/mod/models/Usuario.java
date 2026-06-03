@@ -12,6 +12,8 @@ public class Usuario {
     private String tipoUsuario;
     private String password;
 
+    public Usuario (){}
+
     public Usuario(int id, String nombre, String dni, String email, String telefono, String tipoUsuario, String password) {
         this.id = id;
         this.nombre = nombre;
@@ -50,6 +52,22 @@ public class Usuario {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
+    public void setTipoUsuario(String tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
     }
 
     @Override
