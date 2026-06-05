@@ -1,6 +1,7 @@
 package dam.mod.controllers;
 
 import java.util.List;
+import java.util.ResourceBundle;
 
 import dam.mod.models.Actividad;
 import dam.mod.models.Reserva;
@@ -26,41 +27,24 @@ import javafx.scene.control.Label;
 
 /**
  * Controlador del detalle de una actividad.
- *
- * Permite visualizar la información de una actividad y realizar reservas.
- * Gestiona la interacción entre el usuario y el sistema de reservas.
  */
 public class DetalleActividadController {
 
     @FXML
     private Label mensajeLabel;
-    /**
-     * Nombre de la actividad.
-     */
+
     @FXML
     private Label lblNombre;
 
-    /**
-     * Tipo de actividad.
-     */
     @FXML
     private Label lblTipo;
 
-    /**
-     * Duración de la actividad.
-     */
     @FXML
     private Label lblDuracion;
 
-    /**
-     * Precio de la actividad.
-     */
     @FXML
     private Label lblPrecio;
 
-    /**
-     * Plazas disponibles de la actividad.
-     */
     @FXML
     private Label lblPlazas;
 
@@ -69,21 +53,12 @@ public class DetalleActividadController {
     private IActividadService actividadService;
     private IReservaService reservaService;
 
-    /**
-     * Establece la actividad seleccionada.
-     *
-     * @param actividad actividad seleccionada
-     */
+    private ResourceBundle bundle;
+
     public static void setActividad(Actividad actividad) {
         actividadSeleccionada = actividad;
     }
 
-    /**
-     * Inicializa el controlador.
-     *
-     * Verifica sesión activa, inicializa servicios y carga los datos de la
-     * actividad.
-     */
     @FXML
     public void initialize() {
 
@@ -93,60 +68,54 @@ public class DetalleActividadController {
             return;
         }
 
+        bundle = LanguageManager.getBundle();
+
         IActividadRepository actividadRepo = new ActividadRepository();
         actividadService = new ActividadServiceImpl(actividadRepo);
 
         IReservaRepository reservaRepo = new ReservaRepository();
 
         IUsuarioRepository usuarioRepo = new UsuarioRepository();
-        IUsuarioService usuarioService = new UsuarioServiceImpl(usuarioRepo, new RememberTokenRepositoryImpl());
+        IUsuarioService usuarioService = new UsuarioServiceImpl(
+                usuarioRepo,
+                new RememberTokenRepositoryImpl()
+        );
 
         reservaService = new ReservaServiceImpl(
                 reservaRepo,
                 usuarioService,
-                actividadService);
+                actividadService
+        );
 
         if (actividadSeleccionada != null) {
             cargarDatos();
         }
     }
 
-    /**
-     * Carga los datos de la actividad en la interfaz.
-     */
     private void cargarDatos() {
 
-        lblNombre.setText(LanguageManager.msg(
-                "Nombre: ", "Name: ", "Name: ")
-                + actividadSeleccionada.getNombre());
+        lblNombre.setText(bundle.getString("activity.name") + actividadSeleccionada.getNombre());
 
-        lblTipo.setText(LanguageManager.msg(
-                "Tipo: ", "Type: ", "Typ: ")
-                + actividadSeleccionada.getTipoActividad());
+        lblTipo.setText(bundle.getString("activity.type") + actividadSeleccionada.getTipoActividad());
 
-        lblDuracion.setText(LanguageManager.msg(
-                "Duración: ", "Duration: ", "Dauer: ")
-                + actividadSeleccionada.getDuracion()
-                + LanguageManager.msg(" min", " min", " Min"));
+        lblDuracion.setText(
+                bundle.getString("activity.duration") +
+                actividadSeleccionada.getDuracion() +
+                bundle.getString("activity.minutes")
+        );
 
-        lblPrecio.setText(LanguageManager.msg(
-                "Precio: ", "Price: ", "Preis: ")
-                + actividadSeleccionada.getPrecio()
-                + LanguageManager.msg(" €", " €", " €"));
+        lblPrecio.setText(
+                bundle.getString("activity.price") +
+                actividadSeleccionada.getPrecio() +
+                bundle.getString("activity.euro")
+        );
 
         int disponibles = actividadSeleccionada.getPlazasMaximas()
                 - actividadSeleccionada.getPlazasOcupadas();
 
-        lblPlazas.setText(LanguageManager.msg(
-                "Plazas disponibles: ", "Available spots: ", "Verfügbare Plätze: ")
-                + disponibles);
+        lblPlazas.setText(bundle.getString("activity.available") + disponibles);
     }
 
-    /**
-     * Realiza la reserva de la actividad para el usuario actual.
-     *
-     * Valida si ya está reservada o si hay plazas disponibles.
-     */
     @FXML
     private void reservar() {
 
@@ -155,33 +124,21 @@ public class DetalleActividadController {
 
         List<Reserva> reservasUsuario = reservaService.findByIdUsuario(usuarioId);
 
-        boolean yaTieneActiva = false;
-
         for (Reserva reserva : reservasUsuario) {
 
             if (reserva.getIdActividad() == actividadId &&
                     "ACTIVA".equals(reserva.getEstado())) {
 
-                yaTieneActiva = true;
-                break;
+                mensajeLabel.setText(bundle.getString("error.already.booked"));
+                return;
             }
         }
 
-        if (yaTieneActiva) {
-            mensajeLabel.setText(LanguageManager.msg(
-                    "Ya tienes esta actividad reservada",
-                    "You already have this activity booked",
-                    "Diese Aktivität ist bereits reserviert"));
-            return;
-        }
-
-        int disponibles = actividadSeleccionada.getPlazasMaximas() - actividadSeleccionada.getPlazasOcupadas();
+        int disponibles = actividadSeleccionada.getPlazasMaximas()
+                - actividadSeleccionada.getPlazasOcupadas();
 
         if (disponibles <= 0) {
-            mensajeLabel.setText(LanguageManager.msg(
-                    "No hay plazas disponibles",
-                    "No available spots",
-                    "Keine freien Plätze verfügbar"));
+            mensajeLabel.setText(bundle.getString("error.no.spots"));
             return;
         }
 
@@ -190,25 +147,15 @@ public class DetalleActividadController {
         if (ok) {
 
             actividadSeleccionada = actividadService.findById(actividadId);
-
             cargarDatos();
 
-            mensajeLabel.setText(LanguageManager.msg(
-                    "Reserva realizada correctamente",
-                    "Booking completed successfully",
-                    "Reservierung erfolgreich durchgeführt"));
+            mensajeLabel.setText(bundle.getString("success.booking"));
 
         } else {
-            mensajeLabel.setText(LanguageManager.msg(
-                    "Error al realizar la reserva",
-                    "Error making booking",
-                    "Fehler bei der Reservierung"));
+            mensajeLabel.setText(bundle.getString("error.booking"));
         }
     }
 
-    /**
-     * Vuelve a la pantalla de actividades.
-     */
     @FXML
     private void volver() {
         ScreenManager.change("actividades.fxml");

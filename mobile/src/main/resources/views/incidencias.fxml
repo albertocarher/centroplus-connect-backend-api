@@ -6,34 +6,35 @@
 <VBox xmlns:fx="http://javafx.com/fxml"
     fx:controller="dam.mod.controllers.IncidenciasController"
     spacing="15"
-    alignment="CENTER"
     prefWidth="390"
     prefHeight="844"
-    style="-fx-padding: 15;">
+    style="-fx-padding: 15;"
+    alignment="TOP_CENTER">
 
     <HBox spacing="10" alignment="CENTER_LEFT">
 
-        <Button text="← Back" onAction="#volver" />
-        <Label text="Incidents" />
+        <Button text="%common.back" onAction="#volver" />
+        <Label text="%incidents.title" styleClass="app-subtitle" />
 
     </HBox>
-
+    
     <Label fx:id="mensajeLabel"
         style="-fx-text-fill: red;" />
 
     <TextField fx:id="txtAsunto"
-        promptText="Subject" />
+        promptText="%incidents.subject" />
 
     <TextArea fx:id="txtDescripcion"
-        promptText="Describe the issue"
+        promptText="%incidents.description"
         wrapText="true"
         prefHeight="150" />
 
-    <Button text="Send incident"
+    <Button text="%incidents.send"
         onAction="#enviarIncidencia"
-        prefWidth="200" />
+        prefWidth="200" 
+        alignment="CENTER"/>
 
-    <Label text="My incidents" />
+    <Label text="%incidents.myIncidents" styleClass="app-subtitle"/>
 
     <ListView fx:id="listaIncidencias"
         onMouseClicked="#seleccionarIncidencia"

@@ -70,13 +70,10 @@ public class Reserva {
         this.fecha = fecha;
     }
 
-
     @Override
     public String toString() {
 
-        return nombreActividad +
-                " | Fecha: " + fecha +
-                " | Estado: " + estado;
+        return nombreActividad +" | "+ fecha +" | "+ estado;
     }
 
     @Override

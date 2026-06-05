@@ -1,253 +1,247 @@
 package dam.mod.controllers;
-
+ 
+import dam.mod.JavaFXInitializer;
 import dam.mod.models.Usuario;
 import dam.mod.services.IUsuarioService;
 import dam.mod.utils.LanguageManager;
 import dam.mod.utils.ScreenManager;
 import dam.mod.utils.Session;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
-
+ 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-
+ 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
-
+ 
+@DisplayName("Tests de LoginController")
 class LoginControllerTest {
-
-    private LoginController loginControllerUnderTest;
-
+ 
+    private LoginController controller;
     private IUsuarioService usuarioServiceMock;
-
-    private TextField dniInputMock;
+ 
+    // Login
+    private TextField     dniInputMock;
     private PasswordField passwordInputMock;
-    private CheckBox rememberSessionCheckboxMock;
-    private Label loginErrorLabelMock;
-
-    private TextField nombreInputMock;
-    private TextField dniRegisterInputMock;
-    private TextField emailInputMock;
-    private TextField telefonoInputMock;
+    private CheckBox      rememberSessionCheckboxMock;
+    private Label         loginErrorLabelMock;
+ 
+    // Register
+    private TextField     nombreInputMock;
+    private TextField     dniRegisterInputMock;
+    private TextField     emailInputMock;
+    private TextField     telefonoInputMock;
     private PasswordField registerPasswordInputMock;
-    private Label registerErrorLabelMock;
-
+    private Label         registerErrorLabelMock;
+ 
     @BeforeAll
     static void initializeJavaFXRuntime() {
-        dam.mod.JavaFXInitializer.init();
+        JavaFXInitializer.init();
     }
-
+ 
     @BeforeEach
     void setUp() throws Exception {
+        controller          = new LoginController();
+        usuarioServiceMock  = mock(IUsuarioService.class);
 
-        loginControllerUnderTest = new LoginController();
-        usuarioServiceMock = mock(IUsuarioService.class);
-
-        dniInputMock = mock(TextField.class);
-        passwordInputMock = mock(PasswordField.class);
+        injectField("bundle", LanguageManager.getBundle());
+ 
+        dniInputMock                = mock(TextField.class);
+        passwordInputMock           = mock(PasswordField.class);
         rememberSessionCheckboxMock = mock(CheckBox.class);
-        loginErrorLabelMock = mock(Label.class);
-
-        nombreInputMock = mock(TextField.class);
-        dniRegisterInputMock = mock(TextField.class);
-        emailInputMock = mock(TextField.class);
-        telefonoInputMock = mock(TextField.class);
+        loginErrorLabelMock         = mock(Label.class);
+ 
+        nombreInputMock           = mock(TextField.class);
+        dniRegisterInputMock      = mock(TextField.class);
+        emailInputMock            = mock(TextField.class);
+        telefonoInputMock         = mock(TextField.class);
         registerPasswordInputMock = mock(PasswordField.class);
-        registerErrorLabelMock = mock(Label.class);
-
-        injectField("service", usuarioServiceMock);
-
-        injectField("dniField", dniInputMock);
-        injectField("passwordField", passwordInputMock);
-        injectField("rememberMeCheckBox", rememberSessionCheckboxMock);
-        injectField("errorLabel", loginErrorLabelMock);
-
-        injectField("nombreField", nombreInputMock);
-        injectField("dniRegisterField", dniRegisterInputMock);
-        injectField("emailField", emailInputMock);
-        injectField("telefonoField", telefonoInputMock);
+        registerErrorLabelMock    = mock(Label.class);
+ 
+        injectField("service",               usuarioServiceMock);
+        injectField("dniField",              dniInputMock);
+        injectField("passwordField",         passwordInputMock);
+        injectField("rememberMeCheckBox",    rememberSessionCheckboxMock);
+        injectField("errorLabel",            loginErrorLabelMock);
+        injectField("nombreField",           nombreInputMock);
+        injectField("dniRegisterField",      dniRegisterInputMock);
+        injectField("emailField",            emailInputMock);
+        injectField("telefonoField",         telefonoInputMock);
         injectField("registerPasswordField", registerPasswordInputMock);
-        injectField("registerErrorLabel", registerErrorLabelMock);
+        injectField("registerErrorLabel",    registerErrorLabelMock);
     }
-
+ 
     @Test
-    void login_withValidCredentials_setsSessionAndNavigates() {
-
+    @DisplayName("login con credenciales válidas: guarda sesión y navega a inicio")
+    void login_credencialesValidas_sesionYNavega() {
         Usuario user = new Usuario();
-
         when(dniInputMock.getText()).thenReturn("12345678A");
         when(passwordInputMock.getText()).thenReturn("correcta");
         when(rememberSessionCheckboxMock.isSelected()).thenReturn(false);
-
         when(usuarioServiceMock.login("12345678A", "correcta", false)).thenReturn(user);
-
-        try (MockedStatic<Session> sessionMock = mockStatic(Session.class);
+ 
+        try (MockedStatic<Session> sessionMock      = mockStatic(Session.class);
              MockedStatic<ScreenManager> screenMock = mockStatic(ScreenManager.class)) {
-
+ 
             invokePrivate("handleLogin");
-
+ 
             sessionMock.verify(() -> Session.setCurrentUser(user));
             screenMock.verify(() -> ScreenManager.change("inicio.fxml"));
         }
     }
-
+ 
     @Test
-    void login_withInvalidCredentials_showsErrorMessage() {
-
+    @DisplayName("login con credenciales inválidas: muestra mensaje de error")
+    void login_credencialesInvalidas_muestraError() {
         when(dniInputMock.getText()).thenReturn("12345678A");
         when(passwordInputMock.getText()).thenReturn("wrong");
         when(rememberSessionCheckboxMock.isSelected()).thenReturn(false);
-
-        when(usuarioServiceMock.login(anyString(), anyString(), anyBoolean())).thenReturn(null);
-
+        // El servicio lanza excepción cuando las credenciales no son válidas
+        when(usuarioServiceMock.login(anyString(), anyString(), anyBoolean()))
+                .thenThrow(new RuntimeException("Credenciales incorrectas"));
+ 
         invokePrivate("handleLogin");
-
-        verify(loginErrorLabelMock).setText(anyString());
+ 
+        verify(loginErrorLabelMock).setText("Credenciales incorrectas");
     }
-
+ 
     @Test
-    void login_whenServiceThrows_exceptionIsShown() {
-
+    @DisplayName("login: excepción en el servicio → muestra el mensaje de la excepción")
+    void login_excepcionEnServicio_muestraError() {
         when(dniInputMock.getText()).thenReturn("12345678A");
         when(passwordInputMock.getText()).thenReturn("pass");
         when(rememberSessionCheckboxMock.isSelected()).thenReturn(false);
-
         when(usuarioServiceMock.login(anyString(), anyString(), anyBoolean()))
                 .thenThrow(new RuntimeException("BD caída"));
-
+ 
         invokePrivate("handleLogin");
-
+ 
         verify(loginErrorLabelMock).setText("BD caída");
     }
-
+ 
     @Test
-    void register_shortPassword_showsValidationError() {
-
+    @DisplayName("registro con contraseña corta: muestra error de validación sin crear usuario")
+    void register_contrasennaCorta_muestraErrorDeValidacion() {
         when(registerPasswordInputMock.getText()).thenReturn("123");
-
+ 
         invokePrivate("handleRegister");
-
+ 
         verify(registerErrorLabelMock).setText("Contraseña demasiado corta");
         verify(usuarioServiceMock, never()).create(any());
     }
-
+ 
     @Test
-    void register_validData_createsUserAndNavigates() {
-
+    @DisplayName("registro con datos válidos: crea usuario y navega a login")
+    void register_datosValidos_creaUsuarioYNavega() {
         when(registerPasswordInputMock.getText()).thenReturn("segura123");
         when(nombreInputMock.getText()).thenReturn("Ana");
         when(dniRegisterInputMock.getText()).thenReturn("98765432B");
         when(emailInputMock.getText()).thenReturn("ana@test.com");
         when(telefonoInputMock.getText()).thenReturn("600000000");
-
+ 
         try (MockedStatic<ScreenManager> screenMock = mockStatic(ScreenManager.class)) {
-
             invokePrivate("handleRegister");
-
+ 
             verify(usuarioServiceMock).create(any(Usuario.class));
             screenMock.verify(() -> ScreenManager.change("login.fxml"));
         }
     }
-
+ 
     @Test
-    void register_whenServiceThrows_showsError() {
-
+    @DisplayName("registro: excepción en el servicio → muestra el mensaje de la excepción")
+    void register_excepcionEnServicio_muestraError() {
         when(registerPasswordInputMock.getText()).thenReturn("segura123");
         when(nombreInputMock.getText()).thenReturn("Ana");
         when(dniRegisterInputMock.getText()).thenReturn("98765432B");
         when(emailInputMock.getText()).thenReturn("ana@test.com");
         when(telefonoInputMock.getText()).thenReturn("600000000");
-
         doThrow(new RuntimeException("DNI duplicado")).when(usuarioServiceMock).create(any());
-
+ 
         invokePrivate("handleRegister");
-
-        verify(registerErrorLabelMock).setText("DNI duplicado");
+ 
+        verify(registerErrorLabelMock).setText("Error al registrar usuario");
     }
-
+ 
     @Test
-    void openRegister_navigatesToRegisterScreen() {
-
+    @DisplayName("abrirRegistro navega a register.fxml")
+    void abrirRegistro_navegaCorrectamente() {
         try (MockedStatic<ScreenManager> screenMock = mockStatic(ScreenManager.class)) {
-
             invokePrivate("abrirRegistro");
-
             screenMock.verify(() -> ScreenManager.change("register.fxml"));
         }
     }
-
+ 
     @Test
-    void backToLogin_navigatesToLoginScreen() {
-
+    @DisplayName("volverLogin navega a login.fxml")
+    void volverLogin_navegaCorrectamente() {
         try (MockedStatic<ScreenManager> screenMock = mockStatic(ScreenManager.class)) {
-
             invokePrivate("volverLogin");
-
             screenMock.verify(() -> ScreenManager.change("login.fxml"));
         }
     }
-
+ 
     @Test
-    void setSpanish_changesLanguage() {
-
+    @DisplayName("setSpanish aplica idioma 'es'")
+    void setSpanish_aplicaIdioma() {
         try (MockedStatic<LanguageManager> langMock = mockStatic(LanguageManager.class);
              MockedStatic<ScreenManager> screenMock = mockStatic(ScreenManager.class)) {
-
+ 
             screenMock.when(ScreenManager::getCurrentScreen).thenReturn("login.fxml");
-
+ 
             invokePrivate("setSpanish");
-
+ 
             langMock.verify(() -> LanguageManager.setLanguage("es"));
         }
     }
-
+ 
     @Test
-    void setEnglish_changesLanguage() {
-
+    @DisplayName("setEnglish aplica idioma 'en'")
+    void setEnglish_aplicaIdioma() {
         try (MockedStatic<LanguageManager> langMock = mockStatic(LanguageManager.class);
              MockedStatic<ScreenManager> screenMock = mockStatic(ScreenManager.class)) {
-
+ 
             screenMock.when(ScreenManager::getCurrentScreen).thenReturn("login.fxml");
-
+ 
             invokePrivate("setEnglish");
-
+ 
             langMock.verify(() -> LanguageManager.setLanguage("en"));
         }
     }
-
+ 
     @Test
-    void setGerman_changesLanguage() {
-
+    @DisplayName("setGerman aplica idioma 'de'")
+    void setGerman_aplicaIdioma() {
         try (MockedStatic<LanguageManager> langMock = mockStatic(LanguageManager.class);
              MockedStatic<ScreenManager> screenMock = mockStatic(ScreenManager.class)) {
-
+ 
             screenMock.when(ScreenManager::getCurrentScreen).thenReturn("login.fxml");
-
+ 
             invokePrivate("setGerman");
-
+ 
             langMock.verify(() -> LanguageManager.setLanguage("de"));
         }
     }
-
+ 
+    // --- Helpers ---
+ 
     private void injectField(String fieldName, Object value) throws Exception {
         Field field = LoginController.class.getDeclaredField(fieldName);
         field.setAccessible(true);
-        field.set(loginControllerUnderTest, value);
+        field.set(controller, value);
     }
-
+ 
     private void invokePrivate(String methodName) {
         try {
             Method method = LoginController.class.getDeclaredMethod(methodName);
             method.setAccessible(true);
-            method.invoke(loginControllerUnderTest);
+            method.invoke(controller);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getCause());
         }
     }
 }

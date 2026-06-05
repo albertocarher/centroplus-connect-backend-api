@@ -16,8 +16,8 @@
             <left>
                 <VBox spacing="5" alignment="CENTER_LEFT" style="-fx-padding: 10;">
 
-                    <Label text="SportCenter" />
-                    <Label text="Hauptmenü" />
+                    <Label text="CentroPlus-Connect" styleClass="app-title" />
+                    <Label text="%home.menu" styleClass="app-subtitle" />
 
                     <Label fx:id="mensajeLabel"
                         style="-fx-text-fill: red;" />
@@ -26,9 +26,9 @@
             </left>
 
             <right>
-                <HBox spacing="10" alignment="CENTER_RIGHT" style="-fx-padding: 10;">
+                <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
 
-                    <MenuButton maxWidth="80">
+                    <MenuButton maxWidth="80" styleClass="icon-button">
 
                         <graphic>
                             <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
@@ -71,7 +71,7 @@
                         </items>
                     </MenuButton>
 
-                    <Button onAction="#abrirPerfil">
+                    <Button onAction="#abrirPerfil" styleClass="icon-button">
                         <graphic>
                             <ImageView fitWidth="20" fitHeight="20">
                                 <image>
@@ -90,14 +90,24 @@
     <center>
         <VBox spacing="20" alignment="CENTER">
 
-            <Button text="Aktivitäten"
-                onAction="#abrirActividades" />
+            <ImageView fitWidth="360"
+                preserveRatio="true">
+                <image>
+                    <Image url="@/icons/app.png" />
+                </image>
+            </ImageView>
 
-            <Button text="Meine Reservierungen"
-                onAction="#abrirReservas" />
+            <Button text="%home.activities"
+                onAction="#abrirActividades"
+                styleClass="menu-button" />
 
-            <Button text="Störungen"
-                onAction="#abrirIncidencias" />
+            <Button text="%home.reservations"
+                onAction="#abrirReservas"
+                styleClass="menu-button" />
+
+            <Button text="%home.incidents"
+                onAction="#abrirIncidencias"
+                styleClass="menu-button" />
 
         </VBox>
     </center>

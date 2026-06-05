@@ -6,3 +6,4 @@
 *.sln
 *.swp
 mobile/target
+deps.txt

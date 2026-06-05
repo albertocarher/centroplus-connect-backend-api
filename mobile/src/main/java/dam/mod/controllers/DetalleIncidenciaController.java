@@ -17,43 +17,28 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 
+import java.util.ResourceBundle;
+
 /**
  * Controlador del detalle de una incidencia.
- *
- * Permite visualizar la información completa de una incidencia,
- * cambiar su estado a cerrada y volver a la pantalla de listado.
  */
 public class DetalleIncidenciaController {
 
     @FXML
     private Label mensajeLabel;
-    /**
-     * Asunto de la incidencia.
-     */
+
     @FXML
     private Label lblAsunto;
 
-    /**
-     * Estado actual de la incidencia.
-     */
     @FXML
     private Label lblEstado;
 
-    /**
-     * Fecha de creación de la incidencia.
-     */
     @FXML
     private Label lblFecha;
 
-    /**
-     * Descripción completa de la incidencia.
-     */
     @FXML
     private TextArea txtDescripcion;
 
-    /**
-     * Botón para cerrar la incidencia.
-     */
     @FXML
     private Button btnCerrar;
 
@@ -61,29 +46,26 @@ public class DetalleIncidenciaController {
 
     private Incidencia inc;
 
-    /**
-     * Inicializa el controlador.
-     *
-     * Crea los servicios necesarios y carga la incidencia seleccionada.
-     */
+    private ResourceBundle bundle;
+
     @FXML
     public void initialize() {
+
+        bundle = LanguageManager.getBundle();
 
         IIncidenciaRepository repo = new IncidenciaRepository();
         IUsuarioRepository usuarioRepo = new UsuarioRepository();
 
-        IUsuarioService usuarioService = new UsuarioServiceImpl(usuarioRepo, new RememberTokenRepositoryImpl());
+        IUsuarioService usuarioService = new UsuarioServiceImpl(
+                usuarioRepo,
+                new RememberTokenRepositoryImpl()
+        );
 
         incidenciaService = new IncidenciaServiceImpl(repo, usuarioService);
 
         cargarIncidencia();
     }
 
-    /**
-     * Carga la incidencia seleccionada desde el ScreenManager.
-     *
-     * Si no existe, redirige al listado de incidencias.
-     */
     private void cargarIncidencia() {
 
         int id = ScreenManager.getIncidenciaId();
@@ -91,37 +73,32 @@ public class DetalleIncidenciaController {
         inc = incidenciaService.findById(id);
 
         if (inc == null) {
-            mensajeLabel.setText(LanguageManager.msg(
-                    "Incidencia no encontrada",
-                    "Incident not found",
-                    "Störung nicht gefunden"));
+            mensajeLabel.setText(bundle.getString("error.incident.notfound"));
             ScreenManager.change("incidencias.fxml");
             return;
         }
 
-        lblAsunto.setText(
-                inc.getAsunto() != null ? inc.getAsunto() : "");
+        lblAsunto.setText(inc.getAsunto() != null ? inc.getAsunto() : "");
 
         lblEstado.setText(
-                "Estado: " + (inc.getEstado() != null ? inc.getEstado() : "DESCONOCIDO"));
+                bundle.getString("incident.state") + ": " +
+                (inc.getEstado() != null ? inc.getEstado() : bundle.getString("incident.unknown"))
+        );
 
-        lblFecha.setText("Fecha: " + inc.getFecha());
+        lblFecha.setText(
+                bundle.getString("incident.date") + ": " + inc.getFecha()
+        );
 
         txtDescripcion.setText(
-                inc.getDescripcion() != null ? inc.getDescripcion() : "");
+                inc.getDescripcion() != null ? inc.getDescripcion() : ""
+        );
 
         actualizarBoton();
     }
 
-    /**
-     * Actualiza el estado del botón según el estado de la incidencia.
-     *
-     * Si la incidencia está cerrada, desactiva el botón.
-     */
     private void actualizarBoton() {
 
-        if (btnCerrar == null || inc == null)
-            return;
+        if (btnCerrar == null || inc == null) return;
 
         boolean cerrada = inc.getEstado() != null &&
                 inc.getEstado().equalsIgnoreCase("CERRADA");
@@ -129,35 +106,23 @@ public class DetalleIncidenciaController {
         btnCerrar.setDisable(cerrada);
     }
 
-    /**
-     * Cierra la incidencia cambiando su estado a CERRADA.
-     */
     @FXML
     private void cerrarIncidencia() {
 
-        if (inc == null)
-            return;
+        if (inc == null) return;
 
         boolean ok = incidenciaService.cambiarEstado(inc.getId(), "CERRADA");
 
         if (ok) {
-            mensajeLabel.setText(LanguageManager.msg(
-                    "Incidencia cerrada",
-                    "Incident closed",
-                    "Störung geschlossen"));
+            mensajeLabel.setText(bundle.getString("success.incident.closed"));
+
             inc = incidenciaService.findById(inc.getId());
             cargarIncidencia();
         } else {
-            mensajeLabel.setText(LanguageManager.msg(
-                    "Error al cerrar incidencia",
-                    "Error closing incident",
-                    "Fehler beim Schließen der Störung"));
+            mensajeLabel.setText(bundle.getString("error.incident.close"));
         }
     }
 
-    /**
-     * Vuelve a la pantalla de listado de incidencias.
-     */
     @FXML
     private void volver() {
         ScreenManager.change("incidencias.fxml");

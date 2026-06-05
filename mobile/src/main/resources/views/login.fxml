@@ -8,10 +8,11 @@
 
 <VBox xmlns:fx="http://javafx.com/fxml"
     fx:controller="dam.mod.controllers.LoginController"
-    alignment="CENTER"
     spacing="15"
+    alignment="TOP_CENTER"
     prefWidth="390"
-    prefHeight="844">
+    prefHeight="844"
+    style="-fx-padding: 15;">
 
     <padding>
         <Insets top="40" right="40" bottom="40" left="40" />
@@ -60,26 +61,27 @@
         </items>
     </MenuButton>
 
-    <Label text="LOGIN"
+    <Label text="%login.title"
         style="-fx-font-size: 26px; -fx-font-weight: bold;" />
 
+    <!-- FORM -->
     <TextField fx:id="dniField"
-        promptText="ID (DNI)" />
+        promptText="%login.dni" />
 
     <PasswordField fx:id="passwordField"
-        promptText="Password" />
+        promptText="%login.password" />
 
     <Label fx:id="errorLabel"
         style="-fx-text-fill: red;" />
 
     <CheckBox fx:id="rememberMeCheckBox"
-        text="Remember me" />
+        text="%login.remember" />
 
-    <Button text="LOGIN"
+    <Button text="%login.login"
         onAction="#handleLogin"
         maxWidth="Infinity" />
 
-    <Button text="CREATE ACCOUNT"
+    <Button text="%login.register"
         onAction="#abrirRegistro"
         maxWidth="Infinity" />
 

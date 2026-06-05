@@ -26,114 +26,89 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 
+import java.util.ResourceBundle;
+
 /**
  * Controlador de la pantalla de reservas del usuario.
- *
- * Gestiona la visualización, carga y cancelación de reservas del usuario
- * autenticado.
- * Actúa como intermediario entre la vista y la capa de servicios.
  */
 public class ReservasController {
 
     @FXML
     private Label mensajeLabel;
-    /**
-     * Lista visual que muestra las reservas del usuario.
-     */
+
     @FXML
     private ListView<Reserva> listaReservas;
 
     private IReservaService reservaService;
 
-    /**
-     * Inicializa el controlador.
-     *
-     * Se ejecuta automáticamente al cargar la vista.
-     * Crea repositorios, servicios y carga las reservas del usuario.
-     */
+    private ResourceBundle bundle;
+
     @FXML
     public void initialize() {
 
-        /**
-         * Si no hay usuario en sesión, redirige al login.
-         */
         if (Session.getCurrentUser() == null) {
             ScreenManager.change("login.fxml");
             return;
         }
 
+        bundle = LanguageManager.getBundle();
+
         IReservaRepository reservaRepo = new ReservaRepository();
         IUsuarioRepository usuarioRepo = new UsuarioRepository();
         IActividadRepository actividadRepo = new ActividadRepository();
 
-        IUsuarioService usuarioService = new UsuarioServiceImpl(usuarioRepo, new RememberTokenRepositoryImpl());
+        IUsuarioService usuarioService = new UsuarioServiceImpl(
+                usuarioRepo,
+                new RememberTokenRepositoryImpl()
+        );
 
         IActividadService actividadService = new ActividadServiceImpl(actividadRepo);
 
         reservaService = new ReservaServiceImpl(
                 reservaRepo,
                 usuarioService,
-                actividadService);
+                actividadService
+        );
 
         cargarReservas();
     }
 
-    /**
-     * Carga las reservas del usuario autenticado en la lista.
-     */
     private void cargarReservas() {
 
         int idUsuario = Session.getCurrentUser().getId();
 
         listaReservas.getItems().setAll(
-                reservaService.findByIdUsuario(idUsuario));
+                reservaService.findByIdUsuario(idUsuario)
+        );
     }
 
-    /**
-     * Cancela la reserva seleccionada.
-     *
-     * Si la cancelación es correcta, actualiza la lista de reservas.
-     */
     @FXML
     private void cancelarReserva() {
 
         Reserva seleccionada = listaReservas.getSelectionModel().getSelectedItem();
 
-        if (seleccionada == null) {
-            return;
-        }
+        if (seleccionada == null) return;
 
         int idUsuario = Session.getCurrentUser().getId();
 
         if (seleccionada.getIdUsuario() != idUsuario) {
-            mensajeLabel.setText(LanguageManager.msg(
-                    "No tienes permisos para cancelar esta reserva",
-                    "You are not allowed to cancel this reservation",
-                    "Keine Berechtigung zum Stornieren dieser Reservierung"));
+            mensajeLabel.setText(bundle.getString("error.reservation.permission"));
             return;
         }
 
         boolean ok = reservaService.cambiarEstado(
                 seleccionada.getId(),
-                "CANCELADA");
+                "CANCELADA"
+        );
 
         if (ok) {
-            mensajeLabel.setText(LanguageManager.msg(
-                    "Reserva cancelada",
-                    "Reservation cancelled",
-                    "Reservierung storniert"));
+            mensajeLabel.setText(bundle.getString("success.reservation.cancelled"));
             cargarReservas();
         } else {
-            mensajeLabel.setText(LanguageManager.msg(
-                    "No se pudo cancelar",
-                    "Could not cancel",
-                    "Stornierung nicht möglich"));
+            mensajeLabel.setText(bundle.getString("error.reservation.cancel"));
         }
     }
 
-    /**
-     * Vuelve a la pantalla principal.
-     */
     @FXML
     private void volver() {
         ScreenManager.change("inicio.fxml");

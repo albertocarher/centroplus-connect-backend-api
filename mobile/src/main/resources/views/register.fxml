@@ -6,34 +6,35 @@
 
 <VBox xmlns:fx="http://javafx.com/fxml"
        fx:controller="dam.mod.controllers.LoginController"
+       spacing="15"
        alignment="CENTER"
-       spacing="10"
        prefWidth="390"
-       prefHeight="844">
+       prefHeight="844"
+       style="-fx-padding: 15;">
 
        <padding>
               <Insets top="30" right="30" bottom="30" left="30" />
        </padding>
 
-       <Label text="CREATE ACCOUNT"
+       <Label text="%register.title"
               style="-fx-font-size: 24px; -fx-font-weight: bold;" />
 
-       <TextField fx:id="nombreField" promptText="Name" />
-       <TextField fx:id="dniRegisterField" promptText="ID (DNI)" />
-       <TextField fx:id="emailField" promptText="Email" />
-       <TextField fx:id="telefonoField" promptText="Phone" />
+       <TextField fx:id="nombreField" promptText="%register.name" />
+       <TextField fx:id="dniRegisterField" promptText="%register.dni" />
+       <TextField fx:id="emailField" promptText="%register.email" />
+       <TextField fx:id="telefonoField" promptText="%register.phone" />
 
        <PasswordField fx:id="registerPasswordField"
-              promptText="Password" />
+              promptText="%register.password" />
 
        <Label fx:id="registerErrorLabel"
               style="-fx-text-fill: red;" />
 
-       <Button text="CREATE"
+       <Button text="%register.create"
               onAction="#handleRegister"
               maxWidth="Infinity" />
 
-       <Button text="BACK"
+       <Button text="%common.back"
               onAction="#volverLogin"
               maxWidth="Infinity" />
 

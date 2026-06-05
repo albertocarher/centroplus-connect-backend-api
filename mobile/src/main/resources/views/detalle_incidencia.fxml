@@ -6,13 +6,13 @@
 <VBox xmlns:fx="http://javafx.com/fxml"
     fx:controller="dam.mod.controllers.DetalleIncidenciaController"
     spacing="15"
-    alignment="CENTER"
+    alignment="TOP_CENTER"
     prefWidth="390"
     prefHeight="844"
     style="-fx-padding: 15;">
 
-    <Label text="Detalle de incidencia"
-        style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+    <Label text="%incident.detail"
+        styleClass="app-subtitle" />
 
     <Label fx:id="mensajeLabel"
         style="-fx-text-fill: red;" />
@@ -27,11 +27,11 @@
         prefHeight="250" />
 
     <Button fx:id="btnCerrar"
-        text="Cerrar incidencia"
+        text="%incident.close"
         onAction="#cerrarIncidencia"
         prefWidth="200" />
 
-    <Button text="← Volver"
+    <Button text="%common.back"
         onAction="#volver"
         prefWidth="200" />
 
