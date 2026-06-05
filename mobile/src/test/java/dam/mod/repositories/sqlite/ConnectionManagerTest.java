@@ -1,8 +1,6 @@
-package dam.mod.repositories;
+package dam.mod.repositories.sqlite;
  
 import org.junit.jupiter.api.Test;
-
-import dam.mod.repositories.sqlite.ConnectionManager;
 
 import java.sql.Connection;
 import java.sql.SQLException;

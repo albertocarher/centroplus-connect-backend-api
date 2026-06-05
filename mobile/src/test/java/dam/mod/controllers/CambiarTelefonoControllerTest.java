@@ -19,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
  
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ResourceBundle;
  
 import static org.mockito.Mockito.*;
  
@@ -33,6 +34,8 @@ class CambiarTelefonoControllerTest {
     private TextField telefonoField;
     private TextField repeatTelefonoField;
     private Label mensajeLabel;
+
+    private ResourceBundle bundle;
  
     @BeforeAll
     static void initJavaFX() {
@@ -47,10 +50,14 @@ class CambiarTelefonoControllerTest {
         repeatTelefonoField = new TextField();
         mensajeLabel        = new Label();
  
+        bundle = mock(ResourceBundle.class);
+        lenient().when(bundle.getString(anyString())).thenAnswer(i -> i.getArgument(0));
+ 
         injectField("telefonoField",       telefonoField);
         injectField("repeatTelefonoField", repeatTelefonoField);
         injectField("mensajeLabel",        mensajeLabel);
         injectField("usuarioService",      usuarioService);
+        injectField("bundle",              bundle);
     }
  
     @Test
@@ -59,7 +66,10 @@ class CambiarTelefonoControllerTest {
         telefonoField.setText("");
         repeatTelefonoField.setText("612345678");
  
-        invokeCambiarTelefono();
+        try (MockedStatic<Session> sessionMock = mockStatic(Session.class)) {
+            sessionMock.when(Session::getCurrentUser).thenReturn(new Usuario());
+            invokeCambiarTelefono();
+        }
  
         verify(usuarioService, never()).update(any());
     }
@@ -70,7 +80,10 @@ class CambiarTelefonoControllerTest {
         telefonoField.setText(null);
         repeatTelefonoField.setText("612345678");
  
-        invokeCambiarTelefono();
+        try (MockedStatic<Session> sessionMock = mockStatic(Session.class)) {
+            sessionMock.when(Session::getCurrentUser).thenReturn(new Usuario());
+            invokeCambiarTelefono();
+        }
  
         verify(usuarioService, never()).update(any());
     }
@@ -81,7 +94,10 @@ class CambiarTelefonoControllerTest {
         telefonoField.setText("612345678");
         repeatTelefonoField.setText("699999999");
  
-        invokeCambiarTelefono();
+        try (MockedStatic<Session> sessionMock = mockStatic(Session.class)) {
+            sessionMock.when(Session::getCurrentUser).thenReturn(new Usuario());
+            invokeCambiarTelefono();
+        }
  
         verify(usuarioService, never()).update(any());
     }
@@ -92,13 +108,13 @@ class CambiarTelefonoControllerTest {
         telefonoField.setText("123abc");
         repeatTelefonoField.setText("123abc");
  
-        try (MockedStatic<Validaciones> valMock = mockStatic(Validaciones.class);
+        try (MockedStatic<Validaciones> valMock     = mockStatic(Validaciones.class);
              MockedStatic<ScreenManager> screenMock = mockStatic(ScreenManager.class);
-             MockedStatic<Session> sessionMock = mockStatic(Session.class)) {
+             MockedStatic<Session> sessionMock      = mockStatic(Session.class)) {
  
             sessionMock.when(Session::getCurrentUser).thenReturn(new Usuario());
             valMock.when(() -> Validaciones.validarTelefono("123abc"))
-                    .thenThrow(new IllegalArgumentException("Teléfono no válido"));
+                   .thenThrow(new IllegalArgumentException("Teléfono no válido"));
  
             invokeCambiarTelefono();
  
@@ -108,14 +124,14 @@ class CambiarTelefonoControllerTest {
     }
  
     @Test
-    @DisplayName("teléfono válido llama a update con el usuario")
-    void telefonoValido_llamaUpdate() throws Exception {
+    @DisplayName("teléfono válido: llama a update, actualiza sesión y navega a perfil")
+    void telefonoValido_updateSesionYNavega() throws Exception {
         telefonoField.setText("612345678");
         repeatTelefonoField.setText("612345678");
  
-        try (MockedStatic<Validaciones> valMock = mockStatic(Validaciones.class);
+        try (MockedStatic<Validaciones> valMock     = mockStatic(Validaciones.class);
              MockedStatic<ScreenManager> screenMock = mockStatic(ScreenManager.class);
-             MockedStatic<Session> sessionMock = mockStatic(Session.class)) {
+             MockedStatic<Session> sessionMock      = mockStatic(Session.class)) {
  
             Usuario user = new Usuario();
             sessionMock.when(Session::getCurrentUser).thenReturn(user);
@@ -125,48 +141,8 @@ class CambiarTelefonoControllerTest {
             invokeCambiarTelefono();
  
             verify(usuarioService).update(user);
-        }
-    }
- 
-    @Test
-    @DisplayName("teléfono válido navega a perfil.fxml")
-    void telefonoValido_navegaAPerfil() throws Exception {
-        telefonoField.setText("612345678");
-        repeatTelefonoField.setText("612345678");
- 
-        try (MockedStatic<Validaciones> valMock = mockStatic(Validaciones.class);
-             MockedStatic<ScreenManager> screenMock = mockStatic(ScreenManager.class);
-             MockedStatic<Session> sessionMock = mockStatic(Session.class)) {
- 
-            Usuario user = new Usuario();
-            sessionMock.when(Session::getCurrentUser).thenReturn(user);
-            valMock.when(() -> Validaciones.validarTelefono("612345678")).thenAnswer(i -> null);
-            when(usuarioService.update(user)).thenReturn(true);
- 
-            invokeCambiarTelefono();
- 
-            screenMock.verify(() -> ScreenManager.change("perfil.fxml"));
-        }
-    }
- 
-    @Test
-    @DisplayName("teléfono válido actualiza la sesión")
-    void telefonoValido_actualizaSesion() throws Exception {
-        telefonoField.setText("612345678");
-        repeatTelefonoField.setText("612345678");
- 
-        try (MockedStatic<Validaciones> valMock = mockStatic(Validaciones.class);
-             MockedStatic<ScreenManager> screenMock = mockStatic(ScreenManager.class);
-             MockedStatic<Session> sessionMock = mockStatic(Session.class)) {
- 
-            Usuario user = new Usuario();
-            sessionMock.when(Session::getCurrentUser).thenReturn(user);
-            valMock.when(() -> Validaciones.validarTelefono("612345678")).thenAnswer(i -> null);
-            when(usuarioService.update(user)).thenReturn(true);
- 
-            invokeCambiarTelefono();
- 
             sessionMock.verify(() -> Session.setCurrentUser(user));
+            screenMock.verify(() -> ScreenManager.change("perfil.fxml"));
         }
     }
  
@@ -184,7 +160,7 @@ class CambiarTelefonoControllerTest {
     @Test
     @DisplayName("initialize redirige a login si no hay sesión activa")
     void initialize_sinSesion() throws Exception {
-        try (MockedStatic<Session> sessionMock = mockStatic(Session.class);
+        try (MockedStatic<Session> sessionMock     = mockStatic(Session.class);
              MockedStatic<ScreenManager> screenMock = mockStatic(ScreenManager.class)) {
  
             sessionMock.when(Session::getCurrentUser).thenReturn(null);

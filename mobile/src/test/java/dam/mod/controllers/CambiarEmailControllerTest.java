@@ -30,9 +30,6 @@ class CambiarEmailControllerTest {
     @Mock
     private IUsuarioService usuarioService;
  
-    // FIX 1: bundle es un campo de instancia que se usa en TODOS los paths de
-    // cambiarEmail(). Sin inyectarlo mockeado, cualquier rama que llame a
-    // bundle.getString(...) lanza NullPointerException.
     @Mock
     private ResourceBundle bundle;
  
@@ -58,20 +55,13 @@ class CambiarEmailControllerTest {
         injectField("repeatEmailField", repeatEmailField);
         injectField("mensajeLabel",     mensajeLabel);
         injectField("usuarioService",   usuarioService);
-        // FIX 1: inyectar bundle mockeado en todos los tests
         injectField("bundle",           bundle);
+ 
+        // bundle.getString() devuelve la clave para no depender de ficheros externos
+        lenient().when(bundle.getString(anyString())).thenAnswer(i -> i.getArgument(0));
     }
  
-    // -------------------------------------------------------------------------
-    // FIX 2: Los tests de validación de campos vacíos / no coincidentes NO
-    // mockeaban Session.getCurrentUser(). El controlador llama a ese método
-    // al principio de cambiarEmail(), por lo que sin el mock estático se
-    // ejecuta la implementación real, que devuelve el valor del campo estático
-    // currentUser (null o estado sucio de otro test) y puede causar un NPE o
-    // un comportamiento no determinista.
-    // La solución es envolver estos tests en un MockedStatic<Session> igual
-    // que hacen los tests que ya funcionaban.
-    // -------------------------------------------------------------------------
+    // --- Early-exit: campos vacíos / no coincidentes ---
  
     @Test
     @DisplayName("email vacío no llama a update")
@@ -129,13 +119,15 @@ class CambiarEmailControllerTest {
         verify(usuarioService, never()).update(any());
     }
  
+    // --- Error de formato ---
+ 
     @Test
     @DisplayName("email con formato inválido no llama a update ni navega")
     void emailFormatoInvalido_noLlamaUpdateNiNavega() throws Exception {
         emailField.setText("no-es-email");
         repeatEmailField.setText("no-es-email");
  
-        try (MockedStatic<Validaciones> valMock    = mockStatic(Validaciones.class);
+        try (MockedStatic<Validaciones> valMock     = mockStatic(Validaciones.class);
              MockedStatic<ScreenManager> screenMock = mockStatic(ScreenManager.class);
              MockedStatic<Session> sessionMock      = mockStatic(Session.class)) {
  
@@ -150,13 +142,15 @@ class CambiarEmailControllerTest {
         }
     }
  
+    // --- Camino feliz: update + sesión + navegación ---
+ 
     @Test
-    @DisplayName("email válido llama a update con el usuario")
-    void emailValido_llamaUpdate() throws Exception {
+    @DisplayName("email válido: llama a update, actualiza sesión y navega a perfil")
+    void emailValido_updateSesionYNavega() throws Exception {
         emailField.setText("nuevo@email.com");
         repeatEmailField.setText("nuevo@email.com");
  
-        try (MockedStatic<Validaciones> valMock    = mockStatic(Validaciones.class);
+        try (MockedStatic<Validaciones> valMock     = mockStatic(Validaciones.class);
              MockedStatic<ScreenManager> screenMock = mockStatic(ScreenManager.class);
              MockedStatic<Session> sessionMock      = mockStatic(Session.class)) {
  
@@ -168,50 +162,12 @@ class CambiarEmailControllerTest {
             invokeCambiarEmail();
  
             verify(usuarioService).update(user);
-        }
-    }
- 
-    @Test
-    @DisplayName("email válido navega a perfil.fxml")
-    void emailValido_navegaAPerfil() throws Exception {
-        emailField.setText("nuevo@email.com");
-        repeatEmailField.setText("nuevo@email.com");
- 
-        try (MockedStatic<Validaciones> valMock    = mockStatic(Validaciones.class);
-             MockedStatic<ScreenManager> screenMock = mockStatic(ScreenManager.class);
-             MockedStatic<Session> sessionMock      = mockStatic(Session.class)) {
- 
-            Usuario user = new Usuario();
-            sessionMock.when(Session::getCurrentUser).thenReturn(user);
-            valMock.when(() -> Validaciones.validarEmail("nuevo@email.com")).thenAnswer(i -> null);
-            when(usuarioService.update(user)).thenReturn(true);
- 
-            invokeCambiarEmail();
- 
+            sessionMock.verify(() -> Session.setCurrentUser(user));
             screenMock.verify(() -> ScreenManager.change("perfil.fxml"));
         }
     }
  
-    @Test
-    @DisplayName("email válido actualiza la sesión")
-    void emailValido_actualizaSesion() throws Exception {
-        emailField.setText("nuevo@email.com");
-        repeatEmailField.setText("nuevo@email.com");
- 
-        try (MockedStatic<Validaciones> valMock    = mockStatic(Validaciones.class);
-             MockedStatic<ScreenManager> screenMock = mockStatic(ScreenManager.class);
-             MockedStatic<Session> sessionMock      = mockStatic(Session.class)) {
- 
-            Usuario user = new Usuario();
-            sessionMock.when(Session::getCurrentUser).thenReturn(user);
-            valMock.when(() -> Validaciones.validarEmail("nuevo@email.com")).thenAnswer(i -> null);
-            when(usuarioService.update(user)).thenReturn(true);
- 
-            invokeCambiarEmail();
- 
-            sessionMock.verify(() -> Session.setCurrentUser(user));
-        }
-    }
+    // --- Otros ---
  
     @Test
     @DisplayName("volver navega a perfil.fxml")
@@ -240,7 +196,7 @@ class CambiarEmailControllerTest {
         }
     }
  
-    // -------------------------------------------------------------------------
+    // --- Helpers ---
  
     private void invokeCambiarEmail() throws Exception {
         Method m = CambiarEmailController.class.getDeclaredMethod("cambiarEmail");
