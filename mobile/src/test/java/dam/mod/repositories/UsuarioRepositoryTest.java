@@ -557,4 +557,34 @@ public class UsuarioRepositoryTest {
                     () -> repository.findByDni(dni));
         }
     }
+
+    @DisplayName("findById: el mensaje de la RuntimeException contiene el texto esperado")
+@Order(29)
+@Test
+void findByIdMensajeExcepcionTest() throws SQLException {
+    when(connection.prepareStatement(anyString())).thenThrow(new SQLException("Error BD"));
+
+    try (MockedStatic<ConnectionManager> mock = mockStatic(ConnectionManager.class)) {
+        mock.when(ConnectionManager::getConnection).thenReturn(connection);
+
+        RuntimeException ex = Assertions.assertThrows(RuntimeException.class,
+                () -> repository.findById(id));
+        Assertions.assertTrue(ex.getMessage().contains("Error al buscar usuario"));
+    }
+}
+
+@DisplayName("findByDni: el mensaje de la RuntimeException contiene el texto esperado")
+@Order(30)
+@Test
+void findByDniMensajeExcepcionTest() throws SQLException {
+    when(connection.prepareStatement(anyString())).thenThrow(new SQLException("Error BD"));
+
+    try (MockedStatic<ConnectionManager> mock = mockStatic(ConnectionManager.class)) {
+        mock.when(ConnectionManager::getConnection).thenReturn(connection);
+
+        RuntimeException ex = Assertions.assertThrows(RuntimeException.class,
+                () -> repository.findByDni(dni));
+        Assertions.assertTrue(ex.getMessage().contains("Error al buscar usuario por DNI"));
+    }
+}
 }
