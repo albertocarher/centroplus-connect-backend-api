@@ -1,0 +1,12 @@
+package com.dam.mod.business;
+
+import com.dam.mod.domain.models.Actividad;
+import java.util.List;
+
+public interface ActividadServicePort {
+    List<Actividad> findAll();
+    Actividad findById(int id);
+    boolean save(Actividad actividad);
+    boolean update(Actividad actividad);
+    boolean delete(int id);
+}
