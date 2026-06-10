@@ -28,10 +28,14 @@ public class ApiJpaUsuario {
     @Column(nullable = false)
     private String password;
 
-    public ApiJpaUsuario() {}
+    @Column(nullable = false)
+    private int activo;
+
+    public ApiJpaUsuario() {
+    }
 
     public ApiJpaUsuario(Integer id, String nombre, String dni, String email,
-                         String telefono, String tipoUsuario, String password) {
+            String telefono, String tipoUsuario, String password, int activo) {
         this.id = id;
         this.nombre = nombre;
         this.dni = dni;
@@ -39,21 +43,70 @@ public class ApiJpaUsuario {
         this.telefono = telefono;
         this.tipoUsuario = tipoUsuario;
         this.password = password;
+        this.activo = activo;
     }
 
-    public Integer getId() { return id; }
-    public String getNombre() { return nombre; }
-    public String getDni() { return dni; }
-    public String getEmail() { return email; }
-    public String getTelefono() { return telefono; }
-    public String getTipoUsuario() { return tipoUsuario; }
-    public String getPassword() { return password; }
+    public Integer getId() {
+        return id;
+    }
 
-    public void setId(Integer id) { this.id = id; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
-    public void setDni(String dni) { this.dni = dni; }
-    public void setEmail(String email) { this.email = email; }
-    public void setTelefono(String telefono) { this.telefono = telefono; }
-    public void setTipoUsuario(String tipoUsuario) { this.tipoUsuario = tipoUsuario; }
-    public void setPassword(String password) { this.password = password; }
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public String getTipoUsuario() {
+        return tipoUsuario;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public int getActivo() {
+        return activo;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public void setTipoUsuario(String tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setActivo(int activo) {
+        this.activo = activo;
+    }
 }
