@@ -33,14 +33,14 @@ public class IncidenciaPersistenceAdapter implements IIncidenciaRepository {
 
     @Override
     public Incidencia findById(int id) {
-        return repositoryJpa.findById((long) id)
+        return repositoryJpa.findById(id)
                 .map(mapper::toDomain)
                 .orElse(null);
     }
 
     @Override
     public boolean save(Incidencia incidencia) {
-        ApiJpaUsuario usuario = usuarioRepositoryJpa.findById((long) incidencia.getIdUsuario())
+        ApiJpaUsuario usuario = usuarioRepositoryJpa.findById(incidencia.getIdUsuario())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado: " + incidencia.getIdUsuario()));
         repositoryJpa.save(mapper.toEntity(incidencia, usuario));
         return true;
@@ -48,8 +48,8 @@ public class IncidenciaPersistenceAdapter implements IIncidenciaRepository {
 
     @Override
     public boolean update(Incidencia incidencia) {
-        if (!repositoryJpa.existsById((long) incidencia.getId())) return false;
-        ApiJpaUsuario usuario = usuarioRepositoryJpa.findById((long) incidencia.getIdUsuario())
+        if (!repositoryJpa.existsById(incidencia.getId())) return false;
+        ApiJpaUsuario usuario = usuarioRepositoryJpa.findById(incidencia.getIdUsuario())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado: " + incidencia.getIdUsuario()));
         repositoryJpa.save(mapper.toEntity(incidencia, usuario));
         return true;
@@ -57,8 +57,8 @@ public class IncidenciaPersistenceAdapter implements IIncidenciaRepository {
 
     @Override
     public boolean delete(int id) {
-        if (!repositoryJpa.existsById((long) id)) return false;
-        repositoryJpa.deleteById((long) id);
+        if (!repositoryJpa.existsById(id)) return false;
+        repositoryJpa.deleteById(id);
         return true;
     }
 }

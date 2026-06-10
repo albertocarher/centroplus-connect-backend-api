@@ -10,7 +10,7 @@ public class ActividadMapper {
     public Actividad toDomain(ApiJpaActividad entity) {
         if (entity == null) return null;
         return new Actividad(
-                entity.getId().intValue(),
+                entity.getId(),
                 entity.getNombre(),
                 entity.getTipoActividad(),
                 entity.getDuracion(),
@@ -23,7 +23,7 @@ public class ActividadMapper {
     public ApiJpaActividad toEntity(Actividad domain) {
         if (domain == null) return null;
         ApiJpaActividad entity = new ApiJpaActividad();
-        if (domain.getId() != 0) entity.setId((long) domain.getId());
+        if (domain.getId() != 0) entity.setId(domain.getId());
         entity.setNombre(domain.getNombre());
         entity.setTipoActividad(domain.getTipoActividad());
         entity.setDuracion(domain.getDuracion());

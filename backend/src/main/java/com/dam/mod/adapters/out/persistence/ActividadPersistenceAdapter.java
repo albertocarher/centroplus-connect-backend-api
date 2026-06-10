@@ -3,9 +3,6 @@ package com.dam.mod.adapters.out.persistence;
 import com.dam.mod.adapters.mappers.ActividadMapper;
 import com.dam.mod.domain.models.Actividad;
 import com.dam.mod.domain.ports.IActividadRepository;
-
-
-
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -32,7 +29,7 @@ public class ActividadPersistenceAdapter implements IActividadRepository {
 
     @Override
     public Actividad findById(int id) {
-        return repositoryJpa.findById((long) id)
+        return repositoryJpa.findById(id)
                 .map(mapper::toDomain)
                 .orElse(null);
     }
@@ -45,15 +42,15 @@ public class ActividadPersistenceAdapter implements IActividadRepository {
 
     @Override
     public boolean update(Actividad actividad) {
-        if (!repositoryJpa.existsById((long) actividad.getId())) return false;
+        if (!repositoryJpa.existsById(actividad.getId())) return false;
         repositoryJpa.save(mapper.toEntity(actividad));
         return true;
     }
 
     @Override
     public boolean delete(int id) {
-        if (!repositoryJpa.existsById((long) id)) return false;
-        repositoryJpa.deleteById((long) id);
+        if (!repositoryJpa.existsById(id)) return false;
+        repositoryJpa.deleteById(id);
         return true;
     }
 }

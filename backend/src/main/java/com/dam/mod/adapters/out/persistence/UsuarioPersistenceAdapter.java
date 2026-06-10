@@ -29,7 +29,7 @@ public class UsuarioPersistenceAdapter implements IUsuarioRepository {
 
     @Override
     public Usuario findById(int id) {
-        return repositoryJpa.findById((long) id)
+        return repositoryJpa.findById(id)
                 .map(mapper::toDomain)
                 .orElse(null);
     }
@@ -41,16 +41,15 @@ public class UsuarioPersistenceAdapter implements IUsuarioRepository {
     }
 
     @Override
-    public boolean update(Usuario usuario) {
-        if (!repositoryJpa.existsById((long) usuario.getId())) return false;
-        repositoryJpa.save(mapper.toEntity(usuario));
-        return true;
-    }
+public boolean update(Usuario usuario) {
+    repositoryJpa.save(mapper.toEntity(usuario));
+    return true;
+}
 
     @Override
     public boolean delete(int id) {
-        if (!repositoryJpa.existsById((long) id)) return false;
-        repositoryJpa.deleteById((long) id);
+        if (!repositoryJpa.existsById(id)) return false;
+        repositoryJpa.deleteById(id);
         return true;
     }
 

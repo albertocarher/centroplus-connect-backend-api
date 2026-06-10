@@ -36,16 +36,16 @@ public class ReservaPersistenceAdapter implements IReservaRepository {
 
     @Override
     public Reserva findById(int id) {
-        return repositoryJpa.findById((long) id)
+        return repositoryJpa.findById(id)
                 .map(mapper::toDomain)
                 .orElse(null);
     }
 
     @Override
     public boolean save(Reserva reserva) {
-        ApiJpaUsuario usuario = usuarioRepositoryJpa.findById((long) reserva.getIdUsuario())
+        ApiJpaUsuario usuario = usuarioRepositoryJpa.findById(reserva.getIdUsuario())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado: " + reserva.getIdUsuario()));
-        ApiJpaActividad actividad = actividadRepositoryJpa.findById((long) reserva.getIdActividad())
+        ApiJpaActividad actividad = actividadRepositoryJpa.findById(reserva.getIdActividad())
                 .orElseThrow(() -> new RuntimeException("Actividad no encontrada: " + reserva.getIdActividad()));
         repositoryJpa.save(mapper.toEntity(reserva, usuario, actividad));
         return true;
@@ -53,10 +53,10 @@ public class ReservaPersistenceAdapter implements IReservaRepository {
 
     @Override
     public boolean update(Reserva reserva) {
-        if (!repositoryJpa.existsById((long) reserva.getId())) return false;
-        ApiJpaUsuario usuario = usuarioRepositoryJpa.findById((long) reserva.getIdUsuario())
+        if (!repositoryJpa.existsById(reserva.getId())) return false;
+        ApiJpaUsuario usuario = usuarioRepositoryJpa.findById(reserva.getIdUsuario())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado: " + reserva.getIdUsuario()));
-        ApiJpaActividad actividad = actividadRepositoryJpa.findById((long) reserva.getIdActividad())
+        ApiJpaActividad actividad = actividadRepositoryJpa.findById(reserva.getIdActividad())
                 .orElseThrow(() -> new RuntimeException("Actividad no encontrada: " + reserva.getIdActividad()));
         repositoryJpa.save(mapper.toEntity(reserva, usuario, actividad));
         return true;
@@ -64,19 +64,19 @@ public class ReservaPersistenceAdapter implements IReservaRepository {
 
     @Override
     public boolean delete(int id) {
-        if (!repositoryJpa.existsById((long) id)) return false;
-        repositoryJpa.deleteById((long) id);
+        if (!repositoryJpa.existsById(id)) return false;
+        repositoryJpa.deleteById(id);
         return true;
     }
 
     @Override
     public boolean existsReserva(int actividadId, int usuarioId) {
-        return repositoryJpa.existsByActividadIdAndUsuarioId((long) actividadId, (long) usuarioId);
+        return repositoryJpa.existsByActividadIdAndUsuarioId(actividadId, usuarioId);
     }
 
     @Override
     public List<Reserva> findByIdUsuario(int idUsuario) {
-        return repositoryJpa.findByUsuarioId((long) idUsuario)
+        return repositoryJpa.findByUsuarioId(idUsuario)
                 .stream()
                 .map(mapper::toDomain)
                 .collect(Collectors.toList());
@@ -84,6 +84,6 @@ public class ReservaPersistenceAdapter implements IReservaRepository {
 
     @Override
     public boolean cambiarEstado(int idReserva, String nuevoEstado) {
-        return repositoryJpa.cambiarEstado((long) idReserva, nuevoEstado) > 0;
+        return repositoryJpa.cambiarEstado(idReserva, nuevoEstado) > 0;
     }
 }

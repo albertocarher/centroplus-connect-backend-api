@@ -10,7 +10,7 @@ public class UsuarioMapper {
     public Usuario toDomain(ApiJpaUsuario entity) {
         if (entity == null) return null;
         return new Usuario(
-                entity.getId().intValue(),
+                entity.getId(),
                 entity.getNombre(),
                 entity.getDni(),
                 entity.getEmail(),
@@ -23,7 +23,7 @@ public class UsuarioMapper {
     public ApiJpaUsuario toEntity(Usuario domain) {
         if (domain == null) return null;
         ApiJpaUsuario entity = new ApiJpaUsuario();
-        if (domain.getId() != 0) entity.setId((long) domain.getId());
+        if (domain.getId() != 0) entity.setId(domain.getId());
         entity.setNombre(domain.getNombre());
         entity.setDni(domain.getDni());
         entity.setEmail(domain.getEmail());
