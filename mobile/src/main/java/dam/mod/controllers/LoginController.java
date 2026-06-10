@@ -6,7 +6,6 @@ import dam.mod.repositories.impl.UsuarioRepository;
 import dam.mod.services.IUsuarioService;
 import dam.mod.services.impl.UsuarioServiceImpl;
 import dam.mod.utils.LanguageManager;
-import dam.mod.utils.PasswordUtils;
 import dam.mod.utils.ScreenManager;
 import dam.mod.utils.Session;
 import javafx.fxml.FXML;
