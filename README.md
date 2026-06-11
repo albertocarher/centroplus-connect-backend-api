@@ -1,4 +1,4 @@
-# 📚 CentroPlus Connect
+# CentroPlus Connect
 
 CentroPlus Connect es una aplicación de gestión desarrollada en Java que permite administrar usuarios, actividades, reservas e incidencias dentro de un sistema centralizado.
 
@@ -6,7 +6,7 @@ El proyecto incluye autenticación de usuarios, sistema de reservas, gestión de
 
 ---
 
-# 🚀 Funcionalidades principales
+# Funcionalidades principales
 
 - Gestión de usuarios con roles
 - Sistema de actividades
@@ -19,50 +19,81 @@ El proyecto incluye autenticación de usuarios, sistema de reservas, gestión de
 
 ---
 
-# 🏗️ Tecnologías utilizadas
+# Tecnologías utilizadas
 
-- Java 17
-- JavaFX
-- SQLite3
-- JDBC
-- Maven
-
----
-
-# 📁 Estructura del proyecto
-
-- `src/` → Código fuente
-- `database/` → Base de datos SQLite
-- `docs/` → Documentación del proyecto
-- `utils/` → Utilidades (sesión, navegación, tokens)
-- `services/` → Lógica de negocio
-- `repositories/` → Acceso a datos
-- `resources/` → Recursos
+| Módulo | Tecnologías |
+|---|---|
+| JavaFX | Java 21, JavaFX, SQLite, JDBC, Maven |
+| API REST | Java 21, Spring Boot 3.5.14, Spring Data JPA, Hibernate, SQLite, Swagger |
 
 ---
 
-# 📚 Documentación
+# Estructura del proyecto
+
+```
+centroplus/
+├── README.md                      
+├── mobile/             
+│   ├── deps.txt
+│   └── src/
+│       └── main/
+│           ├── java/dam/mod/
+│           │   ├── controllers/
+│           │   ├── models/
+│           │   ├── repositories/
+│           │   ├── services/
+│           │   └── utils/
+│           └── resources/
+│               ├── database/      
+│               ├── i18n/
+│               ├── icons/
+│               ├── styles/
+│               └── views/
+└── backend/                       
+    ├── README.md
+    ├── pom.xml
+    ├── centroplus.db
+    └── src/
+```
+---
+
+# Documentación
 
 La documentación completa del proyecto está disponible en los siguientes idiomas:
 
 ## 🇪🇸 Español
-- 📘 Documentación → [Ver documentación en español](./docs/es/README.md)
+- Documentación → [Ver documentación en español](./docs/es/README.md)
 
 ## 🇬🇧 English
-- 📘 Documentation → [View English documentation](./docs/en/README.md)
+- Documentation → [View English documentation](./docs/en/README.md)
 
 ---
 
-# ▶️ Ejecución del proyecto
+## Ejecución del proyecto
+
+### App JavaFX
 
 1. Clonar el repositorio
 2. Abrir el proyecto en un IDE compatible con Java
-3. Ejecutar la clase `Main`
-4. La base de datos SQLite se carga automáticamente
+
+```bash
+cd centroplus-javafx
+mvn javafx:run
+```
+
+### API REST
+
+```bash
+cd backend
+mvn spring-boot:run
+```
+
+Disponible en `http://localhost:8080`
+Swagger UI en `http://localhost:8080/swagger-ui/index.html`
 
 ---
 
-# 👨‍💻 Autores
+# Autores
 
 Proyecto desarrollado por:
 
@@ -74,6 +105,6 @@ Desarrollo del ciclo formativo de Desarrollo de Aplicaciones Multiplataforma (DA
 
 ---
 
-# 📌 Nota
+# Nota
 
 Este proyecto forma parte de un sistema de gestión completo con enfoque académico, orientado a la arquitectura en capas y buenas prácticas de desarrollo en Java.

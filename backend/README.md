@@ -22,36 +22,36 @@ src/main/java/com/dam/mod/
 ├── ApiApplication.java
 │
 ├── domain/
-│   ├── models/                     # Modelos de dominio (POJOs puros)
+│   ├── models/                      
 │   │   ├── Usuario.java
 │   │   ├── Actividad.java
 │   │   ├── Reserva.java
 │   │   └── Incidencia.java
 │   │
-│   └── ports/                      # Interfaces de salida (contratos de persistencia)
+│   └── ports/                      
 │       ├── IUsuarioRepository.java
 │       ├── IActividadRepository.java
 │       ├── IReservaRepository.java
 │       └── IIncidenciaRepository.java
 │
-├── business/                       # Capa de negocio
-│   ├── UsuarioServicePort.java     # Interfaces de entrada
+├── business/                       
+│   ├── UsuarioServicePort.java     
 │   ├── ActividadServicePort.java
 │   ├── ReservaServicePort.java
 │   ├── IncidenciaServicePort.java
-│   ├── UsuarioService.java         # Implementaciones con lógica de negocio
+│   ├── UsuarioService.java         
 │   ├── ActividadService.java
 │   ├── ReservaService.java
 │   └── IncidenciaService.java
 │
 └── adapters/
     ├── in/
-    │   ├── controller/             # Controladores REST
+    │   ├── controller/             
     │   │   ├── UsuarioController.java
     │   │   ├── ActividadController.java
     │   │   ├── ReservaController.java
     │   │   └── IncidenciaController.java
-    │   └── api/                    # DTOs de entrada y salida
+    │   └── api/                    
     │       ├── UsuarioRequest.java
     │       ├── UsuarioResponse.java
     │       ├── LoginRequest.java
@@ -62,23 +62,23 @@ src/main/java/com/dam/mod/
     │       ├── IncidenciaRequest.java
     │       └── IncidenciaResponse.java
     │
-    ├── mapper/                     # Conversión dominio <-> Entity JPA
+    ├── mapper/                     
     │   ├── UsuarioMapper.java
     │   ├── ActividadMapper.java
     │   ├── ReservaMapper.java
     │   └── IncidenciaMapper.java
     │
     └── out/
-        └── persistence/            # Capa de persistencia JPA
-            ├── ApiJpaUsuario.java          # Entities JPA
+        └── persistence/            
+            ├── ApiJpaUsuario.java          
             ├── ApiJpaActividad.java
             ├── ApiJpaReserva.java
             ├── ApiJpaIncidencia.java
-            ├── UsuarioRepositoryJpa.java   # Spring Data repositories
+            ├── UsuarioRepositoryJpa.java   
             ├── ActividadRepositoryJpa.java
             ├── ReservaRepositoryJpa.java
             ├── IncidenciaRepositoryJpa.java
-            ├── UsuarioPersistenceAdapter.java   # Implementan ports de dominio
+            ├── UsuarioPersistenceAdapter.java   
             ├── ActividadPersistenceAdapter.java
             ├── ReservaPersistenceAdapter.java
             └── IncidenciaPersistenceAdapter.java
