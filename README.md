@@ -32,7 +32,13 @@ El proyecto incluye autenticación de usuarios, sistema de reservas, gestión de
 
 ```
 centroplus/
-├── README.md                      
+├── README.md   
+├── backend/                       
+│   ├── README.md
+│   ├── pom.xml
+│   ├── centroplus.db
+│   └── src/    
+│               
 ├── mobile/             
 │   ├── deps.txt
 │   └── src/
@@ -49,11 +55,9 @@ centroplus/
 │               ├── icons/
 │               ├── styles/
 │               └── views/
-└── backend/                       
-    ├── README.md
-    ├── pom.xml
-    ├── centroplus.db
-    └── src/
+├── database/
+├── docs/
+└── web/
 ```
 ---
 
