@@ -81,7 +81,7 @@ La documentación completa del proyecto está disponible en los siguientes idiom
 2. Abrir el proyecto en un IDE compatible con Java
 
 ```bash
-cd centroplus-javafx
+cd mobile
 mvn javafx:run
 ```
 
